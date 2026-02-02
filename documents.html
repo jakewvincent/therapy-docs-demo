@@ -1382,7 +1382,8 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <div class="form-group">
                                         <label class="form-label" for="intake-date">Date</label>
-                                        <input type="date" id="intake-date" x-model="currentIntake.date" class="form-input">
+                                        <input type="date" id="intake-date" x-model="currentIntake.date" class="form-input" :class="{ 'border-danger-500': intakeErrors.date }" @input="intakeErrors.date = ''">
+                                        <p x-show="intakeErrors.date" class="text-sm text-danger-600 mt-1" x-text="intakeErrors.date"></p>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="intake-duration">Duration (min)</label>
@@ -1401,19 +1402,20 @@
                         </div>
 
                         <!-- Presenting Problems Card -->
-                        <div class="card" id="intake-presenting-problems">
+                        <div class="card" id="intake-presenting-problems" :class="{ 'border-danger-500': intakeErrors.presentingProblems }">
                             <div class="card-header">
                                 <h3 class="font-semibold">Presenting Problems</h3>
                             </div>
                             <div class="card-body space-y-4">
                                 <p class="text-sm text-neutral-600">Select all that apply:</p>
+                                <p x-show="intakeErrors.presentingProblems" class="text-sm text-danger-600" x-text="intakeErrors.presentingProblems"></p>
                                 <div class="btn-checkbox-group">
                                     <template x-for="issue in allPresentingIssues" :key="issue.id">
                                         <button
                                             type="button"
                                             class="btn-checkbox"
                                             :class="{ 'active': isIntakePresentingProblemSelected(issue.id) }"
-                                            @click="toggleIntakePresentingProblem(issue.id)"
+                                            @click="toggleIntakePresentingProblem(issue.id); intakeErrors.presentingProblems = ''"
                                         >
                                             <span x-text="issue.name"></span>
                                         </button>

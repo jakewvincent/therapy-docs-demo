@@ -450,6 +450,7 @@ export function createAppData() {
     intakeStatus: 'draft',  // 'draft' | 'complete'
     savingIntake: false,
     intakeActiveSection: 'session-details',
+    intakeErrors: { date: '', presentingProblems: '' },
 
     // ========================================
     // TREATMENT PLAN FORM STATE (Beta)
@@ -3768,6 +3769,7 @@ export function createAppData() {
       this.existingIntakeId = null;
       this.intakeStatus = 'draft';
       this.intakeActiveSection = 'session-details';
+      this.intakeErrors = { date: '', presentingProblems: '' };
     },
 
     /**
@@ -3898,9 +3900,34 @@ export function createAppData() {
     },
 
     /**
+     * Validate intake form for completion
+     * @returns {boolean} True if valid
+     */
+    validateIntake() {
+      this.intakeErrors = { date: '', presentingProblems: '' };
+      let valid = true;
+
+      if (!this.currentIntake.date) {
+        this.intakeErrors.date = 'Date is required';
+        valid = false;
+      }
+
+      if (this.currentIntake.presentingProblems.length === 0) {
+        this.intakeErrors.presentingProblems = 'At least one presenting problem is required';
+        valid = false;
+      }
+
+      return valid;
+    },
+
+    /**
      * Submit intake as complete
      */
     async submitIntake() {
+      if (!this.validateIntake()) {
+        this.showToast('error', 'Please fix validation errors');
+        return;
+      }
       await this.saveIntake('complete');
     },
 
