@@ -2460,9 +2460,9 @@ export function createAppData() {
       );
       warnings.hasBackendDocument = !!existingDoc;
 
-      // 2. Check if another local draft exists for this date (different UUID)
+      // 2. Check if another local draft exists for this date (different UUID, same form type)
       const otherDrafts = DraftStorage.getDraftsForDate(this.selectedClient, sessionDate)
-        .filter(d => d.uuid !== this.currentDraftUUID);
+        .filter(d => d.uuid !== this.currentDraftUUID && d.formType === this.formType);
       warnings.hasOtherDraft = otherDrafts.length > 0;
 
       // 3. Check if date predates client creation
