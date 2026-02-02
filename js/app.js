@@ -3820,15 +3820,18 @@ export function createAppData() {
 
     /**
      * Auto-calculate risk level based on flags
+     * Risk level syncs with checkboxes: unchecking flags will downgrade appropriately
      */
     updateIntakeRiskLevel() {
-      if (this.currentIntake.riskAssessment.suicidalIdeation ||
-          this.currentIntake.riskAssessment.homicidalIdeation) {
-        this.currentIntake.riskAssessment.riskLevel = 'high';
-      } else if (this.currentIntake.riskAssessment.selfHarm) {
-        this.currentIntake.riskAssessment.riskLevel = 'elevated';
+      const ra = this.currentIntake.riskAssessment;
+      if (ra.suicidalIdeation || ra.homicidalIdeation) {
+        ra.riskLevel = 'high';
+      } else if (ra.selfHarm) {
+        ra.riskLevel = 'elevated';
+      } else {
+        // No risk factors checked - return to standard
+        ra.riskLevel = 'standard';
       }
-      // Note: Don't auto-downgrade - clinician may have elevated manually
     },
 
     /**
