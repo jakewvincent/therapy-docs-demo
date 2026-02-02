@@ -805,7 +805,7 @@
                     <!-- Just Added Clients (when not searching) -->
                     <div class="mb-6" x-show="clientSearchQuery.length === 0 && !showAllClients && justAddedClients.length > 0">
                         <h3 class="text-sm font-semibold text-neutral-600 uppercase tracking-wide mb-3 flex items-center gap-2">
-                            <svg class="icon text-success-600"><use href="./assets/icons/tabler-sprites.svg#status-new"></use></svg>
+                            <svg class="icon text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#status-new"></use></svg>
                             Just Added
                         </h3>
                         <div class="space-y-2">
@@ -875,6 +875,13 @@
                         <button @click="showAllClients = true" class="btn btn-ghost text-neutral-600">
                             <svg class="icon mr-2"><use href="./assets/icons/tabler-sprites.svg#clients"></use></svg>
                             Show All Clients (<span x-text="clients.length"></span>)
+                        </button>
+                    </div>
+
+                    <!-- Show Less Toggle -->
+                    <div x-show="clientSearchQuery.length === 0 && showAllClients" class="text-center mt-6">
+                        <button @click="showAllClients = false" class="btn btn-ghost text-neutral-600">
+                            Show Less
                         </button>
                     </div>
 
