@@ -5,7 +5,6 @@ node_modules/
 dist/
 
 # Environment files
-config.js
 .env
 .env.local
 

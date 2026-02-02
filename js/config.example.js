@@ -1,8 +1,8 @@
 /**
- * Configuration Template
+ * Configuration Template (Production)
  *
- * Copy this file to config.js and fill in your AWS values.
- * config.js is gitignored to keep credentials safe.
+ * Reference for deploying with a real AWS backend.
+ * The committed config.js is set up for demo mode.
  */
 
 export const config = {
