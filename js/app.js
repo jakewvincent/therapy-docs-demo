@@ -411,8 +411,8 @@ export function createAppData() {
 
     // Document type visibility settings (loaded from settings API)
     documentTypeVisibility: {
-      // Category toggles (default false = hidden)
-      showBeta: false,
+      // Category toggles (default true for demo)
+      showBeta: true,
       showUndeveloped: false,
       // Individual document type toggles
       intakeEnabled: true,
@@ -4702,7 +4702,7 @@ export function createAppData() {
           }
 
           this.documentTypeVisibility = {
-            showBeta: showBeta ?? false,
+            showBeta: showBeta ?? true,
             showUndeveloped: showUndeveloped ?? false,
             intakeEnabled: settings.intakeEnabled ?? true,
             diagnosisEnabled: settings.diagnosisEnabled ?? true,

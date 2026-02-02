@@ -98,7 +98,7 @@ export function createClientsDashboardData() {
          * Controls visibility of diagnosis column and overview cards
          */
         documentTypeVisibility: {
-            showBeta: false,
+            showBeta: true,
             showUndeveloped: false,
             diagnosisEnabled: true,
             treatmentPlanEnabled: true,
@@ -361,7 +361,7 @@ export function createClientsDashboardData() {
                     }
 
                     this.documentTypeVisibility = {
-                        showBeta: showBeta ?? false,
+                        showBeta: showBeta ?? true,
                         showUndeveloped: showUndeveloped ?? false,
                         diagnosisEnabled: settings.diagnosisEnabled ?? true,
                         treatmentPlanEnabled: settings.treatmentPlanEnabled ?? true,

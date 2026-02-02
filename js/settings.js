@@ -99,8 +99,8 @@ export function createSettingsAppData() {
 
         // Document type visibility settings
         documentTypeSettings: {
-            // Category toggles (hide by default, matching tab visibility pattern)
-            showBeta: false,
+            // Category toggles (showBeta true by default for demo)
+            showBeta: true,
             showUndeveloped: false,
             // Individual document type toggles
             intakeEnabled: true,
@@ -775,7 +775,7 @@ export function createSettingsAppData() {
                     }
 
                     this.documentTypeSettings = {
-                        showBeta: showBeta ?? false,
+                        showBeta: showBeta ?? true,
                         showUndeveloped: showUndeveloped ?? false,
                         intakeEnabled: settings.intakeEnabled ?? true,
                         diagnosisEnabled: settings.diagnosisEnabled ?? true,
