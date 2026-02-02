@@ -802,6 +802,26 @@
                         </div>
                     </div>
 
+                    <!-- Just Added Clients (when not searching) -->
+                    <div class="mb-6" x-show="clientSearchQuery.length === 0 && !showAllClients && justAddedClients.length > 0">
+                        <h3 class="text-sm font-semibold text-neutral-600 uppercase tracking-wide mb-3 flex items-center gap-2">
+                            <svg class="icon text-success-600"><use href="./assets/icons/tabler-sprites.svg#status-new"></use></svg>
+                            Just Added
+                        </h3>
+                        <div class="space-y-2">
+                            <template x-for="client in justAddedClients" :key="client.id">
+                                <div class="client-card" @click="selectClientForEntry(client.id)">
+                                    <div class="avatar" x-text="client.initials || client.name.split(' ').map(n => n[0]).join('')"></div>
+                                    <div class="flex-1 min-w-0">
+                                        <span class="font-semibold text-neutral-900" x-text="client.name"></span>
+                                        <p class="text-sm text-neutral-500" x-text="client.clientType || 'Individual'"></p>
+                                    </div>
+                                    <svg class="icon text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#collapsed-indicator"></use></svg>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
                     <!-- Recent Clients (when not searching) -->
                     <div class="mb-6" x-show="clientSearchQuery.length === 0 && !showAllClients && recentClients.length > 0">
                         <h3 class="text-sm font-semibold text-neutral-600 uppercase tracking-wide mb-3 flex items-center gap-2">

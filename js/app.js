@@ -236,6 +236,7 @@ export function createAppData() {
     // APPLICATION DATA
     // ========================================
     clients: [],
+    justAddedClientIds: [],  // Track clients created this session (for "Just Added" section)
     selectedClient: '',
     clientType: '',
     formType: 'Progress Note',
@@ -1022,6 +1023,9 @@ export function createAppData() {
 
         // Refresh clients list
         this.clients = await API.getClients();
+
+        // Track as "just added" for easy selection
+        this.justAddedClientIds.unshift(createdClient.id);
 
         // Select the newly created client
         this.selectedClient = createdClient.id;
@@ -3042,6 +3046,16 @@ export function createAppData() {
       const query = this.clientSearchQuery.toLowerCase().trim();
       if (!query) return this.clients;
       return this.clients.filter(c => c.name.toLowerCase().includes(query));
+    },
+
+    /**
+     * Get clients that were just added this session
+     * Used in client selection view for immediate access after creation
+     */
+    get justAddedClients() {
+      return this.justAddedClientIds
+        .map(id => this.clients.find(c => c.id === id))
+        .filter(Boolean);
     },
 
     /**
