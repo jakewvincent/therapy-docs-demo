@@ -1623,7 +1623,7 @@
                         </div>
 
                         <!-- Goals Card -->
-                        <div class="card">
+                        <div class="card" :class="{ 'border-danger-500': treatmentPlanErrors.goals }">
                             <div class="card-header flex items-center justify-between">
                                 <h3 class="font-semibold">Treatment Goals</h3>
                                 <button type="button" @click="addGoal()" class="btn btn-sm btn-secondary" :disabled="!canAddGoal">
@@ -1632,6 +1632,7 @@
                                 </button>
                             </div>
                             <div class="card-body space-y-4">
+                                <p x-show="treatmentPlanErrors.goals" class="text-sm text-danger-600" x-text="treatmentPlanErrors.goals"></p>
                                 <!-- Goal Tabs -->
                                 <div class="flex gap-2 border-b border-neutral-200 pb-2">
                                     <template x-for="(goal, index) in currentTreatmentPlan.goals" :key="goal.id">
@@ -1650,7 +1651,7 @@
                                 <div x-show="currentGoal" class="space-y-4">
                                     <div class="form-group">
                                         <label class="form-label">Goal Description</label>
-                                        <textarea x-model="currentGoal.text" class="form-textarea" rows="3" placeholder="Describe the treatment goal..."></textarea>
+                                        <textarea x-model="currentGoal.text" @input="treatmentPlanErrors.goals = ''" class="form-textarea" rows="3" placeholder="Describe the treatment goal..."></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Target Date</label>

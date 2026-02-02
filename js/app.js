@@ -472,6 +472,7 @@ export function createAppData() {
     activeGoalIndex: 0,
     linkedIntakeForPlan: null,
     linkedIntakeDateForPlan: null,
+    treatmentPlanErrors: { goals: '' },
 
     // Clinical reference data (for Intake & Treatment Plan)
     allPresentingIssues: [],
@@ -3956,6 +3957,7 @@ export function createAppData() {
       this.existingTreatmentPlanId = null;
       this.treatmentPlanStatus = 'draft';
       this.activeGoalIndex = 0;
+      this.treatmentPlanErrors = { goals: '' };
     },
 
     /**
@@ -4235,9 +4237,30 @@ export function createAppData() {
     },
 
     /**
+     * Validate treatment plan for activation
+     * @returns {boolean} True if valid
+     */
+    validateTreatmentPlan() {
+      this.treatmentPlanErrors = { goals: '' };
+
+      // Check for at least one goal with text
+      const hasValidGoal = this.currentTreatmentPlan.goals.some(g => g.text.trim() !== '');
+      if (!hasValidGoal) {
+        this.treatmentPlanErrors.goals = 'At least one goal with description is required';
+        return false;
+      }
+
+      return true;
+    },
+
+    /**
      * Activate treatment plan (mark as active)
      */
     async activateTreatmentPlan() {
+      if (!this.validateTreatmentPlan()) {
+        this.showToast('error', 'Please fix validation errors');
+        return;
+      }
       await this.saveTreatmentPlan('active');
     },
 
