@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <!-- ======================
+         Actions
+         CRUD operations and user-initiated actions (add, edit, delete, save, etc.)
+         ====================== -->
+
+    <symbol
+      id="action-save"
+      description="Save data; notes, diagnoses, settings, drafts. Custom filled variant of action-save in tabler-sprites.svg"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m6 4h10l4 4v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2" fill="none"/>
+      <path d="m5 4.0234-0.90625 0.97656v14l0.90625 0.9082h14l0.96094-0.9082v-11.002l-3.959-3.9746h-1.002v4.4766h-7.0258l3.769e-4 -4.4766zm7 6.9766c1.3807 0 2.5 1.1193 2.5 2.5s-1.1193 2.5-2.5 2.5-2.5-1.1193-2.5-2.5 1.1193-2.5 2.5-2.5z" stroke="none"/>
+    </symbol>
+
+    <!-- ======================
+         Status & Feedback
+         Success, error, warning, loading, and informational state indicators
+         ====================== -->
+
+    <symbol
+        id="frequent-clients"
+        description="Frequent at the client level"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+    >
+       <path d="m5 7a4 4 0 1 0 8 0 4 4 0 0 0-8 0"/>
+       <path d="M3 21v-2a4 4 0 0 1 4 -4h4c.96 0 1.84 .338 2.53 .901"/>
+       <path d="m16 3.13a4 4 0 0 1 0 7.75"/>
+       <path d="m16.857 21.121 4.2426-4.2426"/>
+       <path d="m21.1 21.121v-4.2426h-4.2426"/>
+    </symbol>
+
+</svg>

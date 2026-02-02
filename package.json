@@ -1,0 +1,15 @@
+{
+  "name": "therapy-docs-demo",
+  "version": "0.1.0",
+  "description": "Therapy documentation application frontend with Alpine.js and Tailwind CSS v4",
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i styles/input.css -o dist/output.css --watch",
+    "build": "npx @tailwindcss/cli -i styles/input.css -o dist/output.css --minify",
+    "release": "standard-version"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/cli": "^4.0.0",
+    "standard-version": "^9.5.0"
+  }
+}

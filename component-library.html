@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Therapy Docs - Component Library</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="dist/output.css">
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <style>
+    /* Component showcase specific styles */
+    .component-section {
+      scroll-margin-top: 100px;
+    }
+    
+    .code-block {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+    }
+    
+    .component-preview {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body x-data="componentLibrary()">
+
+  <!-- Spinner SVG definitions (SMIL animated) -->
+  <svg id="spinner-defs" width="0" height="0" style="position: absolute;">
+    <defs>
+      <filter id="blob-goo">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/>
+        <feBlend in="SourceGraphic" in2="goo"/>
+      </filter>
+    </defs>
+    <symbol id="blob-spinner" viewBox="0 0 24 24">
+      <g fill="currentColor" filter="url(#blob-goo)">
+        <circle cx="5" cy="12" r="4">
+          <animate attributeName="cx" calcMode="spline" dur="2s" values="5;8;5" keySplines=".36,.62,.43,.99;.79,0,.58,.57" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="19" cy="12" r="4">
+          <animate attributeName="cx" calcMode="spline" dur="2s" values="19;16;19" keySplines=".36,.62,.43,.99;.79,0,.58,.57" repeatCount="indefinite"/>
+        </circle>
+        <animateTransform attributeName="transform" type="rotate" dur="0.75s" values="0 12 12;360 12 12" repeatCount="indefinite"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <!-- Register blob-spinner custom element -->
+  <script>
+    class BlobSpinner extends HTMLElement {
+      connectedCallback() {
+        this.style.display = 'contents';
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.classList.add('icon');
+        this.classList.forEach(cls => svg.classList.add(cls));
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttribute('href', '#blob-spinner');
+        svg.appendChild(use);
+        this.appendChild(svg);
+      }
+    }
+    customElements.define('blob-spinner', BlobSpinner);
+  </script>
+
+  <!-- Navigation -->
+  <nav class="bg-white border-b border-neutral-200 sticky top-0 z-50 shadow-sm">
+    <div class="container py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-bold text-neutral-900">Component Library</h1>
+          <p class="text-sm text-neutral-500">Therapy Docs Design System</p>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button @click="toggleTheme" class="btn btn-secondary btn-sm">
+            <span x-show="!darkMode">Dark Mode</span>
+            <span x-show="darkMode">Light Mode</span>
+          </button>
+          <a href="index.html" class="btn btn-primary btn-sm">View App</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sidebar & Main Content -->
+  <div class="flex">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="hidden lg:block w-64 bg-white border-r border-neutral-200 min-h-screen sticky top-[73px] self-start">
+      <nav class="p-4 space-y-1">
+        <a href="#colors" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Colors</a>
+        <a href="#typography" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Typography</a>
+        <a href="#buttons" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Buttons</a>
+        <a href="#buttons-with-icons" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ With Icons</a>
+        <a href="#fab" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ FAB</a>
+        <a href="#cards" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Cards</a>
+        <a href="#collapsible-card" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Collapsible</a>
+        <a href="#numbered-card" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Numbered</a>
+        <a href="#card-variants" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Colored Variants</a>
+        <a href="#forms" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Form Elements</a>
+        <a href="#button-selections" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Button Selections</a>
+        <a href="#checkbox-rows" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Checkbox Rows</a>
+        <a href="#segmented-control" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Segmented Control</a>
+        <a href="#settings-toggles" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Settings Toggles</a>
+        <a href="#alerts" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Alerts</a>
+        <a href="#badges" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Badges</a>
+        <a href="#spacing" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Spacing</a>
+        <a href="#layouts" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Layouts</a>
+        <a href="#navigation" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Navigation</a>
+        <a href="#utilities" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Utilities</a>
+        <a href="#attention-border" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Attention Border</a>
+        <a href="#clinical" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100">Clinical Components</a>
+        <a href="#section-headers" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Section Headers</a>
+        <a href="#page-header" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Page Header</a>
+        <a href="#toc-nav" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Table of Contents</a>
+        <a href="#entry-card" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Entry Card</a>
+        <a href="#diagnosis-display" class="block px-3 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-100 pl-6">↳ Diagnosis Display</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 container-narrow py-8">
+      
+      <!-- Introduction -->
+      <div class="mb-12">
+        <h1 class="text-4xl font-bold text-neutral-900 mb-4">Component Library</h1>
+        <p class="text-lg text-neutral-600 mb-4">
+          A comprehensive showcase of all UI components available in the Therapy Docs application.
+          All components follow our design system principles: consistency, clarity, calm, accessibility, and simplicity.
+        </p>
+        <div class="alert-info mb-4">
+          <p><strong>How to use:</strong> Click on any component to copy its HTML code to your clipboard.</p>
+        </div>
+        <div class="alert-warning">
+          <p><strong>Keep in sync:</strong> This file must stay synchronized with <code>docs/COMPONENTS.md</code>. When adding or modifying components, update both files. Also update the CSS index at the top of <code>styles/input.css</code>.</p>
+        </div>
+      </div>
+
+      <!-- ============================================
+           COLORS
+           ============================================ -->
+      <section id="colors" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Color Palette</h2>
+        
+        <!-- Primary Colors -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Primary (Burnt Orange)</h3>
+          <p class="text-sm text-neutral-600 mb-4">Use for primary actions, main buttons, and key CTAs</p>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+            <div>
+              <div class="h-20 bg-primary-50 rounded-lg border border-neutral-200 mb-2"></div>
+              <p class="text-xs font-medium">primary-50</p>
+              <p class="text-xs text-neutral-500">#eff6ff</p>
+            </div>
+            <div>
+              <div class="h-20 bg-primary-100 rounded-lg border border-neutral-200 mb-2"></div>
+              <p class="text-xs font-medium">primary-100</p>
+              <p class="text-xs text-neutral-500">#dbeafe</p>
+            </div>
+            <div>
+              <div class="h-20 bg-primary-500 rounded-lg mb-2"></div>
+              <p class="text-xs font-medium">primary-500</p>
+              <p class="text-xs text-neutral-500">#3b82f6</p>
+            </div>
+            <div>
+              <div class="h-20 bg-primary-600 rounded-lg mb-2"></div>
+              <p class="text-xs font-medium">primary-600</p>
+              <p class="text-xs text-neutral-500">#2563eb</p>
+            </div>
+            <div>
+              <div class="h-20 bg-primary-700 rounded-lg mb-2"></div>
+              <p class="text-xs font-medium">primary-700</p>
+              <p class="text-xs text-neutral-500">#1d4ed8</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Neutral Colors -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Neutral (White & Cream)</h3>
+          <p class="text-sm text-neutral-600 mb-4">Use for backgrounds, text, borders - includes warm cream tone</p>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+            <div>
+              <div class="h-20 bg-neutral-50 rounded-lg border border-neutral-200 mb-2"></div>
+              <p class="text-xs font-medium">neutral-50</p>
+              <p class="text-xs text-neutral-500">#f9fafb</p>
+            </div>
+            <div>
+              <div class="h-20 bg-neutral-100 rounded-lg border border-neutral-200 mb-2"></div>
+              <p class="text-xs font-medium">neutral-100</p>
+              <p class="text-xs text-neutral-500">#f3f4f6</p>
+            </div>
+            <div>
+              <div class="h-20 bg-neutral-200 rounded-lg mb-2"></div>
+              <p class="text-xs font-medium">neutral-200</p>
+              <p class="text-xs text-neutral-500">#e5e7eb</p>
+            </div>
+            <div>
+              <div class="h-20 bg-neutral-500 rounded-lg mb-2"></div>
+              <p class="text-xs font-medium">neutral-500</p>
+              <p class="text-xs text-neutral-500">#6b7280</p>
+            </div>
+            <div>
+              <div class="h-20 bg-neutral-700 rounded-lg mb-2"></div>
+              <p class="text-xs font-medium">neutral-700</p>
+              <p class="text-xs text-neutral-500">#374151</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary & Semantic Colors -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Secondary (Sage)</h3>
+            <div class="space-y-2">
+              <div class="h-16 bg-secondary-50 rounded-lg border border-secondary-200 flex items-center justify-center">
+                <span class="text-xs font-medium text-secondary-900">secondary-50</span>
+              </div>
+              <div class="h-16 bg-secondary-500 rounded-lg flex items-center justify-center">
+                <span class="text-xs font-medium text-white">secondary-500</span>
+              </div>
+              <div class="h-16 bg-secondary-600 rounded-lg flex items-center justify-center">
+                <span class="text-xs font-medium text-white">secondary-600</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Success (Warm Green)</h3>
+            <div class="space-y-2">
+              <div class="h-16 bg-success-50 rounded-lg border border-success-200 flex items-center justify-center">
+                <span class="text-xs font-medium text-success-900">success-50</span>
+              </div>
+              <div class="h-16 bg-success-500 rounded-lg flex items-center justify-center">
+                <span class="text-xs font-medium text-white">success-500</span>
+              </div>
+              <div class="h-16 bg-success-700 rounded-lg flex items-center justify-center">
+                <span class="text-xs font-medium text-white">success-700</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Danger (Warm Red)</h3>
+            <div class="space-y-2">
+              <div class="h-16 bg-danger-50 rounded-lg border border-danger-200 flex items-center justify-center">
+                <span class="text-xs font-medium text-danger-900">danger-50</span>
+              </div>
+              <div class="h-16 bg-danger-500 rounded-lg flex items-center justify-center">
+                <span class="text-xs font-medium text-white">danger-500</span>
+              </div>
+              <div class="h-16 bg-danger-700 rounded-lg flex items-center justify-center">
+                <span class="text-xs font-medium text-white">danger-700</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Warning (Warm Amber)</h3>
+            <div class="space-y-2">
+              <div class="h-16 bg-warning-50 rounded-lg border border-warning-200 flex items-center justify-center">
+                <span class="text-xs font-medium text-warning-900">warning-50</span>
+              </div>
+              <div class="h-16 bg-warning-500 rounded-lg flex items-center justify-center">
+                <span class="text-xs font-medium text-white">warning-500</span>
+              </div>
+              <div class="h-16 bg-warning-700 rounded-lg flex items-center justify-center">
+                <span class="text-xs font-medium text-white">warning-700</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           TYPOGRAPHY
+           ============================================ -->
+      <section id="typography" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Typography</h2>
+        
+        <div class="component-preview bg-white">
+          <h1 class="mb-4">Heading 1 - Page Titles</h1>
+          <h2 class="mb-4">Heading 2 - Section Titles</h2>
+          <h3 class="mb-4">Heading 3 - Subsection Titles</h3>
+          <h4 class="mb-4">Heading 4 - Minor Headings</h4>
+          <p class="mb-4">Body text - This is the default paragraph text used throughout the application. It's set at 16px with a comfortable line height for easy reading.</p>
+          <p class="text-sm mb-4">Small text - Used for labels, captions, and helper text. Set at 14px.</p>
+          <p class="text-xs">Tiny text - Used for badges and metadata. Set at 12px.</p>
+        </div>
+
+        <pre class="code-block" @click="copyCode($event)"><code>&lt;h1&gt;Heading 1 - text-3xl font-bold&lt;/h1&gt;
+&lt;h2&gt;Heading 2 - text-2xl font-semibold&lt;/h2&gt;
+&lt;h3&gt;Heading 3 - text-xl font-semibold&lt;/h3&gt;
+&lt;p&gt;Body text - text-base&lt;/p&gt;
+&lt;p class="text-sm"&gt;Small text&lt;/p&gt;</code></pre>
+      </section>
+
+      <!-- ============================================
+           BUTTONS
+           ============================================ -->
+      <section id="buttons" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Buttons</h2>
+        
+        <!-- Primary Buttons -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Primary Buttons</h3>
+          <p class="text-sm text-neutral-600 mb-4">Use for main actions (Save, Submit, Continue)</p>
+          <div class="component-preview">
+            <div class="flex flex-wrap gap-4 items-center">
+              <button class="btn btn-primary btn-lg">Large Primary</button>
+              <button class="btn btn-primary">Default Primary</button>
+              <button class="btn btn-primary btn-sm">Small Primary</button>
+              <button class="btn btn-primary" disabled>Disabled</button>
+              <button class="btn btn-primary">
+                <span class="flex items-center">
+                  <blob-spinner class="icon-sm mr-2"></blob-spinner>
+                  Loading...
+                </span>
+              </button>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;button class="btn btn-primary"&gt;Default Primary&lt;/button&gt;
+&lt;button class="btn btn-primary btn-lg"&gt;Large Primary&lt;/button&gt;
+&lt;button class="btn btn-primary btn-sm"&gt;Small Primary&lt;/button&gt;
+&lt;button class="btn btn-primary" disabled&gt;Disabled&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Secondary Buttons -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Secondary Buttons</h3>
+          <p class="text-sm text-neutral-600 mb-4">Use for less important actions (Cancel, Back)</p>
+          <div class="component-preview">
+            <div class="flex flex-wrap gap-4 items-center">
+              <button class="btn btn-secondary btn-lg">Large Secondary</button>
+              <button class="btn btn-secondary">Default Secondary</button>
+              <button class="btn btn-secondary btn-sm">Small Secondary</button>
+              <button class="btn btn-secondary" disabled>Disabled</button>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;button class="btn btn-secondary"&gt;Default Secondary&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Danger Buttons -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Danger Buttons</h3>
+          <p class="text-sm text-neutral-600 mb-4">Use for destructive actions (Delete, Remove)</p>
+          <div class="component-preview">
+            <div class="flex flex-wrap gap-4 items-center">
+              <button class="btn btn-danger">Delete</button>
+              <button class="btn btn-danger btn-sm">Remove</button>
+              <button class="btn btn-danger" disabled>Disabled</button>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;button class="btn btn-danger"&gt;Delete&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Success Buttons -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Success Buttons</h3>
+          <p class="text-sm text-neutral-600 mb-4">Use for confirmations (Approve, Confirm)</p>
+          <div class="component-preview">
+            <div class="flex flex-wrap gap-4 items-center">
+              <button class="btn btn-success">Approve</button>
+              <button class="btn btn-success btn-sm">Confirm</button>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;button class="btn btn-success"&gt;Approve&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Ghost Buttons -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Ghost Buttons</h3>
+          <p class="text-sm text-neutral-600 mb-4">Use for tertiary actions, inline actions</p>
+          <div class="component-preview">
+            <div class="flex flex-wrap gap-4 items-center">
+              <button class="btn btn-ghost">Edit</button>
+              <button class="btn btn-ghost btn-sm">View</button>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;button class="btn btn-ghost"&gt;Edit&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Buttons with Icons -->
+        <div id="buttons-with-icons" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Buttons with Icons</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            When a button contains both an icon and text, wrap the content in <code>&lt;span class="flex items-center"&gt;</code>
+            for proper vertical alignment. Use <code>mr-2</code> to add spacing between the icon and text.
+          </p>
+          <div class="component-preview">
+            <div class="flex flex-wrap gap-4 items-center">
+              <button class="btn btn-primary">
+                <span class="flex items-center">
+                  <svg class="icon icon-sm mr-2"><use href="./assets/icons/tabler-sprites.svg#action-add-client"></use></svg>
+                  Add Client
+                </span>
+              </button>
+              <button class="btn btn-secondary">
+                <span class="flex items-center">
+                  <svg class="icon icon-sm mr-2"><use href="./assets/icons/custom-sprites.svg#action-save"></use></svg>
+                  Save Draft
+                </span>
+              </button>
+              <button class="btn btn-danger btn-sm">
+                <span class="flex items-center">
+                  <svg class="icon icon-sm mr-2"><use href="./assets/icons/tabler-sprites.svg#action-delete"></use></svg>
+                  Delete
+                </span>
+              </button>
+              <button class="btn btn-primary">
+                <span class="flex items-center">
+                  <blob-spinner class="icon-sm mr-2"></blob-spinner>
+                  Loading...
+                </span>
+              </button>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;!-- Always wrap icon + text in a flex container --&gt;
+&lt;button class="btn btn-primary"&gt;
+  &lt;span class="flex items-center"&gt;
+    &lt;svg class="icon icon-sm mr-2"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#icon-id"&gt;&lt;/use&gt;&lt;/svg&gt;
+    Button Text
+  &lt;/span&gt;
+&lt;/button&gt;
+
+&lt;!-- Loading state with spinner --&gt;
+&lt;button class="btn btn-primary"&gt;
+  &lt;span class="flex items-center"&gt;
+    &lt;blob-spinner class="icon-sm mr-2"&gt;&lt;/blob-spinner&gt;
+    Loading...
+  &lt;/span&gt;
+&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Icon-Only Buttons -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Icon-Only Buttons</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Use <code>btn-icon</code> for buttons containing only an icon (40x40px square). No wrapper needed for single icons.
+          </p>
+          <div class="component-preview">
+            <div class="flex flex-wrap gap-4 items-center">
+              <button class="btn btn-icon btn-ghost">
+                <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+              </button>
+              <button class="btn btn-icon btn-secondary">
+                <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#action-delete"></use></svg>
+              </button>
+              <button class="btn btn-icon btn-primary">
+                <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#action-add"></use></svg>
+              </button>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;button class="btn btn-icon btn-ghost"&gt;
+  &lt;svg class="icon"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#action-edit"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Floating Action Button (FAB) -->
+        <div id="fab" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Floating Action Button (FAB)</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Use <code>btn-fab</code> for floating action buttons (56×56px circle). Position with utility classes like <code>fixed bottom-6 right-6</code>. Use <code>icon icon-md</code> for the icon inside.
+          </p>
+          <div class="component-preview">
+            <div class="flex flex-wrap gap-4 items-center">
+              <button class="btn-fab" title="Add new item">
+                <svg class="icon icon-md"><use href="./assets/icons/tabler-sprites.svg#action-add"></use></svg>
+              </button>
+              <button class="btn-fab" title="Edit">
+                <svg class="icon icon-md"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+              </button>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;!-- FAB with positioning --&gt;
+&lt;button class="btn-fab fixed bottom-6 right-6" title="Add new item"&gt;
+  &lt;svg class="icon icon-md"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#action-add"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/button&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- ============================================
+           CARDS
+           ============================================ -->
+      <section id="cards" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Cards</h2>
+        
+        <!-- Standard Card -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Standard Card</h3>
+          <div class="component-preview">
+            <div class="card">
+              <h3>Card Title</h3>
+              <p class="text-neutral-600 mt-2">This is a standard card with padding of p-6. Use for main content containers.</p>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="card"&gt;
+  &lt;h3&gt;Card Title&lt;/h3&gt;
+  &lt;p&gt;Card content...&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Card with Header -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Card with Header</h3>
+          <div class="component-preview">
+            <div class="card">
+              <div class="card-header">
+                <h3>Session Notes</h3>
+              </div>
+              <div class="card-body">
+                <p class="text-neutral-600">Content goes here with separated header.</p>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="card"&gt;
+  &lt;div class="card-header"&gt;
+    &lt;h3&gt;Session Notes&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    &lt;p&gt;Content...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Card with Footer -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Card with Footer</h3>
+          <div class="component-preview">
+            <div class="card">
+              <div class="card-body">
+                <h3>Are you sure?</h3>
+                <p class="text-neutral-600 mt-2">This action cannot be undone.</p>
+              </div>
+              <div class="card-footer flex justify-end space-x-3">
+                <button class="btn btn-secondary btn-sm">Cancel</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="card"&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h3&gt;Content&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="card-footer"&gt;
+    &lt;button class="btn btn-primary"&gt;Action&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Compact Card -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Compact Card</h3>
+          <div class="component-preview">
+            <div class="card-compact">
+              <p class="text-sm text-neutral-600">Compact card with p-4 padding for dense information.</p>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="card-compact"&gt;
+  &lt;p&gt;Compact content...&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Collapsible Card -->
+        <div id="collapsible-card" class="mb-8" x-data="{ open: true }">
+          <h3 class="text-xl font-semibold mb-4">Collapsible Card</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Expandable section with clickable header. Use for content that can be hidden to save space.
+            Requires Alpine.js x-collapse plugin for smooth animation.
+          </p>
+          <div class="component-preview">
+            <div class="collapsible-card">
+              <div class="collapsible-header" @click="open = !open">
+                <span class="collapsible-title">
+                  <svg class="icon text-primary-600 inline-block"><use href="./assets/icons/tabler-sprites.svg#admin-view"></use></svg>
+                  Mental Status Examination
+                </span>
+                <svg class="icon transition-transform" :class="{ 'rotate-180': open }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+              </div>
+              <div class="collapsible-body" x-show="open">
+                <p class="text-neutral-600">Collapsible content goes here. Click the header to toggle.</p>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="collapsible-card" x-data="{ open: true }"&gt;
+  &lt;div class="collapsible-header" @click="open = !open"&gt;
+    &lt;span class="collapsible-title"&gt;
+      &lt;svg class="icon text-primary-600 inline-block"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#admin-view"&gt;&lt;/use&gt;&lt;/svg&gt;
+      Section Title
+    &lt;/span&gt;
+    &lt;svg class="icon transition-transform" :class="{ 'rotate-180': open }"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#expand"&gt;&lt;/use&gt;&lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;div class="collapsible-body" x-show="open" x-collapse&gt;
+    &lt;!-- Content --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Numbered Card -->
+        <div id="numbered-card" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Numbered Card</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Card with prominent numbered header. Use for treatment goals, ordered steps, or any numbered content.
+            The number badge is optional - you can omit it for unnumbered sections.
+          </p>
+          <div class="component-preview">
+            <div class="space-y-4">
+              <div class="numbered-card">
+                <div class="numbered-card-header">
+                  <div class="flex items-center gap-3">
+                    <span class="card-number">1</span>
+                    <span class="font-semibold text-neutral-800">Reduce Anxiety Symptoms</span>
+                  </div>
+                  <span class="badge badge-success">Active</span>
+                </div>
+                <div class="numbered-card-body">
+                  <p class="text-neutral-600">Card body content with objectives, interventions, etc.</p>
+                </div>
+              </div>
+              <div class="numbered-card">
+                <div class="numbered-card-header">
+                  <div class="flex items-center gap-3">
+                    <span class="card-number">2</span>
+                    <span class="font-semibold text-neutral-800">Improve Coping Skills</span>
+                  </div>
+                </div>
+                <div class="numbered-card-body">
+                  <p class="text-neutral-600">Another goal card content.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="numbered-card"&gt;
+  &lt;div class="numbered-card-header"&gt;
+    &lt;div class="flex items-center gap-3"&gt;
+      &lt;span class="card-number"&gt;1&lt;/span&gt;
+      &lt;span class="font-semibold text-neutral-800"&gt;Goal Title&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="badge badge-success"&gt;Active&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="numbered-card-body"&gt;
+    &lt;!-- Content --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Colored Card Variants -->
+        <div id="card-variants" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Colored Card Variants</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Semantic colored backgrounds for cards. Use to highlight different types of content.
+          </p>
+          <div class="component-preview">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="card card-primary">
+                <p class="text-sm font-medium text-primary-700">Primary Card</p>
+                <p class="text-xs text-primary-600">Use for emphasis</p>
+              </div>
+              <div class="card card-success">
+                <p class="text-sm font-medium text-success-700">Success Card</p>
+                <p class="text-xs text-success-600">Use for confirmations</p>
+              </div>
+              <div class="card card-warning">
+                <p class="text-sm font-medium text-warning-700">Warning Card</p>
+                <p class="text-xs text-warning-600">Use for cautions</p>
+              </div>
+              <div class="card card-danger">
+                <p class="text-sm font-medium text-danger-700">Danger Card</p>
+                <p class="text-xs text-danger-600">Use for critical info</p>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="card card-primary"&gt;Primary styled card&lt;/div&gt;
+&lt;div class="card card-success"&gt;Success styled card&lt;/div&gt;
+&lt;div class="card card-warning"&gt;Warning styled card&lt;/div&gt;
+&lt;div class="card card-danger"&gt;Danger styled card&lt;/div&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- ============================================
+           FORM ELEMENTS
+           ============================================ -->
+      <section id="forms" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Form Elements</h2>
+        
+        <!-- Text Input -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Text Input</h3>
+          <div class="component-preview">
+            <div class="form-group">
+              <label class="form-label" for="demo-input">Full Name</label>
+              <input type="text" id="demo-input" class="form-input" placeholder="Enter your name">
+              <p class="form-helper">This is helper text explaining the field</p>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="form-group"&gt;
+  &lt;label class="form-label" for="field"&gt;Label&lt;/label&gt;
+  &lt;input type="text" id="field" class="form-input" placeholder="Placeholder"&gt;
+  &lt;p class="form-helper"&gt;Helper text&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Text Input with Error -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Text Input with Error</h3>
+          <div class="component-preview">
+            <div class="form-group">
+              <label class="form-label" for="demo-error">Email Address</label>
+              <input type="email" id="demo-error" class="form-input border-danger-500" placeholder="email@example.com">
+              <p class="form-error">Please enter a valid email address</p>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="form-group"&gt;
+  &lt;label class="form-label" for="field"&gt;Label&lt;/label&gt;
+  &lt;input type="text" id="field" class="form-input border-danger-500"&gt;
+  &lt;p class="form-error"&gt;Error message&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Textarea -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Textarea</h3>
+          <div class="component-preview">
+            <div class="form-group">
+              <label class="form-label" for="demo-textarea">Session Notes</label>
+              <textarea id="demo-textarea" class="form-textarea" rows="4" placeholder="Enter notes here..."></textarea>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="form-group"&gt;
+  &lt;label class="form-label" for="notes"&gt;Notes&lt;/label&gt;
+  &lt;textarea id="notes" class="form-textarea" rows="8"&gt;&lt;/textarea&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Select Dropdown -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Select Dropdown</h3>
+          <div class="component-preview">
+            <div class="form-group">
+              <label class="form-label" for="demo-select">Select Client</label>
+              <select id="demo-select" class="form-select">
+                <option value="">Choose a client...</option>
+                <option value="1">John Doe</option>
+                <option value="2">Jane Smith</option>
+                <option value="3">Robert Johnson</option>
+              </select>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="form-group"&gt;
+  &lt;label class="form-label" for="select"&gt;Label&lt;/label&gt;
+  &lt;select id="select" class="form-select"&gt;
+    &lt;option&gt;Option 1&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Checkbox -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Checkbox</h3>
+          <div class="component-preview">
+            <div class="space-y-3">
+              <div class="flex items-center">
+                <input type="checkbox" id="demo-check1" class="form-checkbox">
+                <label for="demo-check1" class="ml-2 text-sm text-neutral-700">Option 1</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="demo-check2" class="form-checkbox" checked>
+                <label for="demo-check2" class="ml-2 text-sm text-neutral-700">Option 2 (checked)</label>
+              </div>
+              <div class="flex items-center">
+                <input type="checkbox" id="demo-check3" class="form-checkbox" disabled>
+                <label for="demo-check3" class="ml-2 text-sm text-neutral-500">Option 3 (disabled)</label>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="flex items-center"&gt;
+  &lt;input type="checkbox" id="check" class="form-checkbox"&gt;
+  &lt;label for="check" class="ml-2 text-sm"&gt;Label&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Radio Buttons -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Radio Buttons</h3>
+          <div class="component-preview">
+            <div class="space-y-3">
+              <div class="flex items-center">
+                <input type="radio" id="demo-radio1" name="demo-radio" class="form-radio" checked>
+                <label for="demo-radio1" class="ml-2 text-sm text-neutral-700">Option 1</label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="demo-radio2" name="demo-radio" class="form-radio">
+                <label for="demo-radio2" class="ml-2 text-sm text-neutral-700">Option 2</label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="demo-radio3" name="demo-radio" class="form-radio" disabled>
+                <label for="demo-radio3" class="ml-2 text-sm text-neutral-500">Option 3 (disabled)</label>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="flex items-center"&gt;
+  &lt;input type="radio" id="radio" name="group" class="form-radio"&gt;
+  &lt;label for="radio" class="ml-2 text-sm"&gt;Label&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Date Input -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Date Input</h3>
+          <div class="component-preview">
+            <div class="form-group">
+              <label class="form-label" for="demo-date">Session Date</label>
+              <input type="date" id="demo-date" class="form-input">
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="form-group"&gt;
+  &lt;label class="form-label" for="date"&gt;Date&lt;/label&gt;
+  &lt;input type="date" id="date" class="form-input"&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Button Checkboxes (Multiple Selection) -->
+        <div id="button-selections" class="mb-8" x-data="{ symptoms: ['anxiety', 'depression'] }">
+          <h3 class="text-xl font-semibold mb-4">Button Checkboxes (Multiple Selection)</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Optimized for tablet - better UX than dropdowns for multiple selections. Shows all options inline.
+          </p>
+          <div class="component-preview">
+            <div class="form-group">
+              <label class="form-label">Symptoms Presented</label>
+              <div class="btn-checkbox-group">
+                <button
+                  type="button"
+                  class="btn-checkbox"
+                  :class="{ 'checked': symptoms.includes('anxiety') }"
+                  @click="symptoms.includes('anxiety') ? symptoms = symptoms.filter(s => s !== 'anxiety') : symptoms.push('anxiety')"
+                >
+                  <svg class="icon icon-sm"><use :href="symptoms.includes('anxiety') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"></use></svg>
+                  Anxiety
+                </button>
+                <button
+                  type="button"
+                  class="btn-checkbox"
+                  :class="{ 'checked': symptoms.includes('depression') }"
+                  @click="symptoms.includes('depression') ? symptoms = symptoms.filter(s => s !== 'depression') : symptoms.push('depression')"
+                >
+                  <svg class="icon icon-sm"><use :href="symptoms.includes('depression') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"></use></svg>
+                  Depression
+                </button>
+                <button
+                  type="button"
+                  class="btn-checkbox"
+                  :class="{ 'checked': symptoms.includes('stress') }"
+                  @click="symptoms.includes('stress') ? symptoms = symptoms.filter(s => s !== 'stress') : symptoms.push('stress')"
+                >
+                  <svg class="icon icon-sm"><use :href="symptoms.includes('stress') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"></use></svg>
+                  Stress
+                </button>
+                <button
+                  type="button"
+                  class="btn-checkbox"
+                  :class="{ 'checked': symptoms.includes('trauma') }"
+                  @click="symptoms.includes('trauma') ? symptoms = symptoms.filter(s => s !== 'trauma') : symptoms.push('trauma')"
+                >
+                  <svg class="icon icon-sm"><use :href="symptoms.includes('trauma') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"></use></svg>
+                  Trauma
+                </button>
+                <button
+                  type="button"
+                  class="btn-checkbox"
+                  :class="{ 'checked': symptoms.includes('grief') }"
+                  @click="symptoms.includes('grief') ? symptoms = symptoms.filter(s => s !== 'grief') : symptoms.push('grief')"
+                >
+                  <svg class="icon icon-sm"><use :href="symptoms.includes('grief') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"></use></svg>
+                  Grief
+                </button>
+              </div>
+              <p class="form-helper mt-2">
+                Selected: <span x-text="symptoms.length > 0 ? symptoms.join(', ') : 'None'"></span>
+              </p>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div x-data="{ selected: ['option1'] }"&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label class="form-label"&gt;Label&lt;/label&gt;
+    &lt;div class="btn-checkbox-group"&gt;
+      &lt;button
+        type="button"
+        class="btn-checkbox"
+        :class="{ 'checked': selected.includes('option1') }"
+        @click="selected.includes('option1') ? selected = selected.filter(s =&gt; s !== 'option1') : selected.push('option1')"
+      &gt;
+        &lt;svg class="icon icon-sm"&gt;&lt;use :href="selected.includes('option1') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"&gt;&lt;/use&gt;&lt;/svg&gt;
+        Option 1
+      &lt;/button&gt;
+      &lt;button
+        type="button"
+        class="btn-checkbox"
+        :class="{ 'checked': selected.includes('option2') }"
+        @click="selected.includes('option2') ? selected = selected.filter(s =&gt; s !== 'option2') : selected.push('option2')"
+      &gt;
+        &lt;svg class="icon icon-sm"&gt;&lt;use :href="selected.includes('option2') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"&gt;&lt;/use&gt;&lt;/svg&gt;
+        Option 2
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Button Radios (Single Selection) -->
+        <div class="mb-8" x-data="{ mood: 'neutral' }">
+          <h3 class="text-xl font-semibold mb-4">Button Radios (Single Selection)</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Optimized for tablet - better UX than dropdowns for single selections. Shows all options inline.
+          </p>
+          <div class="component-preview">
+            <div class="form-group">
+              <label class="form-label">Client Mood</label>
+              <div class="btn-radio-group">
+                <button
+                  type="button"
+                  class="btn-radio"
+                  :class="{ 'checked': mood === 'great' }"
+                  @click="mood = 'great'"
+                >
+                  <svg class="icon icon-sm"><use :href="mood === 'great' ? './assets/icons/tabler-sprites.svg#radio-checked' : './assets/icons/tabler-sprites.svg#radio-unchecked'"></use></svg>
+                  Great
+                </button>
+                <button
+                  type="button"
+                  class="btn-radio"
+                  :class="{ 'checked': mood === 'good' }"
+                  @click="mood = 'good'"
+                >
+                  <svg class="icon icon-sm"><use :href="mood === 'good' ? './assets/icons/tabler-sprites.svg#radio-checked' : './assets/icons/tabler-sprites.svg#radio-unchecked'"></use></svg>
+                  Good
+                </button>
+                <button
+                  type="button"
+                  class="btn-radio"
+                  :class="{ 'checked': mood === 'neutral' }"
+                  @click="mood = 'neutral'"
+                >
+                  <svg class="icon icon-sm"><use :href="mood === 'neutral' ? './assets/icons/tabler-sprites.svg#radio-checked' : './assets/icons/tabler-sprites.svg#radio-unchecked'"></use></svg>
+                  Neutral
+                </button>
+                <button
+                  type="button"
+                  class="btn-radio"
+                  :class="{ 'checked': mood === 'low' }"
+                  @click="mood = 'low'"
+                >
+                  <svg class="icon icon-sm"><use :href="mood === 'low' ? './assets/icons/tabler-sprites.svg#radio-checked' : './assets/icons/tabler-sprites.svg#radio-unchecked'"></use></svg>
+                  Low
+                </button>
+                <button
+                  type="button"
+                  class="btn-radio"
+                  :class="{ 'checked': mood === 'distressed' }"
+                  @click="mood = 'distressed'"
+                >
+                  <svg class="icon icon-sm"><use :href="mood === 'distressed' ? './assets/icons/tabler-sprites.svg#radio-checked' : './assets/icons/tabler-sprites.svg#radio-unchecked'"></use></svg>
+                  Distressed
+                </button>
+              </div>
+              <p class="form-helper mt-2">
+                Selected: <span x-text="mood"></span>
+              </p>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div x-data="{ selected: 'option1' }"&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label class="form-label"&gt;Label&lt;/label&gt;
+    &lt;div class="btn-radio-group"&gt;
+      &lt;button
+        type="button"
+        class="btn-radio"
+        :class="{ 'checked': selected === 'option1' }"
+        @click="selected = 'option1'"
+      &gt;
+        &lt;svg class="icon icon-sm"&gt;&lt;use :href="selected === 'option1' ? './assets/icons/tabler-sprites.svg#radio-checked' : './assets/icons/tabler-sprites.svg#radio-unchecked'"&gt;&lt;/use&gt;&lt;/svg&gt;
+        Option 1
+      &lt;/button&gt;
+      &lt;button
+        type="button"
+        class="btn-radio"
+        :class="{ 'checked': selected === 'option2' }"
+        @click="selected = 'option2'"
+      &gt;
+        &lt;svg class="icon icon-sm"&gt;&lt;use :href="selected === 'option2' ? './assets/icons/tabler-sprites.svg#radio-checked' : './assets/icons/tabler-sprites.svg#radio-unchecked'"&gt;&lt;/use&gt;&lt;/svg&gt;
+        Option 2
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Checkbox Rows (Full Width with Description) -->
+        <div id="checkbox-rows" class="mb-8" x-data="{ selected: ['option1'] }">
+          <h3 class="text-xl font-semibold mb-4">Checkbox Rows (Full Width)</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Full-width checkbox buttons with title and optional description. Use for vertical lists
+            where each option needs more explanation, such as therapy approaches or treatment options.
+          </p>
+          <div class="component-preview">
+            <div class="form-group">
+              <label class="form-label">Select Therapeutic Approaches</label>
+              <div class="space-y-2">
+                <button
+                  type="button"
+                  class="btn-checkbox-row"
+                  :class="{ 'checked': selected.includes('option1') }"
+                  @click="selected.includes('option1') ? selected = selected.filter(s => s !== 'option1') : selected.push('option1')"
+                >
+                  <svg class="icon icon-sm"><use :href="selected.includes('option1') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"></use></svg>
+                  <div class="btn-checkbox-row-content">
+                    <div class="btn-checkbox-row-title">Cognitive Behavioral Therapy</div>
+                    <div class="btn-checkbox-row-description">Focus on identifying and changing negative thought patterns</div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  class="btn-checkbox-row"
+                  :class="{ 'checked': selected.includes('option2') }"
+                  @click="selected.includes('option2') ? selected = selected.filter(s => s !== 'option2') : selected.push('option2')"
+                >
+                  <svg class="icon icon-sm"><use :href="selected.includes('option2') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"></use></svg>
+                  <div class="btn-checkbox-row-content">
+                    <div class="btn-checkbox-row-title">Mindfulness-Based Therapy</div>
+                    <div class="btn-checkbox-row-description">Cultivating present-moment awareness and acceptance</div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  class="btn-checkbox-row"
+                  :class="{ 'checked': selected.includes('option3') }"
+                  @click="selected.includes('option3') ? selected = selected.filter(s => s !== 'option3') : selected.push('option3')"
+                >
+                  <svg class="icon icon-sm"><use :href="selected.includes('option3') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"></use></svg>
+                  <div class="btn-checkbox-row-content">
+                    <div class="btn-checkbox-row-title">Solution-Focused Brief Therapy</div>
+                    <div class="btn-checkbox-row-description">Goal-oriented approach focusing on solutions rather than problems</div>
+                  </div>
+                </button>
+              </div>
+              <p class="form-helper mt-2">
+                Selected: <span x-text="selected.length > 0 ? selected.join(', ') : 'None'"></span>
+              </p>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div x-data="{ selected: [] }"&gt;
+  &lt;div class="space-y-2"&gt;
+    &lt;button
+      type="button"
+      class="btn-checkbox-row"
+      :class="{ 'checked': selected.includes('option1') }"
+      @click="selected.includes('option1') ? selected = selected.filter(s =&gt; s !== 'option1') : selected.push('option1')"
+    &gt;
+      &lt;svg class="icon icon-sm"&gt;&lt;use :href="selected.includes('option1') ? './assets/icons/tabler-sprites.svg#checkbox-checked' : './assets/icons/tabler-sprites.svg#checkbox-unchecked'"&gt;&lt;/use&gt;&lt;/svg&gt;
+      &lt;div class="btn-checkbox-row-content"&gt;
+        &lt;div class="btn-checkbox-row-title"&gt;Option Title&lt;/div&gt;
+        &lt;div class="btn-checkbox-row-description"&gt;Optional description text&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- ============================================
+           SEGMENTED CONTROL
+           ============================================ -->
+      <section id="segmented-control" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Segmented Control</h2>
+        <p class="text-neutral-600 mb-6">
+          iOS-style toggle for binary mode switches. Use for switching between views or modes,
+          not for form field values. 44px min-height for tablet use.
+        </p>
+
+        <div class="space-y-6">
+          <div x-data="{ mode: 'quick' }">
+            <h3 class="text-xl font-semibold mb-4">Basic Usage</h3>
+            <p class="text-sm text-neutral-500 mb-3">
+              Best for switching between two modes (e.g., Quick/Detailed, List/Grid, Edit/Preview).
+            </p>
+            <div class="component-preview">
+              <div class="segmented-control">
+                <button
+                  type="button"
+                  class="segmented-control-option"
+                  :class="{ 'active': mode === 'quick' }"
+                  @click="mode = 'quick'"
+                >
+                  <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#mode-quick"></use></svg>
+                  Quick
+                </button>
+                <button
+                  type="button"
+                  class="segmented-control-option"
+                  :class="{ 'active': mode === 'detailed' }"
+                  @click="mode = 'detailed'"
+                >
+                  <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#mode-detailed"></use></svg>
+                  Detailed
+                </button>
+              </div>
+              <p class="mt-4 text-sm text-neutral-500">Current mode: <strong x-text="mode"></strong></p>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;div x-data="{ mode: 'quick' }"&gt;
+  &lt;div class="segmented-control"&gt;
+    &lt;button
+      type="button"
+      class="segmented-control-option"
+      :class="{ 'active': mode === 'quick' }"
+      @click="mode = 'quick'"
+    &gt;
+      &lt;svg class="icon icon-sm"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#mode-quick"&gt;&lt;/use&gt;&lt;/svg&gt;
+      Quick
+    &lt;/button&gt;
+    &lt;button
+      type="button"
+      class="segmented-control-option"
+      :class="{ 'active': mode === 'detailed' }"
+      @click="mode = 'detailed'"
+    &gt;
+      &lt;svg class="icon icon-sm"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#mode-detailed"&gt;&lt;/use&gt;&lt;/svg&gt;
+      Detailed
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <div x-data="{ view: 'list' }">
+            <h3 class="text-xl font-semibold mb-4">Without Icons</h3>
+            <div class="component-preview">
+              <div class="segmented-control">
+                <button
+                  type="button"
+                  class="segmented-control-option"
+                  :class="{ 'active': view === 'list' }"
+                  @click="view = 'list'"
+                >
+                  List
+                </button>
+                <button
+                  type="button"
+                  class="segmented-control-option"
+                  :class="{ 'active': view === 'grid' }"
+                  @click="view = 'grid'"
+                >
+                  Grid
+                </button>
+              </div>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="segmented-control"&gt;
+  &lt;button class="segmented-control-option active"&gt;List&lt;/button&gt;
+  &lt;button class="segmented-control-option"&gt;Grid&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <div x-data="{ mode: 'browse' }">
+            <h3 class="text-xl font-semibold mb-4">With Sliding Animation</h3>
+            <p class="text-sm text-neutral-500 mb-3">
+              The white indicator slides smoothly between options instead of jumping.
+            </p>
+            <div class="component-preview">
+              <div class="segmented-control relative">
+                <!-- Sliding indicator - positioned behind buttons -->
+                <div
+                  class="absolute top-1 bottom-1 left-1 bg-white rounded-md shadow-sm transition-transform duration-200 ease-out"
+                  :style="`width: calc(50% - 0.375rem); transform: translateX(${mode === 'favorites' ? 'calc(100% + 0.25rem)' : '0'})`"
+                ></div>
+                <!-- Options (transparent bg, slider provides visual) -->
+                <button
+                  type="button"
+                  class="segmented-control-option relative z-10 !bg-transparent"
+                  :class="{ '!text-primary-700': mode === 'browse' }"
+                  @click="mode = 'browse'"
+                >
+                  <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#search"></use></svg>
+                  Browse
+                </button>
+                <button
+                  type="button"
+                  class="segmented-control-option relative z-10 !bg-transparent"
+                  :class="{ '!text-primary-700': mode === 'favorites' }"
+                  @click="mode = 'favorites'"
+                >
+                  <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#favorite"></use></svg>
+                  Favorites
+                </button>
+              </div>
+              <p class="mt-4 text-sm text-neutral-500">Current mode: <strong x-text="mode"></strong></p>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;div x-data="{ mode: 'browse' }"&gt;
+  &lt;div class="segmented-control relative"&gt;
+    &lt;!-- Sliding indicator --&gt;
+    &lt;div
+      class="absolute top-1 bottom-1 left-1 bg-white rounded-md shadow-sm transition-transform duration-200 ease-out"
+      :style="`width: calc(50% - 0.375rem); transform: translateX(${mode === 'favorites' ? 'calc(100% + 0.25rem)' : '0'})`"
+    &gt;&lt;/div&gt;
+    &lt;!-- Options (use !bg-transparent to override .active styling) --&gt;
+    &lt;button
+      type="button"
+      class="segmented-control-option relative z-10 !bg-transparent"
+      :class="{ '!text-primary-700': mode === 'browse' }"
+      @click="mode = 'browse'"
+    &gt;
+      &lt;svg class="icon icon-sm"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#search"&gt;&lt;/use&gt;&lt;/svg&gt;
+      Browse
+    &lt;/button&gt;
+    &lt;button
+      type="button"
+      class="segmented-control-option relative z-10 !bg-transparent"
+      :class="{ '!text-primary-700': mode === 'favorites' }"
+      @click="mode = 'favorites'"
+    &gt;
+      &lt;svg class="icon icon-sm"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#favorite"&gt;&lt;/use&gt;&lt;/svg&gt;
+      Favorites
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <div x-data="{
+            selected: 'all',
+            expanded: false,
+            sliderStyle: '',
+            options: [
+              { id: 'all', label: 'All', icon: 'filter-all', collapsible: false },
+              { id: 'cbt', label: 'CBT', icon: 'approach-cbt', collapsible: true },
+              { id: 'dbt', label: 'DBT', icon: 'approach-dbt', collapsible: true },
+              { id: 'humanistic', label: 'Humanistic', icon: 'approach-humanistic', collapsible: false },
+              { id: 'psychodynamic', label: 'Psychodynamic', icon: 'approach-psychodynamic', collapsible: true },
+              { id: 'family', label: 'Family', icon: 'approach-parts-work', collapsible: false }
+            ],
+            get visibleOptions() {
+              return this.expanded ? this.options : this.options.filter(o => !o.collapsible);
+            },
+            updateSlider() {
+              this.$nextTick(() => {
+                const container = this.$refs.control;
+                const selectedBtn = container?.querySelector(`[data-option-id='${this.selected}']`);
+                if (container && selectedBtn) {
+                  const containerRect = container.getBoundingClientRect();
+                  const btnRect = selectedBtn.getBoundingClientRect();
+                  const offsetLeft = btnRect.left - containerRect.left - 4; // 4px = container padding
+                  this.sliderStyle = `width: ${btnRect.width}px; transform: translateX(${offsetLeft}px)`;
+                }
+              });
+            },
+            selectOption(id) {
+              this.selected = id;
+            },
+            toggle() {
+              this.expanded = !this.expanded;
+              // If collapsing and selected option will be hidden, switch to 'all'
+              if (!this.expanded && this.options.find(o => o.id === this.selected)?.collapsible) {
+                this.selected = 'all';
+              }
+            },
+            init() {
+              // Use x-effect for reactive updates, but also handle resize
+              window.addEventListener('resize', () => this.updateSlider());
+              // Initial render needs a small delay for x-for to complete
+              setTimeout(() => this.updateSlider(), 50);
+            }
+          }"
+          x-effect="selected; expanded; updateSlider()">
+            <h3 class="text-xl font-semibold mb-4">With Collapsible Options</h3>
+            <p class="text-sm text-neutral-500 mb-3">
+              Collapsible options (CBT, DBT, Psychodynamic) appear in their defined positions when expanded.
+              Collapsed: All, Humanistic, Family. Expanded: All, <em>CBT, DBT</em>, Humanistic, <em>Psychodynamic</em>, Family.
+            </p>
+            <div class="component-preview">
+              <!-- Segmented control with toggle inside -->
+              <div class="segmented-control relative" x-ref="control">
+                <!-- Sliding indicator -->
+                <div
+                  class="absolute top-1 bottom-1 left-1 bg-white rounded-md shadow-sm transition-all duration-200 ease-out"
+                  :style="sliderStyle"
+                ></div>
+
+                <!-- Expand/collapse toggle (inside the control) -->
+                <button
+                  type="button"
+                  class="segmented-control-option relative z-10 !bg-transparent px-3"
+                  @click="toggle()"
+                  :title="expanded ? 'Hide additional options' : 'Show additional options'"
+                >
+                  <svg class="icon transition-transform duration-200"><use :href="expanded ? './assets/icons/tabler-sprites.svg#show-options-from-left' : './assets/icons/tabler-sprites.svg#hide-options-from-left'"></use></svg>
+                </button>
+
+                <!-- Options -->
+                <template x-for="option in visibleOptions" :key="option.id">
+                  <button
+                    type="button"
+                    class="segmented-control-option relative z-10 !bg-transparent flex-1 transition-all duration-200"
+                    :class="{ '!text-primary-700': selected === option.id }"
+                    :data-option-id="option.id"
+                    @click="selectOption(option.id)"
+                  >
+                    <svg class="icon"><use :href="'./assets/icons/tabler-sprites.svg#' + option.icon"></use></svg>
+                    <span x-text="option.label"></span>
+                  </button>
+                </template>
+              </div>
+              <p class="mt-4 text-sm text-neutral-500">
+                Selected: <strong x-text="selected"></strong> |
+                Visible options: <strong x-text="visibleOptions.length"></strong>
+              </p>
+            </div>
+            <pre class="code-block text-xs" @click="copyCode($event)"><code>&lt;div x-data="{
+  selected: 'all',
+  expanded: false,
+  sliderStyle: '',
+  options: [
+    { id: 'cbt', label: 'CBT', icon: 'approach-cbt', collapsible: true },
+    // ... more options with collapsible: true/false
+  ],
+  get visibleOptions() {
+    return this.expanded ? this.options : this.options.filter(o =&gt; !o.collapsible);
+  },
+  updateSlider() {
+    this.$nextTick(() =&gt; {
+      const container = this.$refs.control;
+      const btn = container?.querySelector(`[data-option-id='${this.selected}']`);
+      if (container &amp;&amp; btn) {
+        const cRect = container.getBoundingClientRect();
+        const bRect = btn.getBoundingClientRect();
+        this.sliderStyle = `width: ${bRect.width}px; transform: translateX(${bRect.left - cRect.left - 4}px)`;
+      }
+    });
+  },
+  selectOption(id) { this.selected = id; this.updateSlider(); },
+  toggle() {
+    this.expanded = !this.expanded;
+    if (!this.expanded &amp;&amp; this.options.find(o =&gt; o.id === this.selected)?.collapsible) {
+      this.selected = 'all';
+    }
+    this.updateSlider();
+  },
+  init() { this.updateSlider(); }
+}"&gt;
+  &lt;div class="segmented-control relative" x-ref="control"&gt;
+    &lt;div class="absolute top-1 bottom-1 left-1 bg-white rounded-md shadow-sm transition-all duration-200"
+         :style="sliderStyle"&gt;&lt;/div&gt;
+    &lt;button class="segmented-control-option ..." @click="toggle()"&gt;
+      &lt;svg class="icon"&gt;&lt;use :href="expanded ? '...#show-options-from-left' : '...#hide-options-from-left'"&gt;&lt;/use&gt;&lt;/svg&gt;
+    &lt;/button&gt;
+    &lt;template x-for="option in visibleOptions" :key="option.id"&gt;
+      &lt;button :data-option-id="option.id" @click="selectOption(option.id)"&gt;...&lt;/button&gt;
+    &lt;/template&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           SETTINGS TOGGLES
+           ============================================ -->
+      <section id="settings-toggles" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Settings Toggles</h2>
+        <p class="text-neutral-600 mb-6">
+          Toggle switches for settings pages. Uses SVG icons for on/off states instead of native checkboxes.
+          48px touch targets for tablet use.
+        </p>
+
+        <div class="space-y-8">
+          <!-- Basic Setting Toggle -->
+          <div x-data="{ enabled: false }">
+            <h3 class="text-xl font-semibold mb-4">Basic Setting Toggle</h3>
+            <p class="text-sm text-neutral-500 mb-3">
+              Full-width row with icon, label, description, and toggle. Click anywhere on the row to toggle.
+            </p>
+            <div class="component-preview">
+              <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                <div class="flex items-center gap-3">
+                  <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#user"></use></svg>
+                  <div>
+                    <span class="font-medium text-neutral-900">Per-Client Usage</span>
+                    <p class="text-xs text-neutral-500" x-text="enabled
+                        ? 'Shows interventions you use most with the current client'
+                        : 'Shows interventions you use most across all clients'"></p>
+                  </div>
+                </div>
+                <input type="checkbox" x-model="enabled" class="sr-only peer">
+                <svg x-show="enabled" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                <svg x-show="!enabled" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+              </label>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors"&gt;
+  &lt;div class="flex items-center gap-3"&gt;
+    &lt;svg class="icon text-neutral-400 w-5"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#user"&gt;&lt;/use&gt;&lt;/svg&gt;
+    &lt;div&gt;
+      &lt;span class="font-medium text-neutral-900"&gt;Setting Label&lt;/span&gt;
+      &lt;p class="text-xs text-neutral-500"&gt;Description that updates based on state&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;input type="checkbox" x-model="enabled" class="sr-only peer"&gt;
+  &lt;svg x-show="enabled" class="icon icon-xl text-primary-500"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"&gt;&lt;/use&gt;&lt;/svg&gt;
+  &lt;svg x-show="!enabled" x-cloak class="icon icon-xl text-neutral-400"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/label&gt;</code></pre>
+          </div>
+
+          <!-- Sub-settings Pattern -->
+          <div x-data="{ parentEnabled: true, childEnabled: true }">
+            <h3 class="text-xl font-semibold mb-4">Sub-settings (Nested/Conditional)</h3>
+            <p class="text-sm text-neutral-500 mb-3">
+              When a parent toggle reveals child settings, use indentation with a left border to show hierarchy.
+              Use <code>&lt;template x-if&gt;</code> to conditionally render the sub-settings.
+            </p>
+            <div class="component-preview">
+              <div class="space-y-3">
+                <!-- Parent Toggle -->
+                <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#bookmarked"></use></svg>
+                    <div>
+                      <span class="font-medium text-neutral-900">Limit Favorites</span>
+                      <p class="text-xs text-neutral-500" x-text="parentEnabled
+                          ? 'Shows a limited number of favorites'
+                          : 'Shows all favorites'"></p>
+                    </div>
+                  </div>
+                  <input type="checkbox" x-model="parentEnabled" class="sr-only peer">
+                  <svg x-show="parentEnabled" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                  <svg x-show="!parentEnabled" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                </label>
+
+                <!-- Sub-settings (conditional) -->
+                <template x-if="parentEnabled">
+                  <div class="ml-8 space-y-3 border-l-2 border-neutral-200 pl-4">
+                    <!-- Number Input Sub-setting -->
+                    <div class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg">
+                      <div class="flex items-center gap-3">
+                        <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#count"></use></svg>
+                        <div>
+                          <span class="font-medium text-neutral-900">Maximum Count</span>
+                          <p class="text-xs text-neutral-500">Number of items to show</p>
+                        </div>
+                      </div>
+                      <input type="number" value="10" min="1" max="50" class="form-input w-20 text-center">
+                    </div>
+
+                    <!-- Toggle Sub-setting -->
+                    <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                      <div class="flex items-center gap-3">
+                        <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#sort"></use></svg>
+                        <div>
+                          <span class="font-medium text-neutral-900">Sort by Usage</span>
+                          <p class="text-xs text-neutral-500" x-text="childEnabled
+                              ? 'Most-used items appear first'
+                              : 'Items appear in default order'"></p>
+                        </div>
+                      </div>
+                      <input type="checkbox" x-model="childEnabled" class="sr-only peer">
+                      <svg x-show="childEnabled" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                      <svg x-show="!childEnabled" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                    </label>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;!-- Parent Toggle --&gt;
+&lt;label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors"&gt;
+  &lt;!-- ... parent toggle content ... --&gt;
+&lt;/label&gt;
+
+&lt;!-- Sub-settings (conditional) --&gt;
+&lt;template x-if="parentEnabled"&gt;
+  &lt;div class="ml-8 space-y-3 border-l-2 border-neutral-200 pl-4"&gt;
+    &lt;!-- Number input sub-setting --&gt;
+    &lt;div class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg"&gt;
+      &lt;!-- ... --&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Toggle sub-setting --&gt;
+    &lt;label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer ..."&gt;
+      &lt;!-- ... --&gt;
+    &lt;/label&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+          </div>
+
+          <!-- Key Classes Reference -->
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Key Classes</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-neutral-200">
+                    <th class="text-left py-2 pr-4">Class</th>
+                    <th class="text-left py-2">Purpose</th>
+                  </tr>
+                </thead>
+                <tbody class="text-neutral-600">
+                  <tr class="border-b border-neutral-100">
+                    <td class="py-2 pr-4 font-mono text-xs">p-3 bg-neutral-50 rounded-lg</td>
+                    <td class="py-2">Setting row container</td>
+                  </tr>
+                  <tr class="border-b border-neutral-100">
+                    <td class="py-2 pr-4 font-mono text-xs">cursor-pointer hover:bg-neutral-100</td>
+                    <td class="py-2">Interactive hover state (for toggles)</td>
+                  </tr>
+                  <tr class="border-b border-neutral-100">
+                    <td class="py-2 pr-4 font-mono text-xs">icon icon-xl text-primary-500</td>
+                    <td class="py-2">Toggle ON state icon</td>
+                  </tr>
+                  <tr class="border-b border-neutral-100">
+                    <td class="py-2 pr-4 font-mono text-xs">icon icon-xl text-neutral-400</td>
+                    <td class="py-2">Toggle OFF state icon</td>
+                  </tr>
+                  <tr class="border-b border-neutral-100">
+                    <td class="py-2 pr-4 font-mono text-xs">ml-8 border-l-2 border-neutral-200 pl-4</td>
+                    <td class="py-2">Sub-settings indentation with left border</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           ALERTS
+           ============================================ -->
+      <section id="alerts" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Alerts</h2>
+        
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Success Alert</h3>
+            <div class="component-preview">
+              <div class="alert-success">
+                <p><strong>Success!</strong> Your note has been saved successfully.</p>
+              </div>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="alert-success"&gt;
+  &lt;p&gt;Success message&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Error Alert</h3>
+            <div class="component-preview">
+              <div class="alert-error">
+                <p><strong>Error!</strong> Failed to save note. Please try again.</p>
+              </div>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="alert-error"&gt;
+  &lt;p&gt;Error message&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Warning Alert</h3>
+            <div class="component-preview">
+              <div class="alert-warning">
+                <p><strong>Warning!</strong> You have unsaved changes.</p>
+              </div>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="alert-warning"&gt;
+  &lt;p&gt;Warning message&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Info Alert</h3>
+            <div class="component-preview">
+              <div class="alert-info">
+                <p><strong>Info:</strong> This is the last session for this client.</p>
+              </div>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="alert-info"&gt;
+  &lt;p&gt;Info message&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Alert with Link</h3>
+            <p class="text-sm text-neutral-600 mb-4">
+              Use <code>.alert-link</code> to push a link to the right side of an alert.
+            </p>
+            <div class="component-preview">
+              <div class="alert-info">
+                <p><strong>Reference:</strong> See HIPAA guidelines for documentation requirements.</p>
+                <a href="#" class="alert-link">View Guidelines</a>
+              </div>
+            </div>
+            <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="alert-info"&gt;
+  &lt;p&gt;&lt;strong&gt;Reference:&lt;/strong&gt; Message text here.&lt;/p&gt;
+  &lt;a href="#" class="alert-link"&gt;View Link&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           BADGES
+           ============================================ -->
+      <section id="badges" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Badges</h2>
+        <p class="text-sm text-neutral-600 mb-4">
+          Pill-shaped labels for status indicators, categories, and metadata. Use sparingly to highlight key information.
+        </p>
+
+        <div class="component-preview">
+          <div class="flex flex-wrap gap-3">
+            <span class="badge badge-primary">Active</span>
+            <span class="badge badge-secondary">Individual</span>
+            <span class="badge badge-success">Completed</span>
+            <span class="badge badge-danger">Overdue</span>
+            <span class="badge badge-neutral">Draft</span>
+          </div>
+        </div>
+
+        <pre class="code-block" @click="copyCode($event)"><code>&lt;span class="badge badge-primary"&gt;Active&lt;/span&gt;
+&lt;span class="badge badge-secondary"&gt;Individual&lt;/span&gt;
+&lt;span class="badge badge-success"&gt;Completed&lt;/span&gt;
+&lt;span class="badge badge-danger"&gt;Overdue&lt;/span&gt;
+&lt;span class="badge badge-neutral"&gt;Draft&lt;/span&gt;</code></pre>
+      </section>
+
+      <!-- ============================================
+           SPACING
+           ============================================ -->
+      <section id="spacing" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Spacing System</h2>
+        
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Standard Spacing Scale</h3>
+          <div class="space-y-4">
+            <div class="flex items-center">
+              <div class="w-32 text-sm font-medium">xs (8px)</div>
+              <div class="h-8 bg-primary-500 rounded" style="width: 8px;"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="w-32 text-sm font-medium">sm (12px)</div>
+              <div class="h-8 bg-primary-500 rounded" style="width: 12px;"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="w-32 text-sm font-medium">md (16px)</div>
+              <div class="h-8 bg-primary-500 rounded" style="width: 16px;"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="w-32 text-sm font-medium">lg (24px)</div>
+              <div class="h-8 bg-primary-500 rounded" style="width: 24px;"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="w-32 text-sm font-medium">xl (32px)</div>
+              <div class="h-8 bg-primary-500 rounded" style="width: 32px;"></div>
+            </div>
+            <div class="flex items-center">
+              <div class="w-32 text-sm font-medium">2xl (48px)</div>
+              <div class="h-8 bg-primary-500 rounded" style="width: 48px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-info">
+          <p><strong>Common Patterns:</strong></p>
+          <ul class="list-disc list-inside mt-2 space-y-1 text-sm">
+            <li>Card padding: <code>p-6</code> (24px)</li>
+            <li>Section spacing: <code>space-y-6</code> (24px between items)</li>
+            <li>Form field spacing: <code>space-y-4</code> (16px between fields)</li>
+            <li>Button padding: <code>px-4 py-2</code> (16px horizontal, 8px vertical)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============================================
+           LAYOUTS
+           ============================================ -->
+      <section id="layouts" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Layout Patterns</h2>
+        
+        <!-- Page Header -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Page Header</h3>
+          <div class="component-preview bg-white p-0">
+            <header class="bg-white shadow-sm border-b border-neutral-200">
+              <div class="container">
+                <div class="py-4 flex justify-between items-center">
+                  <h1 class="text-2xl font-bold text-neutral-900">Page Title</h1>
+                  <div class="flex items-center space-x-4">
+                    <span class="text-sm text-neutral-600">user@example.com</span>
+                    <button class="btn btn-secondary btn-sm">Action</button>
+                  </div>
+                </div>
+              </div>
+            </header>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;header class="bg-white shadow-sm border-b border-neutral-200"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="py-4 flex justify-between items-center"&gt;
+      &lt;h1&gt;Page Title&lt;/h1&gt;
+      &lt;div&gt;Actions&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Main Content Area</h3>
+          <div class="component-preview bg-neutral-50">
+            <main class="container-narrow section">
+              <div class="space-y-6">
+                <div class="card">
+                  <p class="text-neutral-600">Content section 1</p>
+                </div>
+                <div class="card">
+                  <p class="text-neutral-600">Content section 2</p>
+                </div>
+              </div>
+            </main>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;main class="container-narrow section"&gt;
+  &lt;div class="space-y-6"&gt;
+    &lt;!-- Sections with consistent spacing --&gt;
+  &lt;/div&gt;
+&lt;/main&gt;</code></pre>
+        </div>
+
+        <!-- Two-Column Layout -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Two-Column Layout</h3>
+          <div class="component-preview">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="card">
+                <h3>Left Column</h3>
+                <p class="text-neutral-600 mt-2">Content here</p>
+              </div>
+              <div class="card">
+                <h3>Right Column</h3>
+                <p class="text-neutral-600 mt-2">Content here</p>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="grid grid-cols-1 lg:grid-cols-2 gap-6"&gt;
+  &lt;div class="card"&gt;Left&lt;/div&gt;
+  &lt;div class="card"&gt;Right&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- ============================================
+           NAVIGATION
+           ============================================ -->
+      <section id="navigation" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Navigation Components</h2>
+        <p class="text-neutral-600 mb-6">Components for navigation menus and action buttons used throughout the app.</p>
+
+        <!-- Hamburger Button -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Hamburger Button</h3>
+          <p class="text-sm text-neutral-600 mb-4">Touch-friendly button (48x48px) for opening the navigation drawer.</p>
+          <div class="component-preview">
+            <button class="hamburger-btn">
+              <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#menu-hamburger"></use></svg>
+            </button>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;button class="hamburger-btn"&gt;
+  &lt;svg class="icon"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#menu-hamburger"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Modal Close Button -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Modal Close Button</h3>
+          <p class="text-sm text-neutral-600 mb-4">Touch-friendly close button (48x48px) for modals and slide-out panels.</p>
+          <div class="component-preview">
+            <button class="modal-close-btn">
+              <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+            </button>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;button class="modal-close-btn"&gt;
+  &lt;svg class="icon"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#close"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/button&gt;</code></pre>
+        </div>
+
+        <!-- Menu Item -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Menu Item</h3>
+          <p class="text-sm text-neutral-600 mb-4">Navigation menu item with icon support. Use inside drawers or sidebars.</p>
+          <div class="component-preview bg-white" style="max-width: 280px;">
+            <a href="#" class="menu-item">
+              <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#document-new"></use></svg>
+              <span>Documents</span>
+            </a>
+            <a href="#" class="menu-item active">
+              <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#clients"></use></svg>
+              <span>Clients</span>
+            </a>
+            <a href="#" class="menu-item">
+              <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#settings"></use></svg>
+              <span>Settings</span>
+            </a>
+            <div class="menu-divider"></div>
+            <span class="menu-label">Admin</span>
+            <a href="#" class="menu-item disabled">
+              <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#admin-users"></use></svg>
+              <span>User Management</span>
+            </a>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;a href="#" class="menu-item"&gt;
+  &lt;svg class="icon"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#document-new"&gt;&lt;/use&gt;&lt;/svg&gt;
+  &lt;span&gt;Documents&lt;/span&gt;
+&lt;/a&gt;
+&lt;a href="#" class="menu-item active"&gt;...&lt;/a&gt;
+&lt;a href="#" class="menu-item disabled"&gt;...&lt;/a&gt;
+&lt;div class="menu-divider"&gt;&lt;/div&gt;
+&lt;span class="menu-label"&gt;Section Label&lt;/span&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- ============================================
+           UTILITIES
+           ============================================ -->
+      <section id="utilities" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Utility Components</h2>
+        <p class="text-neutral-600 mb-6">Small utility components for common UI patterns.</p>
+
+        <!-- Loading Spinner -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Loading Spinner</h3>
+          <p class="text-sm text-neutral-600 mb-4">SMIL-animated blob spinner Web Component. Uses currentColor, available in multiple sizes.</p>
+          <div class="component-preview flex items-center gap-8">
+            <div class="text-center">
+              <blob-spinner class="icon-lg text-primary-600"></blob-spinner>
+              <span class="block text-xs text-neutral-500 mt-2">icon-lg</span>
+            </div>
+            <div class="text-center">
+              <blob-spinner class="text-primary-600"></blob-spinner>
+              <span class="block text-xs text-neutral-500 mt-2">(default)</span>
+            </div>
+            <div class="text-center">
+              <blob-spinner class="icon-sm text-primary-600"></blob-spinner>
+              <span class="block text-xs text-neutral-500 mt-2">icon-sm</span>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;!-- Requires Spinner.init() in entry file, or inline SVG defs + custom element registration --&gt;
+&lt;blob-spinner class="icon-lg"&gt;&lt;/blob-spinner&gt;
+&lt;blob-spinner&gt;&lt;/blob-spinner&gt;
+&lt;blob-spinner class="icon-sm"&gt;&lt;/blob-spinner&gt;</code></pre>
+        </div>
+
+        <!-- Divider -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Divider</h3>
+          <p class="text-sm text-neutral-600 mb-4">Simple horizontal rule for separating content sections.</p>
+          <div class="component-preview">
+            <p class="text-neutral-600 mb-4">Content above</p>
+            <div class="divider"></div>
+            <p class="text-neutral-600 mt-4">Content below</p>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="divider"&gt;&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Highlight Flash -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Highlight Flash</h3>
+          <p class="text-sm text-neutral-600 mb-4">Temporary attention-grabbing animation. Apply class then remove after animation completes.</p>
+          <div class="component-preview">
+            <div class="card highlight-flash">
+              <p class="text-neutral-700">This element just changed!</p>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="card highlight-flash"&gt;
+  &lt;!-- Content that just changed --&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Attention Border -->
+        <div id="attention-border" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Attention Border</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Persistent glow effect using primary color. Use to highlight elements that require user attention
+            or indicate a selected/active state. Unlike highlight-flash, this stays until explicitly removed.
+          </p>
+          <div class="component-preview">
+            <div class="flex gap-4">
+              <div class="card attention-border">
+                <p class="text-neutral-700 font-medium">Requires Attention</p>
+                <p class="text-sm text-neutral-500">This field needs to be completed</p>
+              </div>
+              <div class="card">
+                <p class="text-neutral-700 font-medium">Normal State</p>
+                <p class="text-sm text-neutral-500">For comparison</p>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;!-- Add .attention-border to highlight an element --&gt;
+&lt;div class="card attention-border"&gt;
+  &lt;!-- Content requiring attention --&gt;
+&lt;/div&gt;
+
+&lt;!-- Commonly used with form fields --&gt;
+&lt;input class="form-input attention-border" /&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- ============================================
+           CLINICAL COMPONENTS
+           ============================================ -->
+      <section id="clinical" class="component-section mb-16">
+        <h2 class="text-3xl font-bold mb-6">Clinical Components</h2>
+        <p class="text-neutral-600 mb-8">
+          Specialized components for clinical documentation, form layouts, and therapy-specific patterns.
+        </p>
+
+        <!-- Section Headers with Icons -->
+        <div id="section-headers" class="mb-12">
+          <h3 class="text-xl font-semibold mb-4">Section Headers with Icons</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Pattern for section headers in clinical forms. Use a colored icon followed by bold title text.
+            No special CSS class needed - this is a conventional pattern using existing utilities.
+          </p>
+          <div class="component-preview">
+            <div class="space-y-6">
+              <h3 class="text-lg font-bold text-neutral-800 flex items-center gap-2">
+                <svg class="icon text-primary-600"><use href="./assets/icons/tabler-sprites.svg#user"></use></svg>
+                Client Information
+              </h3>
+              <h3 class="text-lg font-bold text-neutral-800 flex items-center gap-2">
+                <svg class="icon text-danger-600"><use href="./assets/icons/tabler-sprites.svg#risk-assessment"></use></svg>
+                Risk Assessment
+              </h3>
+              <h3 class="text-lg font-bold text-neutral-800 flex items-center gap-2">
+                <svg class="icon text-success-600"><use href="./assets/icons/tabler-sprites.svg#treatment-goals"></use></svg>
+                Treatment Goals
+              </h3>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;h3 class="text-lg font-bold text-neutral-800 flex items-center gap-2"&gt;
+  &lt;svg class="icon text-primary-600"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#user"&gt;&lt;/use&gt;&lt;/svg&gt;
+  Client Information
+&lt;/h3&gt;
+
+&lt;!-- Danger/Risk sections use danger color --&gt;
+&lt;h3 class="text-lg font-bold text-neutral-800 flex items-center gap-2"&gt;
+  &lt;svg class="icon text-danger-600"&gt;&lt;use href="./assets/icons/tabler-sprites.svg#risk-assessment"&gt;&lt;/use&gt;&lt;/svg&gt;
+  Risk Assessment
+&lt;/h3&gt;</code></pre>
+        </div>
+
+        <!-- Page Header -->
+        <div id="page-header" class="mb-12">
+          <h3 class="text-xl font-semibold mb-4">Page Header</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Top-of-page header with client avatar, title, subtitle, and optional badge or action slot.
+            Used for document forms like intake, treatment plans, and progress notes.
+          </p>
+          <div class="component-preview bg-neutral-100 p-0">
+            <div class="page-header">
+              <div class="page-header-content">
+                <div class="w-10 h-10 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold">
+                  JD
+                </div>
+                <div class="page-header-text">
+                  <h1 class="page-title">John Doe</h1>
+                  <p class="page-subtitle">Treatment Plan</p>
+                </div>
+              </div>
+              <span class="badge badge-success">Active</span>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="page-header"&gt;
+  &lt;div class="page-header-content"&gt;
+    &lt;div class="w-10 h-10 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-bold"&gt;
+      JD
+    &lt;/div&gt;
+    &lt;div class="page-header-text"&gt;
+      &lt;h1 class="page-title"&gt;John Doe&lt;/h1&gt;
+      &lt;p class="page-subtitle"&gt;Treatment Plan&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;span class="badge badge-success"&gt;Active&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Table of Contents -->
+        <div id="toc-nav" class="mb-12">
+          <h3 class="text-xl font-semibold mb-4">Table of Contents</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Sticky sidebar navigation for long forms. Shows form sections with active state indicator.
+            Use <code>position: sticky</code> in a sidebar column alongside main content.
+          </p>
+          <div class="component-preview">
+            <div class="grid grid-cols-3 gap-6">
+              <!-- TOC Sidebar -->
+              <div class="col-span-1">
+                <nav class="toc-nav">
+                  <p class="toc-title">On This Page</p>
+                  <a href="#" class="toc-link active">Client Information</a>
+                  <a href="#" class="toc-link">Presenting Problem</a>
+                  <a href="#" class="toc-link">Mental Status</a>
+                  <a href="#" class="toc-link">Risk Assessment</a>
+                  <a href="#" class="toc-link">Diagnosis</a>
+                </nav>
+              </div>
+              <!-- Main Content Area -->
+              <div class="col-span-2">
+                <div class="card">
+                  <p class="text-sm text-neutral-500">Main form content goes here...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;!-- In a grid layout with sidebar --&gt;
+&lt;div class="grid grid-cols-4 gap-6"&gt;
+  &lt;div class="col-span-1"&gt;
+    &lt;nav class="toc-nav"&gt;
+      &lt;p class="toc-title"&gt;On This Page&lt;/p&gt;
+      &lt;a href="#section1" class="toc-link active"&gt;Section 1&lt;/a&gt;
+      &lt;a href="#section2" class="toc-link"&gt;Section 2&lt;/a&gt;
+      &lt;a href="#section3" class="toc-link"&gt;Section 3&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+  &lt;div class="col-span-3"&gt;
+    &lt;!-- Form content --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Entry Card -->
+        <div id="entry-card" class="mb-12">
+          <h3 class="text-xl font-semibold mb-4">Entry Card</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Container for nested/sub-items within a larger card. Use for objectives within goals,
+            entries within sections, or any grouped sub-content. Neutral background distinguishes
+            it from parent card.
+          </p>
+          <div class="component-preview">
+            <div class="card">
+              <h3 class="font-bold mb-4">Goal 1: Reduce Anxiety</h3>
+              <div class="space-y-3">
+                <div class="entry-card">
+                  <div class="flex items-start gap-3">
+                    <span class="text-sm font-bold text-primary-600">1.1</span>
+                    <div>
+                      <p class="font-medium">Practice breathing exercises daily</p>
+                      <p class="text-sm text-neutral-500 mt-1">Target: 5 minutes per day</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="entry-card">
+                  <div class="flex items-start gap-3">
+                    <span class="text-sm font-bold text-primary-600">1.2</span>
+                    <div>
+                      <p class="font-medium">Identify anxiety triggers</p>
+                      <p class="text-sm text-neutral-500 mt-1">Document in journal weekly</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="card"&gt;
+  &lt;h3 class="font-bold mb-4"&gt;Goal 1: Reduce Anxiety&lt;/h3&gt;
+  &lt;div class="space-y-3"&gt;
+    &lt;div class="entry-card"&gt;
+      &lt;div class="flex items-start gap-3"&gt;
+        &lt;span class="text-sm font-bold text-primary-600"&gt;1.1&lt;/span&gt;
+        &lt;div&gt;
+          &lt;p class="font-medium"&gt;Objective text&lt;/p&gt;
+          &lt;p class="text-sm text-neutral-500 mt-1"&gt;Details&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <!-- Diagnosis Display -->
+        <div id="diagnosis-display" class="mb-12">
+          <h3 class="text-xl font-semibold mb-4">Diagnosis Display</h3>
+          <p class="text-sm text-neutral-600 mb-4">
+            Card for displaying ICD-10 diagnoses with monospace code and description.
+            Use for showing current or historical diagnoses in clinical forms.
+          </p>
+          <div class="component-preview">
+            <div class="space-y-3">
+              <div class="diagnosis-card">
+                <span class="diagnosis-code">F41.1</span>
+                <span class="text-neutral-700">Generalized Anxiety Disorder</span>
+              </div>
+              <div class="diagnosis-card">
+                <span class="diagnosis-code">F32.1</span>
+                <span class="text-neutral-700">Major Depressive Disorder, Single Episode, Moderate</span>
+              </div>
+            </div>
+          </div>
+          <pre class="code-block" @click="copyCode($event)"><code>&lt;div class="diagnosis-card"&gt;
+  &lt;span class="diagnosis-code"&gt;F41.1&lt;/span&gt;
+  &lt;span class="text-neutral-700"&gt;Generalized Anxiety Disorder&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </section>
+
+      <!-- Copy Notification -->
+      <div 
+        x-show="showCopyNotification" 
+        x-transition
+        class="fixed bottom-4 right-4 alert-success shadow-lg"
+      >
+        <p>Code copied to clipboard!</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    function componentLibrary() {
+      return {
+        darkMode: false,
+        showCopyNotification: false,
+
+        toggleTheme() {
+          this.darkMode = !this.darkMode;
+          // Dark mode implementation would go here
+          alert('Dark mode coming soon!');
+        },
+
+        copyCode(event) {
+          const codeBlock = event.currentTarget;
+          const code = codeBlock.querySelector('code').textContent;
+          
+          navigator.clipboard.writeText(code).then(() => {
+            this.showCopyNotification = true;
+            setTimeout(() => {
+              this.showCopyNotification = false;
+            }, 2000);
+          });
+        }
+      }
+    }
+  </script>
+</body>
+</html>

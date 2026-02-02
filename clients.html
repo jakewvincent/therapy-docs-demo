@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients - Therapy Docs</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Critical CSS to prevent FOUC -->
+    <style>[x-cloak] { display: none !important; }</style>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="dist/output.css">
+
+    <!-- Application Entry Point (ES Module) - includes Alpine.js -->
+    <script type="module" src="js/entries/clients.entry.js"></script>
+</head>
+<body>
+    <div x-data="clientsDashboard" class="min-h-screen bg-neutral-50" :class="{ 'mock-watermark': window.config?.useMockAPI }">
+
+        <!-- Shared Navigation Drawer (injected by drawer.js) -->
+        <div id="nav-drawer"></div>
+
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-neutral-200 sticky top-0 z-40">
+            <div class="px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button @click="drawerOpen = true" class="hamburger-btn">
+                        <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#menu-hamburger"></use></svg>
+                    </button>
+                    <h1 class="text-lg font-bold text-neutral-900 flex items-center">
+                        <svg class="icon mr-2 text-primary-500"><use href="./assets/icons/tabler-sprites.svg#clients"></use></svg>
+                        Clients
+                    </h1>
+                </div>
+                <button @click="openNewClientModal" class="btn btn-primary">
+                    <span class="flex items-center">
+                        <svg class="icon icon-md mr-2"><use href="./assets/icons/tabler-sprites.svg#action-add-client"></use></svg>
+                        Add Client
+                    </span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Loading State -->
+        <template x-if="loading">
+            <div class="p-8 text-center">
+                <blob-spinner class="icon-lg mx-auto mb-4"></blob-spinner>
+                <p class="text-neutral-500">Loading clients...</p>
+            </div>
+        </template>
+
+        <!-- Error State -->
+        <template x-if="errorMessage && !loading">
+            <div class="p-4">
+                <div class="alert-error">
+                    <svg class="icon mr-2"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                    <span x-text="errorMessage"></span>
+                </div>
+            </div>
+        </template>
+
+        <!-- Main Content (shown when not loading) -->
+        <div x-show="!loading" x-cloak>
+            <!-- Filter/Sort Bar -->
+            <div class="filter-bar">
+                <div class="flex flex-wrap gap-3 items-end">
+                    <!-- Search -->
+                    <div class="flex-1 min-w-[200px]">
+                        <div class="relative">
+                            <svg class="icon icon-sm absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#search"></use></svg>
+                            <input
+                                type="text"
+                                x-model="searchQuery"
+                                placeholder="Search clients..."
+                                class="form-input pl-9 py-2 text-sm w-full"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div class="flex flex-col gap-1">
+                        <label for="status-filter" class="text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                            <svg class="icon icon-xs mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#filter"></use></svg>Filter
+                        </label>
+                        <select id="status-filter" x-model="statusFilter" class="form-select py-2 text-sm" style="width: auto;">
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort -->
+                    <div class="flex flex-col gap-1">
+                        <label for="sort-by" class="text-xs font-medium text-neutral-500 uppercase tracking-wide">
+                            <svg class="icon icon-xs mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#sort"></use></svg>Sort
+                        </label>
+                        <select id="sort-by" x-model="sortBy" class="form-select py-2 text-sm" style="width: auto;">
+                            <option value="lastSession">Last Session</option>
+                            <option value="name">Name</option>
+                            <option value="totalSessions">Total Sessions</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Caseload Summary -->
+            <div class="px-4 py-2 bg-neutral-100 border-b border-neutral-200 flex items-center justify-between">
+                <p class="text-sm text-neutral-600">
+                    <span class="font-semibold text-neutral-900" x-text="filteredClients.length"></span> clients
+                    <template x-if="overdueCount > 0">
+                        <span class="ml-2">
+                            <svg class="icon icon-sm text-warning-500 inline-block"><use href="./assets/icons/tabler-sprites.svg#warning-overdue"></use></svg>
+                            <span class="text-warning-700 font-medium" x-text="overdueCount + ' overdue'"></span>
+                        </span>
+                    </template>
+                    <template x-if="riskFlagCount > 0">
+                        <span class="ml-2">
+                            <svg class="icon icon-sm risk-flag inline-block"><use href="./assets/icons/tabler-sprites.svg#warning-risk"></use></svg>
+                            <span class="text-danger-600 font-medium" x-text="riskFlagCount + ' risk'"></span>
+                        </span>
+                    </template>
+                    <template x-if="insuranceWarningCount > 0">
+                        <span class="ml-2">
+                            <svg class="icon icon-sm text-warning-500 inline-block"><use href="./assets/icons/tabler-sprites.svg#warning-insurance"></use></svg>
+                            <span class="text-warning-600 font-medium" x-text="insuranceWarningCount + ' auth'"></span>
+                        </span>
+                    </template>
+                </p>
+                <template x-if="archivedCount > 0">
+                    <a href="clients-archived.html" class="btn btn-ghost btn-sm text-neutral-600 hover:text-neutral-900">
+                        <span class="flex items-center">
+                            <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-archive"></use></svg>
+                            View Archived (<span x-text="archivedCount"></span>)
+                        </span>
+                    </a>
+                </template>
+            </div>
+
+            <!-- Client List Table -->
+            <table class="client-table">
+                <thead class="table-header">
+                    <tr>
+                        <th class="client-cell-indicator"></th>
+                        <th class="client-cell-name">Name</th>
+                        <th class="client-cell-type" x-show="isColumnVisible('type')">Type</th>
+                        <th class="client-cell-diagnosis" x-show="isColumnVisible('diagnosis') && isDiagnosisVisible()">Diagnosis</th>
+                        <th class="client-cell-metrics" x-show="isColumnVisible('lastSession')">Last Session</th>
+                        <th class="client-cell-status" x-show="isColumnVisible('status')">Status</th>
+                        <th class="client-cell-basis" x-show="isColumnVisible('sessionBasis')">Basis</th>
+                        <th class="client-cell-payer" x-show="isColumnVisible('payer')">Payer</th>
+                        <th class="client-cell-referral" x-show="isColumnVisible('referralSource')">Referral</th>
+                        <th class="client-cell-arrow"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="client in filteredClients" :key="client.id">
+                        <tr class="client-row" @click="openPanel(client)">
+                            <!-- Indicator (priority: risk > insurance warning > overdue) -->
+                            <td class="client-cell-indicator">
+                                <template x-if="client.hasRiskFlag">
+                                    <svg class="icon icon-sm risk-flag" title="Risk flag"><use href="./assets/icons/tabler-sprites.svg#warning-risk"></use></svg>
+                                </template>
+                                <template x-if="!client.hasRiskFlag && hasInsuranceWarning(client)">
+                                    <svg class="icon icon-sm text-warning-500" title="Authorization expiring or sessions low"><use href="./assets/icons/tabler-sprites.svg#warning-insurance"></use></svg>
+                                </template>
+                                <template x-if="!client.hasRiskFlag && !hasInsuranceWarning(client) && client.isOverdue">
+                                    <svg class="icon icon-sm text-warning-500" title="Not seen in 14+ days"><use href="./assets/icons/tabler-sprites.svg#warning-overdue"></use></svg>
+                                </template>
+                            </td>
+
+                            <!-- Name (always visible) -->
+                            <td class="client-cell-name">
+                                <span class="text-lg font-bold text-neutral-900" x-text="client.name"></span>
+                            </td>
+
+                            <!-- Type Badge -->
+                            <td class="client-cell-type" x-show="isColumnVisible('type')">
+                                <span class="type-badge" x-text="client.clientType"></span>
+                            </td>
+
+                            <!-- Diagnosis -->
+                            <td class="client-cell-diagnosis" x-show="isColumnVisible('diagnosis') && isDiagnosisVisible()">
+                                <p class="text-sm text-neutral-600 truncate" x-text="client.diagnosis || 'No diagnosis on file'"></p>
+                            </td>
+
+                            <!-- Last Session -->
+                            <td class="client-cell-metrics" x-show="isColumnVisible('lastSession')">
+                                <div class="text-neutral-900">
+                                    <span class="font-medium">Last:</span>
+                                    <template x-if="client.totalSessions === 0">
+                                        <span class="text-neutral-500">N/A</span>
+                                    </template>
+                                    <template x-if="client.totalSessions > 0">
+                                        <span x-text="client.daysSinceLastSession + 'd ago'"></span>
+                                    </template>
+                                </div>
+                                <div class="text-neutral-500 text-xs">
+                                    <svg class="icon icon-xs inline-block"><use href="./assets/icons/tabler-sprites.svg#sessions"></use></svg>
+                                    <span x-text="client.totalSessions + ' sessions'"></span>
+                                </div>
+                            </td>
+
+                            <!-- Status Badge -->
+                            <td class="client-cell-status" x-show="isColumnVisible('status')">
+                                <span
+                                    class="status-badge"
+                                    :class="{
+                                        'status-active': client.status === 'active',
+                                        'status-inactive': client.status === 'inactive'
+                                    }"
+                                    x-text="client.status"
+                                ></span>
+                            </td>
+
+                            <!-- Session Basis -->
+                            <td class="client-cell-basis" x-show="isColumnVisible('sessionBasis')">
+                                <span class="text-sm text-neutral-600 capitalize" x-text="client.sessionBasis || '—'"></span>
+                            </td>
+
+                            <!-- Payer -->
+                            <td class="client-cell-payer" x-show="isColumnVisible('payer')">
+                                <span class="text-sm text-neutral-600 truncate" x-text="client.payer || '—'"></span>
+                            </td>
+
+                            <!-- Referral Source -->
+                            <td class="client-cell-referral" x-show="isColumnVisible('referralSource')">
+                                <span class="text-sm text-neutral-600 truncate" x-text="client.referralSource || '—'"></span>
+                            </td>
+
+                            <!-- Arrow -->
+                            <td class="client-cell-arrow">
+                                <svg class="icon icon-sm text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#collapsed-indicator"></use></svg>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <!-- Empty State -->
+            <template x-if="filteredClients.length === 0 && !loading">
+                <div class="p-8 text-center text-neutral-500 bg-white">
+                    <svg class="icon icon-2xl mb-3 text-neutral-300 mx-auto"><use href="./assets/icons/tabler-sprites.svg#empty-no-results"></use></svg>
+                    <p>No clients match your filters.</p>
+                </div>
+            </template>
+        </div>
+
+        <!-- Panel Overlay -->
+        <div
+            class="panel-overlay"
+            :class="{ 'open': panelOpen }"
+            @click="closePanel"
+        ></div>
+
+        <!-- Slide-in Client Detail Panel -->
+        <div class="client-panel" :class="{ 'open': panelOpen }">
+            <template x-if="selectedClient">
+                <div class="flex flex-col h-full">
+                    <!-- Panel Header -->
+                    <div class="bg-white border-b border-neutral-200 px-4 py-3 flex items-center justify-between flex-shrink-0">
+                        <div class="flex items-center gap-3">
+                            <button @click="closePanel" class="hamburger-btn">
+                                <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#back"></use></svg>
+                            </button>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg font-bold text-neutral-900" x-text="selectedClient.name"></span>
+                                    <span class="type-badge" x-text="selectedClient.clientType"></span>
+                                    <span
+                                        class="status-badge"
+                                        :class="{
+                                            'status-active': selectedClient.status === 'active',
+                                            'status-inactive': selectedClient.status === 'inactive'
+                                        }"
+                                        x-text="selectedClient.status"
+                                    ></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button
+                                @click="showArchiveModal = true"
+                                class="btn btn-ghost text-warning-600 hover:bg-warning-50"
+                                style="padding: 0.375rem 0.75rem;"
+                                title="Archive client"
+                            >
+                                <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#action-archive"></use></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tab Navigation -->
+                    <div class="tab-nav flex-shrink-0">
+                        <template x-for="tab in visibleTabs" :key="tab.id">
+                            <button
+                                class="tab-btn"
+                                :class="{ 'active': activeTab === tab.id }"
+                                @click="activeTab = tab.id"
+                            >
+                                <span x-text="tab.label"></span>
+                                <span x-show="tab.status === 'beta'" class="badge badge-beta ml-1">Beta</span>
+                                <span x-show="tab.status === 'notImplemented'" x-cloak class="badge badge-not-implemented ml-1">Dev</span>
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Loading State for Client Data -->
+                    <template x-if="loadingClientData">
+                        <div class="flex-1 flex items-center justify-center">
+                            <div class="text-center">
+                                <blob-spinner class="icon-lg mx-auto mb-4"></blob-spinner>
+                                <p class="text-neutral-500">Loading client details...</p>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Tab Content -->
+                    <div x-show="!loadingClientData" class="flex-1 overflow-y-auto">
+
+                        <!-- Overview Tab -->
+                        <div x-show="activeTab === 'overview'" class="p-4">
+                            <!-- Client Info -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Client Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Name - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Name</span>
+                                        <span class="info-value-container" x-show="!isEditing('name')">
+                                            <span class="info-value" x-text="selectedClient.name"></span>
+                                            <button @click="startEditing('name')" class="edit-pencil-btn" title="Edit name">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('name')" x-cloak>
+                                            <input type="text" x-model="editBuffer.name" class="form-input" @keydown.enter="saveEdit()" @keydown.escape="cancelEditing()" placeholder="Client name/initials">
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                            <p x-show="editError && editingField === 'name'" class="form-error" x-text="editError"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Client Type - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Client Type</span>
+                                        <span class="info-value-container" x-show="!isEditing('clientType')">
+                                            <span class="info-value" x-text="selectedClient.clientType"></span>
+                                            <button @click="startEditing('clientType')" class="edit-pencil-btn" title="Edit client type">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('clientType')" x-cloak>
+                                            <select x-model="editBuffer.clientType" class="form-select" @keydown.escape="cancelEditing()">
+                                                <option value="Individual">Individual</option>
+                                                <option value="Couple">Couple</option>
+                                                <option value="Family">Family</option>
+                                                <option value="Partner">Partner</option>
+                                            </select>
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Status - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Status</span>
+                                        <span class="info-value-container" x-show="!isEditing('status')">
+                                            <span class="info-value capitalize" x-text="selectedClient.status"></span>
+                                            <button @click="startEditing('status')" class="edit-pencil-btn" title="Edit status">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('status')" x-cloak>
+                                            <select x-model="editBuffer.status" class="form-select" @keydown.escape="cancelEditing()">
+                                                <option value="active">Active</option>
+                                                <option value="inactive">Inactive</option>
+                                            </select>
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Therapy Started - Editable (startDate) -->
+                                    <div class="info-row">
+                                        <span class="info-label">Therapy Started</span>
+                                        <span class="info-value-container" x-show="!isEditing('startDate')">
+                                            <span class="info-value" x-text="selectedClient.startDate ? formatDate(selectedClient.startDate) : 'Not set'"></span>
+                                            <button @click="startEditing('startDate')" class="edit-pencil-btn" title="Edit start date">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('startDate')" x-cloak>
+                                            <input type="date" x-model="editBuffer.startDate" class="form-input" @keydown.escape="cancelEditing()">
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Record Created - Read-only -->
+                                    <div class="info-row">
+                                        <span class="info-label">Record Created</span>
+                                        <span class="info-value-container">
+                                            <span class="info-value" x-text="formatDate(selectedClient.createdAt)"></span>
+                                            <span class="edit-pencil-placeholder"></span>
+                                        </span>
+                                    </div>
+
+                                    <!-- Total Sessions - Read-only (computed) -->
+                                    <div class="info-row">
+                                        <span class="info-label">Total Sessions</span>
+                                        <span class="info-value-container">
+                                            <span class="info-value" x-text="formatTotalSessionsDisplay()"></span>
+                                            <span class="edit-pencil-placeholder"></span>
+                                        </span>
+                                    </div>
+
+                                    <!-- Prior Sessions - Editable (sessionAdjustment) -->
+                                    <div class="info-row">
+                                        <span class="info-label">Prior Sessions</span>
+                                        <span class="info-value-container" x-show="!isEditing('sessionAdjustment')">
+                                            <span class="info-value" x-text="selectedClient.sessionAdjustment || 0"></span>
+                                            <button @click="startEditing('sessionAdjustment')" class="edit-pencil-btn" title="Edit prior sessions">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('sessionAdjustment')" x-cloak>
+                                            <input type="number" x-model.number="editBuffer.sessionAdjustment" class="form-input" min="0" @keydown.enter="saveEdit()" @keydown.escape="cancelEditing()">
+                                            <p class="form-helper">Sessions before using this app</p>
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                            <p x-show="editError && editingField === 'sessionAdjustment'" class="form-error" x-text="editError"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Last Session - Read-only -->
+                                    <div class="info-row">
+                                        <span class="info-label">Last Session</span>
+                                        <span class="info-value-container">
+                                            <span class="info-value">
+                                                <template x-if="selectedClient.totalSessions === 0">
+                                                    <span class="text-neutral-500">N/A</span>
+                                                </template>
+                                                <template x-if="selectedClient.totalSessions > 0">
+                                                    <span>
+                                                        <span x-text="selectedClient.daysSinceLastSession + ' days ago'"></span>
+                                                        <span class="text-neutral-500 text-xs ml-1" x-text="'(' + formatDate(selectedClient.lastSessionDate) + ')'"></span>
+                                                    </span>
+                                                </template>
+                                            </span>
+                                            <span class="edit-pencil-placeholder"></span>
+                                        </span>
+                                    </div>
+
+                                    <!-- Session Basis - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Session Basis</span>
+                                        <span class="info-value-container" x-show="!isEditing('sessionBasis')">
+                                            <span class="info-value capitalize" x-text="selectedClient.sessionBasis || 'Not set'"></span>
+                                            <button @click="startEditing('sessionBasis')" class="edit-pencil-btn" title="Edit session basis">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('sessionBasis')" x-cloak>
+                                            <select x-model="editBuffer.sessionBasis" class="form-select" @keydown.escape="cancelEditing()">
+                                                <option value="">Not set</option>
+                                                <option value="weekly">Weekly</option>
+                                                <option value="biweekly">Biweekly</option>
+                                                <option value="monthly">Monthly</option>
+                                                <option value="as-needed">As needed</option>
+                                            </select>
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Referral Source - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Referral Source</span>
+                                        <span class="info-value-container" x-show="!isEditing('referralSource')">
+                                            <span class="info-value" x-text="selectedClient.referralSource || 'Not set'"></span>
+                                            <button @click="startEditing('referralSource')" class="edit-pencil-btn" title="Edit referral source">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('referralSource')" x-cloak>
+                                            <input type="text" x-model="editBuffer.referralSource" class="form-input" @keydown.enter="saveEdit()" @keydown.escape="cancelEditing()" placeholder="e.g., PCP referral, Psychology Today">
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment & Insurance -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Payment & Insurance</h3>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Payment Type - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Payment Type</span>
+                                        <span class="info-value-container" x-show="!isEditing('paymentType')">
+                                            <span class="info-value capitalize" x-text="(selectedClient.paymentType || 'private-pay').replace('-', ' ')"></span>
+                                            <button @click="startEditing('paymentType')" class="edit-pencil-btn" title="Edit payment type">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('paymentType')" x-cloak>
+                                            <select x-model="editBuffer.paymentType" class="form-select" @keydown.escape="cancelEditing()">
+                                                <option value="insurance">Insurance</option>
+                                                <option value="private-pay">Private Pay</option>
+                                                <option value="sliding-scale">Sliding Scale</option>
+                                            </select>
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Payer - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Payer</span>
+                                        <span class="info-value-container" x-show="!isEditing('payer')">
+                                            <span class="info-value" x-text="selectedClient.payer || 'Not set'"></span>
+                                            <button @click="startEditing('payer')" class="edit-pencil-btn" title="Edit payer">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('payer')" x-cloak>
+                                            <input type="text" x-model="editBuffer.payer" class="form-input" @keydown.enter="saveEdit()" @keydown.escape="cancelEditing()" placeholder="e.g., Blue Cross Blue Shield">
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Auth Expires - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Auth Expires</span>
+                                        <span class="info-value-container" x-show="!isEditing('authorizationExpiration')">
+                                            <span class="info-value" :class="{ 'text-warning-600 font-medium': selectedClient.authorizationExpiration && isAuthExpiringSoon(selectedClient.authorizationExpiration) }">
+                                                <span x-text="selectedClient.authorizationExpiration ? formatDate(selectedClient.authorizationExpiration) : 'Not set'"></span>
+                                                <template x-if="selectedClient.authorizationExpiration && isAuthExpiringSoon(selectedClient.authorizationExpiration)">
+                                                    <svg class="icon icon-sm ml-1 text-warning-500 inline-block"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                                                </template>
+                                            </span>
+                                            <button @click="startEditing('authorizationExpiration')" class="edit-pencil-btn" title="Edit auth expiration">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('authorizationExpiration')" x-cloak>
+                                            <input type="date" x-model="editBuffer.authorizationExpiration" class="form-input" @keydown.escape="cancelEditing()">
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sessions Remaining - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Sessions Remaining</span>
+                                        <span class="info-value-container" x-show="!isEditing('sessionsRemaining')">
+                                            <span class="info-value" :class="{ 'text-warning-600 font-medium': selectedClient.sessionsRemaining !== null && selectedClient.sessionsRemaining <= 3 }">
+                                                <span x-text="selectedClient.sessionsRemaining !== null && selectedClient.sessionsRemaining !== undefined ? selectedClient.sessionsRemaining : 'N/A'"></span>
+                                                <template x-if="selectedClient.sessionsRemaining !== null && selectedClient.sessionsRemaining <= 3">
+                                                    <svg class="icon icon-sm ml-1 text-warning-500 inline-block"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                                                </template>
+                                            </span>
+                                            <button @click="startEditing('sessionsRemaining')" class="edit-pencil-btn" title="Edit sessions remaining">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('sessionsRemaining')" x-cloak>
+                                            <input type="number" x-model.number="editBuffer.sessionsRemaining" class="form-input" min="0" @keydown.enter="saveEdit()" @keydown.escape="cancelEditing()">
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                            <p x-show="editError && editingField === 'sessionsRemaining'" class="form-error" x-text="editError"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Risk Assessment -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Risk Assessment</h3>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Risk Level - Editable -->
+                                    <div class="info-row">
+                                        <span class="info-label">Risk Level</span>
+                                        <span class="info-value-container" x-show="!isEditing('riskLevel')">
+                                            <span
+                                                class="info-value font-medium capitalize"
+                                                :class="{
+                                                    'text-success-600': selectedClient.riskLevel === 'standard',
+                                                    'text-warning-600': selectedClient.riskLevel === 'elevated',
+                                                    'text-danger-600': selectedClient.riskLevel === 'high'
+                                                }"
+                                                x-text="selectedClient.riskLevel || 'Not set'"
+                                            ></span>
+                                            <button @click="startEditing('riskLevel')" class="edit-pencil-btn" title="Edit risk level">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </span>
+                                        <div class="info-edit-container" x-show="isEditing('riskLevel')" x-cloak>
+                                            <select x-model="editBuffer.riskLevel" class="form-select" @keydown.escape="cancelEditing()">
+                                                <option value="">Not set</option>
+                                                <option value="standard">Standard</option>
+                                                <option value="elevated">Elevated</option>
+                                                <option value="high">High</option>
+                                            </select>
+                                            <div class="edit-actions">
+                                                <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                    <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                                </button>
+                                                <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                    <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <template x-if="selectedClient.lastRiskAssessment">
+                                        <div class="info-row">
+                                            <span class="info-label">Last Assessed</span>
+                                            <span class="info-value-container">
+                                                <span class="info-value" x-text="formatDate(selectedClient.lastRiskAssessment)"></span>
+                                                <span class="edit-pencil-placeholder"></span>
+                                            </span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Internal Notes -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Internal Notes</h3>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Internal Notes - Editable -->
+                                    <div x-show="!isEditing('internalNotes')">
+                                        <div class="flex items-start justify-between gap-2">
+                                            <p class="text-sm text-neutral-700 flex-1" x-text="selectedClient.internalNotes || 'No internal notes'"></p>
+                                            <button @click="startEditing('internalNotes')" class="edit-pencil-btn flex-shrink-0" title="Edit internal notes">
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="info-edit-container" x-show="isEditing('internalNotes')" x-cloak>
+                                        <textarea x-model="editBuffer.internalNotes" class="form-textarea" rows="4" @keydown.escape="cancelEditing()" placeholder="Internal notes about this client..."></textarea>
+                                        <div class="edit-actions">
+                                            <button @click="saveEdit()" class="btn btn-primary btn-icon" :disabled="savingField">
+                                                <blob-spinner x-show="savingField" class="icon-sm"></blob-spinner><svg x-show="!savingField" class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#selected"></use></svg>
+                                            </button>
+                                            <button @click="cancelEditing()" class="btn btn-secondary btn-icon" :disabled="savingField">
+                                                <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Diagnosis Summary -->
+                            <div class="card mb-4" x-show="isDiagnosisVisible()">
+                                <div class="card-header flex items-center justify-between">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Current Diagnosis</h3>
+                                    <a
+                                        :href="'documents.html?client=' + selectedClient.id + '&form=Diagnosis'"
+                                        class="text-xs text-primary-600 hover:text-primary-700"
+                                    >
+                                        <svg class="icon icon-xs mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>Edit
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <template x-if="clientDiagnosis">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span x-show="clientDiagnosis.isPrincipal" class="text-warning-500" title="Principal Diagnosis">
+                                                    <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#principal"></use></svg>
+                                                </span>
+                                                <span class="font-mono text-sm font-semibold text-primary-600" x-text="clientDiagnosis.icd10Code"></span>
+                                                <span
+                                                    class="px-2 py-0.5 text-xs font-medium rounded-full"
+                                                    :class="{
+                                                        'bg-warning-100 text-warning-700': clientDiagnosis.status === 'provisional',
+                                                        'bg-success-100 text-success-700': clientDiagnosis.status === 'active'
+                                                    }"
+                                                    x-text="clientDiagnosis.status"
+                                                ></span>
+                                                <span
+                                                    x-show="clientDiagnosis.severity"
+                                                    class="px-2 py-0.5 text-xs font-medium rounded-full bg-neutral-100 text-neutral-600"
+                                                    x-text="clientDiagnosis.severity"
+                                                ></span>
+                                            </div>
+                                            <p class="text-neutral-900" x-text="clientDiagnosis.description"></p>
+                                            <p class="text-xs text-neutral-500 mt-1" x-text="'Diagnosed: ' + formatDate(clientDiagnosis.dateOfDiagnosis)"></p>
+                                        </div>
+                                    </template>
+                                    <template x-if="!clientDiagnosis">
+                                        <p class="text-neutral-500 italic">No diagnosis on file</p>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Treatment Plan Status -->
+                            <div class="card mb-4" x-show="isTreatmentPlanVisible()">
+                                <div class="card-header">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Treatment Plan</h3>
+                                </div>
+                                <div class="card-body">
+                                    <template x-if="clientTreatmentPlan">
+                                        <div>
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-neutral-900" x-text="clientTreatmentPlan.status === 'active' ? 'Active' : 'Inactive'"></span>
+                                                <span
+                                                    class="text-xs font-medium"
+                                                    :class="clientTreatmentPlan.isOverdue ? 'text-warning-600' : 'text-neutral-500'"
+                                                >
+                                                    <template x-if="clientTreatmentPlan.isOverdue">
+                                                        <span><svg class="icon icon-xs mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#time-recent"></use></svg>Review overdue</span>
+                                                    </template>
+                                                    <template x-if="!clientTreatmentPlan.isOverdue">
+                                                        <span x-text="'Review: ' + formatDate(clientTreatmentPlan.reviewDate)"></span>
+                                                    </template>
+                                                </span>
+                                            </div>
+                                            <p class="text-sm text-neutral-600 mt-2" x-text="clientTreatmentPlan.goals.length + ' goals, ' + clientTreatmentPlan.interventions.length + ' interventions'"></p>
+                                        </div>
+                                    </template>
+                                    <template x-if="!clientTreatmentPlan">
+                                        <p class="text-neutral-500 italic">No treatment plan on file</p>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Recent Sessions -->
+                            <div class="card">
+                                <div class="card-header flex items-center justify-between">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Recent Sessions</h3>
+                                    <button
+                                        class="text-sm text-primary-600 hover:text-primary-700"
+                                        @click="activeTab = 'notes'"
+                                    >View all</button>
+                                </div>
+                                <div class="card-body">
+                                    <template x-for="session in clientSessions.slice(0, 3)" :key="session.id">
+                                        <div class="flex items-center justify-between py-2 border-b border-neutral-100 last:border-0">
+                                            <div>
+                                                <p class="text-sm font-medium text-neutral-900" x-text="formatDate(session.date)"></p>
+                                                <p class="text-xs text-neutral-600" x-text="getSessionTheme(session)"></p>
+                                            </div>
+                                            <button class="text-xs text-primary-600 hover:text-primary-700">View</button>
+                                        </div>
+                                    </template>
+                                    <template x-if="clientSessions.length === 0">
+                                        <p class="text-neutral-500 italic text-sm">No sessions recorded</p>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Notes Tab -->
+                        <div x-show="activeTab === 'notes'" class="p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-sm font-semibold text-neutral-900">All Sessions</h3>
+                                <span class="text-xs text-neutral-500" x-text="clientSessions.length + ' total'"></span>
+                            </div>
+
+                            <template x-for="session in clientSessions" :key="session.id">
+                                <div class="session-card" x-data="{ expanded: false }">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-neutral-900" x-text="formatDate(session.date)"></span>
+                                                <span class="text-xs text-neutral-500" x-text="session.duration + ' min'"></span>
+                                            </div>
+                                            <p class="text-sm text-neutral-600 mt-1" x-text="getSessionTheme(session)"></p>
+                                        </div>
+                                        <button
+                                            class="text-neutral-400 hover:text-neutral-600 p-1"
+                                            @click="expanded = !expanded"
+                                        >
+                                            <svg class="icon icon-sm"><use :href="expanded ? './assets/icons/tabler-sprites.svg#collapse' : './assets/icons/tabler-sprites.svg#expand'"></use></svg>
+                                        </button>
+                                    </div>
+
+                                    <!-- Expanded Content -->
+                                    <div x-show="expanded" x-collapse class="mt-3 pt-3 border-t border-neutral-100">
+                                        <template x-if="session.narrative">
+                                            <div class="mb-3">
+                                                <p class="text-xs font-semibold text-neutral-500 uppercase mb-1">Session Narrative</p>
+                                                <p class="text-sm text-neutral-700" x-text="session.narrative"></p>
+                                            </div>
+                                        </template>
+                                        <template x-if="session.interventions && session.interventions.length > 0">
+                                            <div class="mb-3">
+                                                <p class="text-xs font-semibold text-neutral-500 uppercase mb-1">Interventions</p>
+                                                <div class="flex flex-wrap gap-1">
+                                                    <template x-for="intervention in session.interventions" :key="intervention.label || intervention">
+                                                        <span class="text-xs bg-neutral-100 text-neutral-600 px-2 py-0.5 rounded" x-text="intervention.label || intervention"></span>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template x-if="session.notes">
+                                            <div>
+                                                <p class="text-xs font-semibold text-neutral-500 uppercase mb-1">Notes</p>
+                                                <p class="text-sm text-neutral-700" x-text="session.notes"></p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <template x-if="clientSessions.length === 0">
+                                <div class="text-center py-8 text-neutral-500">
+                                    <svg class="icon icon-2xl mb-2 text-neutral-300 mx-auto"><use href="./assets/icons/tabler-sprites.svg#sessions"></use></svg>
+                                    <p>No sessions recorded yet</p>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Tx Plan Tab -->
+                        <div x-show="activeTab === 'txplan'" class="p-4">
+                            <!-- Diagnosis Section -->
+                            <div class="card mb-4">
+                                <div class="card-header flex items-center justify-between">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Current Diagnosis</h3>
+                                    <a
+                                        :href="'documents.html?client=' + selectedClient.id + '&form=Diagnosis'"
+                                        class="text-xs text-primary-600 hover:text-primary-700"
+                                    >
+                                        <svg class="icon icon-xs mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#action-edit"></use></svg>Edit
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <template x-if="clientDiagnosis">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <span x-show="clientDiagnosis.isPrincipal" class="text-warning-500" title="Principal Diagnosis">
+                                                    <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#principal"></use></svg>
+                                                </span>
+                                                <span class="font-mono text-sm font-semibold text-primary-600" x-text="clientDiagnosis.icd10Code"></span>
+                                                <span
+                                                    class="px-2 py-0.5 text-xs font-medium rounded-full"
+                                                    :class="{
+                                                        'bg-warning-100 text-warning-700': clientDiagnosis.status === 'provisional',
+                                                        'bg-success-100 text-success-700': clientDiagnosis.status === 'active'
+                                                    }"
+                                                    x-text="clientDiagnosis.status"
+                                                ></span>
+                                                <span class="text-xs text-neutral-500" x-text="'Diagnosed: ' + formatDate(clientDiagnosis.dateOfDiagnosis)"></span>
+                                            </div>
+                                            <p class="text-neutral-900" x-text="clientDiagnosis.description"></p>
+                                        </div>
+                                    </template>
+                                    <template x-if="!clientDiagnosis">
+                                        <p class="text-neutral-500 italic">No diagnosis on file</p>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Treatment Plan Section -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="text-sm font-semibold text-neutral-900">Treatment Plan</h3>
+                                </div>
+                                <div class="card-body">
+                                    <template x-if="clientTreatmentPlan">
+                                        <div>
+                                            <div class="flex items-center gap-4 mb-4 text-xs text-neutral-500">
+                                                <span><svg class="icon icon-xs mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#date"></use></svg> Created: <span x-text="formatDate(clientTreatmentPlan.date)"></span></span>
+                                                <span
+                                                    :class="clientTreatmentPlan.isOverdue ? 'text-warning-600 font-medium' : ''"
+                                                >
+                                                    <svg class="icon icon-xs mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#time-recent"></use></svg> Review: <span x-text="formatDate(clientTreatmentPlan.reviewDate)"></span>
+                                                    <template x-if="clientTreatmentPlan.isOverdue">
+                                                        <span class="ml-1">(Overdue)</span>
+                                                    </template>
+                                                </span>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <p class="text-xs font-semibold text-neutral-500 uppercase mb-2">Goals</p>
+                                                <ul class="space-y-1">
+                                                    <template x-for="(goal, index) in clientTreatmentPlan.goals" :key="index">
+                                                        <li class="text-sm text-neutral-700 flex items-start gap-2">
+                                                            <span class="text-primary-500 mt-0.5"><svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#bullet-check"></use></svg></span>
+                                                            <span x-text="goal"></span>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <p class="text-xs font-semibold text-neutral-500 uppercase mb-2">Interventions</p>
+                                                <div class="flex flex-wrap gap-1">
+                                                    <template x-for="intervention in clientTreatmentPlan.interventions" :key="intervention">
+                                                        <span class="text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded" x-text="intervention"></span>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <p class="text-xs font-semibold text-neutral-500 uppercase mb-2">Target Symptoms</p>
+                                                <div class="flex flex-wrap gap-1">
+                                                    <template x-for="symptom in clientTreatmentPlan.targetSymptoms" :key="symptom">
+                                                        <span class="text-xs bg-neutral-100 text-neutral-600 px-2 py-1 rounded" x-text="symptom"></span>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <template x-if="clientTreatmentPlan.notes">
+                                                <div>
+                                                    <p class="text-xs font-semibold text-neutral-500 uppercase mb-2">Notes</p>
+                                                    <p class="text-sm text-neutral-700" x-text="clientTreatmentPlan.notes"></p>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    <template x-if="!clientTreatmentPlan">
+                                        <div class="text-center py-4">
+                                            <p class="text-neutral-500 italic mb-3">No treatment plan on file</p>
+                                            <button class="btn btn-primary btn-sm">
+                                                <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-add"></use></svg> Create Treatment Plan
+                                            </button>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Intake Tab -->
+                        <div x-show="activeTab === 'intake'" class="p-4">
+                            <div class="card">
+                                <div class="card-body text-center py-8">
+                                    <svg class="icon icon-2xl mb-3 text-neutral-300 mx-auto"><use href="./assets/icons/tabler-sprites.svg#document-empty"></use></svg>
+                                    <p class="text-neutral-500 mb-1">Intake information will appear here</p>
+                                    <p class="text-xs text-neutral-400">This feature is coming soon</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Shared New Client Modal -->
+        <div id="new-client-modal"></div>
+
+        <!-- Archive Confirmation Modal -->
+        <!-- z-[1010] to appear above client panel (z-1000) and its overlay (z-999) -->
+        <div
+            x-show="showArchiveModal"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="modal-overlay z-[1010]"
+            @click.self="showArchiveModal = false"
+            @keydown.escape.window="showArchiveModal && (showArchiveModal = false)"
+            x-cloak
+        >
+            <div
+                class="card w-full max-w-md bg-white"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+                @click.stop
+            >
+                <div class="text-center mb-4">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-warning-100 text-warning-600 mb-3">
+                        <svg class="icon icon-lg"><use href="./assets/icons/tabler-sprites.svg#action-archive"></use></svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-neutral-900">Archive Client?</h2>
+                </div>
+
+                <p class="text-neutral-600 text-center mb-6">
+                    <span class="font-semibold" x-text="selectedClient?.name"></span> will be moved to the archive.
+                    You can restore them later from the Archived Clients page.
+                </p>
+
+                <div class="flex gap-3 justify-center">
+                    <button
+                        type="button"
+                        @click="showArchiveModal = false"
+                        class="btn btn-secondary"
+                        :disabled="archiving"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        @click="archiveClient"
+                        class="btn btn-primary bg-warning-600 hover:bg-warning-700"
+                        :disabled="archiving"
+                    >
+                        <template x-if="archiving">
+                            <span><blob-spinner class="icon-md mr-2"></blob-spinner>Archiving...</span>
+                        </template>
+                        <template x-if="!archiving">
+                            <span><svg class="icon icon-md mr-2"><use href="./assets/icons/tabler-sprites.svg#action-archive"></use></svg>Archive</span>
+                        </template>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

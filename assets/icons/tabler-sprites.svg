@@ -1,0 +1,974 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+
+    <!-- ======================
+         App Navigation & Structure
+         Main menu items and top-level navigation sections of the application
+         ====================== -->
+
+    <symbol id="therapy-docs-app" tabler-id="heart-handshake" description="App brand logo shown on login page, represents the Therapy Docs application identity" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19.5 12.572L12 20l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 6.572"/><path d="M12 6L8.707 9.293a1 1 0 0 0 0 1.414l.543.543c.69.69 1.81.69 2.5 0l1-1a3.18 3.18 0 0 1 4.5 0l2.25 2.25m-7 3l2 2M15 13l2 2"/></g>
+    </symbol>
+
+    <symbol id="documents-general-alt-1" tabler-id="file-stack" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 12V5a2 2 0 0 1 2-2h7l5 5v4M5 21h14M5 18h14M5 15h14"/></g>
+    </symbol>
+    <symbol id="documents-general-alt-2" tabler-id="files" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 3v4a1 1 0 0 0 1 1h4"/><path d="M18 17h-7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4l5 5v7a2 2 0 0 1-2 2"/><path d="M16 17v2a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2"/></g>
+    </symbol>
+    <symbol id="documents-general" tabler-id="notes" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zm4 2h6m-6 4h6m-6 4h4"/>
+    </symbol>
+
+    <symbol id="document-new-alt-1" tabler-id="file-plus" description="Starting a new document or note; used for Documents navigation, Start Fresh button, and page titles" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2m-5-10v6m-3-3h6"/></g>
+    </symbol>
+    <symbol id="document-new" tabler-id="file-spark" description="Starting a new document or note; used for Documents navigation, Start Fresh button, and page titles" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 22.5a4.75 4.75 0 0 1 3.5-3.5a4.75 4.75 0 0 1-3.5-3.5a4.75 4.75 0 0 1-3.5 3.5a4.75 4.75 0 0 1 3.5 3.5M14 3v4a1 1 0 0 0 1 1h4"/><path d="M12 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v3.5"/></g>
+    </symbol>
+
+    <symbol id="clients-alt-1" tabler-id="users" description="Client list and management screens; navigation menu item, dashboard, and Show All Clients button" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/>
+    </symbol>
+    <symbol id="clients" tabler-id="address-book" description="Client list and management screens; navigation menu item, dashboard, and Show All Clients button" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 6v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2M10 16h6"/><path d="M11 11a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 8h3m-3 4h3m-3 4h3"/></g>
+    </symbol>
+
+    <symbol id="interventions" tabler-id="seeding" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10a6 6 0 0 0-6-6H3v2a6 6 0 0 0 6 6h3m0 2a6 6 0 0 1 6-6h3v1a6 6 0 0 1-6 6h-3m0 5V10"/>
+    </symbol>
+    <symbol id="interventions-alt-1" tabler-id="wind" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h8.5a2.5 2.5 0 1 0-2.34-3.24M3 12h15.5a2.5 2.5 0 1 1-2.34 3.24M4 16h5.5a2.5 2.5 0 1 1-2.34 3.24"/>
+    </symbol>
+    <symbol id="interventions-alt-2" tabler-id="building-bridge" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5v14M18 5v14M2 15h20M3 8a7.5 7.5 0 0 0 3-2a6.5 6.5 0 0 0 12 0a7.5 7.5 0 0 0 3 2m-9 2v5"/>
+    </symbol>
+    <symbol id="interventions-alt-3" tabler-id="ripple" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7q4.5-3 9 0c4.5 3 6 2 9 0M3 17q4.5-3 9 0c4.5 3 6 2 9 0M3 12q4.5-3 9 0c4.5 3 6 2 9 0"/>
+    </symbol>
+    <symbol id="interventions-alt-4" tabler-id="bulb" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h1m8-9v1m8 8h1M5.6 5.6l.7.7m12.1-.7l-.7.7M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0-1 3a2 2 0 0 1-4 0a3.5 3.5 0 0 0-1-3m.7 1h4.6"/>
+    </symbol>
+    <symbol id="interventions-alt-5" tabler-id="sparkles-2" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7a9.3 9.3 0 0 0 1.516-.546c.911-.438 1.494-1.015 1.937-1.932c.207-.428.382-.928.547-1.522c.165.595.34 1.095.547 1.521c.443.918 1.026 1.495 1.937 1.933c.426.205.925.38 1.516.546a9.3 9.3 0 0 0-1.516.547c-.911.438-1.494 1.015-1.937 1.932A9 9 0 0 0 17 11c-.165-.594-.34-1.095-.547-1.521c-.443-.918-1.026-1.494-1.937-1.932A9 9 0 0 0 13 7M3 14a21 21 0 0 0 1.652-.532c2.542-.953 3.853-2.238 4.816-4.806A20 20 0 0 0 10 7a20 20 0 0 0 .532 1.662c.963 2.567 2.275 3.853 4.816 4.806q.75.28 1.652.532a21 21 0 0 0-1.652.532c-2.542.953-3.854 2.238-4.816 4.806A20 20 0 0 0 10 21a20 20 0 0 0-.532-1.662c-.963-2.568-2.275-3.853-4.816-4.806A21 21 0 0 0 3 14"/>
+    </symbol>
+    <symbol id="interventions-alt-6" tabler-id="sparkles" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2m0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2M9 18a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6"/>
+    </symbol>
+    <symbol id="interventions-alt-7" tabler-id="bubble" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1-1.195 10.6a4.26 4.26 0 0 1-5.28 1.863L7 21v-3.134a2.668 2.668 0 0 1-1.795-3.773A4.8 4.8 0 0 1 8.113 5.16A5.33 5.33 0 0 1 12.4 3"/>
+    </symbol>
+    <symbol id="interventions-alt-8" tabler-id="tool" description="Therapeutic interventions library; My Interventions page title and navigation link" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10h3V7L6.5 3.5a6 6 0 0 1 8 8l6 6a2 2 0 0 1-3 3l-6-6a6 6 0 0 1-8-8z"/>
+    </symbol>
+
+    <symbol id="admin-users" tabler-id="user-cog" description="User Management page for administrators; invite users, manage roles, reset MFA" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h2.5m4.501 4a2 2 0 1 0 4 0a2 2 0 1 0-4 0m2-3.5V17m0 4v1.5m3.031-5.25l-1.299.75m-3.463 2l-1.3.75m0-3.5l1.3.75m3.463 2l1.3.75"/>
+    </symbol>
+
+    <symbol id="settings" tabler-id="settings" description="Application settings and preferences; navigation menu item and page title" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0-6 0"/></g>
+    </symbol>
+
+    <symbol id="help" tabler-id="help-circle" description="Help and support resources; currently disabled in navigation drawer" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9 4v.01"/><path d="M12 13a2 2 0 0 0 .914-3.782a1.98 1.98 0 0 0-2.414.483"/></g>
+    </symbol>
+
+    <symbol id="clinical-reference" tabler-id="books" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1zm4 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zM5 8h4m0 8h4"/><path d="m13.803 4.56l2.184-.53c.562-.135 1.133.19 1.282.732l3.695 13.418a1.02 1.02 0 0 1-.634 1.219l-.133.041l-2.184.53c-.562.135-1.133-.19-1.282-.732L13.036 5.82a1.02 1.02 0 0 1 .634-1.219zM14 9l4-1m-2 8l3.923-.98"/></g>
+    </symbol>
+
+
+    <!-- ======================
+         Clinical Documents & Forms
+         Clinical document types (intake, diagnosis, progress notes, etc.) and draft management icons
+         ====================== -->
+
+    <symbol id="form-types" tabler-id="list-details" description="Indicator for the list of form types" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5h8m-8 4h5m-5 6h8m-8 4h5M3 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+    </symbol>
+
+    <symbol id="form-intake" tabler-id="door-enter" description="Initial client intake assessment form; captures demographic and presenting problem info" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 12v.01M3 21h18M5 21V5a2 2 0 0 1 2-2h6m4 10.5V21m4-14h-7m3-3l-3 3l3 3"/>
+    </symbol>
+
+    <symbol id="form-diagnosis" tabler-id="clipboard-heart" description="Clinical diagnosis form; ICD-10 codes and diagnostic impressions" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2m2.993 11.75l2.747-2.815a1.9 1.9 0 0 0 0-2.632a1.775 1.775 0 0 0-2.56 0l-.183.188l-.183-.189a1.775 1.775 0 0 0-2.56 0a1.9 1.9 0 0 0 0 2.632l2.738 2.825z"/></g>
+    </symbol>
+    <symbol id="form-diagnosis-alt-1" tabler-id="prism-light" description="Clinical diagnosis form; ICD-10 codes and diagnostic impressions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.731 19H16.27a1 1 0 0 0 .866-1.5l-5.769-10a1 1 0 0 0-1.732 0l-5.769 10a1 1 0 0 0 .865 1.5M2 13h4.45M18 5l-4.5 6M22 9l-7.75 3.25M22 15l-7-1.5"/>
+    </symbol>
+    <symbol id="form-diagnosis-alt-2" tabler-id="palette" description="Clinical diagnosis form; ICD-10 codes and diagnostic impressions" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 21a9 9 0 0 1 0-18c4.97 0 9 3.582 9 8c0 1.06-.474 2.078-1.318 2.828S17.693 15 16.5 15H14a2 2 0 0 0-1 3.75A1.3 1.3 0 0 1 12 21"/><path d="M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0m4-3a1 1 0 1 0 2 0a1 1 0 1 0-2 0m4 3a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/></g>
+    </symbol>
+    <symbol id="form-diagnosis-alt-3" tabler-id="color-swatch" description="Clinical diagnosis form; ICD-10 codes and diagnostic impressions" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 3h-4a2 2 0 0 0-2 2v12a4 4 0 0 0 8 0V5a2 2 0 0 0-2-2"/><path d="m13 7.35l-2-2a2 2 0 0 0-2.828 0L5.344 8.178a2 2 0 0 0 0 2.828l9 9"/><path d="M7.3 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h12m0-4v.01"/></g>
+    </symbol>
+    <symbol id="form-diagnosis-alt-4" tabler-id="fingerprint" description="Clinical diagnosis form; ICD-10 codes and diagnostic impressions" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18.9 7a8 8 0 0 1 1.1 5v1a6 6 0 0 0 .8 3M8 11a4 4 0 0 1 8 0v1a10 10 0 0 0 2 6"/><path d="M12 11v2a14 14 0 0 0 2.5 8M8 15a18 18 0 0 0 1.8 6m-4.9-2a22 22 0 0 1-.9-7v-1a8 8 0 0 1 12-6.95"/></g>
+    </symbol>
+
+    <symbol id="form-consultation-alt-1" tabler-id="messages" description="Initial consultation form; first meeting notes before formal intake" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 14l-3-3h-7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1zm-7 1v2a1 1 0 0 1-1 1H6l-3 3V11a1 1 0 0 1 1-1h2"/>
+    </symbol>
+    <symbol id="form-consultation" tabler-id="coffee" description="Initial consultation form; first meeting notes before formal intake" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 14c.83.642 2.077 1.017 3.5 1c1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1M8 3a2.4 2.4 0 0 0-1 2a2.4 2.4 0 0 0 1 2m4-4a2.4 2.4 0 0 0-1 2a2.4 2.4 0 0 0 1 2"/><path d="M3 10h14v5a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6z"/><path d="M16.746 16.726a3 3 0 1 0 .252-5.555"/></g>
+    </symbol>
+    <symbol id="form-consultation-alt-2" tabler-id="mug" description="Initial consultation form; first meeting notes before formal intake" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.083 5h10.834A1.08 1.08 0 0 1 16 6.077v8.615C16 17.072 14.06 19 11.667 19H7.333C4.94 19 3 17.071 3 14.692V6.077A1.08 1.08 0 0 1 4.083 5M16 8h2.5c1.38 0 2.5 1.045 2.5 2.333v2.334C21 13.955 19.88 15 18.5 15H16"/>
+    </symbol>
+
+    <symbol id="form-discharge" tabler-id="door-exit" description="Client discharge/termination form; end of treatment documentation" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 12v.01M3 21h18M5 21V5a2 2 0 0 1 2-2h7.5M17 13.5V21M14 7h7m-3-3l3 3l-3 3"/>
+    </symbol>
+
+    <symbol id="form-progress-note-alt-1" tabler-id="notes" description="Session progress note form; the main document type for documenting therapy sessions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zm4 2h6m-6 4h6m-6 4h4"/>
+    </symbol>
+    <symbol id="form-progress-note-alt-2" tabler-id="sign-right" description="Session progress note form; the main document type for documenting therapy sessions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h4m-2 0V11m0-5V3M6 6h10l2 2.5l-2 2.5H6z"/>
+    </symbol>
+    <symbol id="form-progress-note-alt-3" tabler-id="pin" description="Session progress note form; the main document type for documenting therapy sessions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 4.5l-4 4L7 10l-1.5 1.5l7 7L14 17l1.5-4l4-4M9 15l-4.5 4.5M14.5 4L20 9.5"/>
+    </symbol>
+    <symbol id="form-progress-note-alt-4" tabler-id="pinned" description="Session progress note form; the main document type for documenting therapy sessions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 4v6l-2 4v2h10v-2l-2-4V4m-3 12v5M8 4h8"/>
+    </symbol>
+    <symbol id="form-progress-note" tabler-id="writing" description="Session progress note form; the main document type for documenting therapy sessions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 17V5c0-1.121-.879-2-2-2s-2 .879-2 2v12l2 2zM16 7h4m-2 12H5a2 2 0 1 1 0-4h4a2 2 0 1 0 0-4H6"/>
+    </symbol>
+
+    <symbol id="form-treatment-plan-alt-1" tabler-id="target" description="Treatment plan form; goals, objectives, and therapeutic approach documentation" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/></g>
+    </symbol>
+    <symbol id="form-treatment-plan" tabler-id="map-2" description="Treatment plan form; goals, objectives, and therapeutic approach documentation" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18.5L9 17l-6 3V7l6-3l6 3l6-3v7.5M9 4v13m6-10v5.5m6.121 7.621a3 3 0 1 0-4.242 0Q17.506 20.749 19 22q1.577-1.335 2.121-1.879M19 18v.01"/>
+    </symbol>
+    <symbol id="form-treatment-plan-alt-2" tabler-id="compass" description="Treatment plan form; goals, objectives, and therapeutic approach documentation" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m8 16l2-6l6-2l-2 6z"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0m9-9v2m0 14v2m-9-9h2m14 0h2"/></g>
+    </symbol>
+
+    <symbol id="draft-continue-alt-1" tabler-id="file-arrow-right" description="Resume working on a saved draft; Continue Selected Draft button" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2m-8-6h6"/><path d="M12.5 17.5L15 15l-2.5-2.5"/></g>
+    </symbol>
+    <symbol id="draft-continue-alt-2" tabler-id="file-import" description="Resume working on a saved draft; Continue Selected Draft button" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 13V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2h-5.5M2 19h7m-3-3l3 3l-3 3"/></g>
+    </symbol>
+    <symbol id="draft-continue-alt-3" tabler-id="clock-play" description="Resume working on a saved draft; Continue Selected Draft button" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 7v5l2 2m3 8l5-3l-5-3z"/><path d="M13.017 20.943a9 9 0 1 1 7.831-7.292"/></g>
+    </symbol>
+    <symbol id="draft-continue" tabler-id="file-pencil" description="Resume working on a saved draft; Continue Selected Draft button" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2"/><path d="m10 18l5-5a1.414 1.414 0 0 0-2-2l-5 5v2z"/></g>
+    </symbol>
+
+    <symbol id="draft-list-alt-1" tabler-id="file-text" description="List of available drafts; draft selection modal header" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 9h1m-1 4h6m-6 4h6"/></g>
+    </symbol>
+    <symbol id="draft-list" tabler-id="files-filled" description="List of available drafts; draft selection modal header" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="m11 2l3 .001V8a1 1 0 0 0 .883.993L15 9h6v6a3 3 0 0 1-3 3h-1v1a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h1V5a3 3 0 0 1 3-3M8 8H7a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-1h-4a3 3 0 0 1-3-3zm12.415-1H16V2.585z"/>
+    </symbol>
+    <symbol id="draft-list-alt-2" tabler-id="files" description="List of available drafts; draft selection modal header" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 3v4a1 1 0 0 0 1 1h4"/><path d="M18 17h-7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4l5 5v7a2 2 0 0 1-2 2"/><path d="M16 17v2a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2"/></g>
+    </symbol>
+
+    <symbol id="draft-saved" tabler-id="cloud-check" description="Draft auto-saved to cloud indicator; shown in context strip and workspace" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 18.004H6.657C4.085 18 2 15.993 2 13.517s2.085-4.482 4.657-4.482c.393-1.762 1.794-3.2 3.675-3.773c1.88-.572 3.956-.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.388 0 2.585.82 3.138 2.007M15 19l2 2l4-4"/>
+    </symbol>
+
+    <symbol id="document-empty-alt-1" tabler-id="file-plus" description="Empty state for document sections; no diagnosis or intake recorded yet" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2m-5-10v6m-3-3h6"/></g>
+    </symbol>
+    <symbol id="document-empty" tabler-id="file-broken" description="Empty state for document sections; no diagnosis or intake recorded yet" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M5 7V5a2 2 0 0 1 2-2h7l5 5v2m0 9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2m0-3h.01M5 13h.01M5 10h.01M19 13h.01M19 16h.01"/></g>
+    </symbol>
+
+    <symbol id="empty-archived" tabler-id="file-off" description="No archived clients empty state; shown when archive is empty" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 3l18 18M7 3h7l5 5v7m0 4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5"/>
+    </symbol>
+
+
+    <!-- ======================
+         Actions
+         CRUD operations and user-initiated actions (add, edit, delete, save, etc.)
+         ====================== -->
+
+    <symbol id="action-add" tabler-id="plus" description="Add new item; clients, diagnoses, interventions, approaches, treatment plans" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"/>
+    </symbol>
+
+    <symbol id="action-archive" tabler-id="archive" description="Archive a client; moves to archived state for later retrieval" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2m2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8m-9 4h4"/>
+    </symbol>
+
+    <symbol id="action-delete" tabler-id="trash" description="Permanently delete items; drafts, clients, interventions, approaches, users" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
+    </symbol>
+
+    <symbol id="action-edit" tabler-id="pencil" description="Edit existing item; client fields, diagnoses, custom approaches, quick notes" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16zm9.5-13.5l4 4"/>
+    </symbol>
+
+    <symbol id="action-edit-document" tabler-id="file-pencil" description="For editing a file/document" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2"/><path d="m10 18l5-5a1.414 1.414 0 0 0-2-2l-5 5v2z"/></g>
+    </symbol>
+
+    <symbol id="action-export-alt-1" tabler-id="file-export" description="Export notes or data; currently disabled in navigation drawer" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M11.5 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v5m-5 6h7m-3-3l3 3l-3 3"/></g>
+    </symbol>
+    <symbol id="action-export" tabler-id="download" description="Export notes or data; currently disabled in navigation drawer" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5l5-5m-5-7v12"/>
+    </symbol>
+
+    <symbol id="action-invite-user" tabler-id="user-plus" description="Invite new user to the system; admin function in user management" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0m8 12h6m-3-3v6M6 21v-2a4 4 0 0 1 4-4h4"/>
+    </symbol>
+
+    <symbol id="action-add-client" tabler-id="user-plus" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0m8 12h6m-3-3v6M6 21v-2a4 4 0 0 1 4-4h4"/>
+    </symbol>
+
+    <symbol id="action-logout" tabler-id="logout" description="Sign out of the application; navigation drawer button" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-2"/><path d="M9 12h12l-3-3m0 6l3-3"/></g>
+    </symbol>
+
+    <symbol id="action-reset" tabler-id="restore" description="Reset to default values; AI model parameters, system prompts, templates" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3.06 13a9 9 0 1 0 .49-4.087"/><path d="M3 4.001v5h5M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/></g>
+    </symbol>
+
+    <symbol id="action-resolve" tabler-id="circle-check" description="Mark a diagnosis as resolved; clinical status change" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="m9 12l2 2l4-4"/></g>
+    </symbol>
+
+    <symbol id="action-restore" tabler-id="restore" description="Restore an archived client back to active status" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3.06 13a9 9 0 1 0 .49-4.087"/><path d="M3 4.001v5h5M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/></g>
+    </symbol>
+
+    <symbol id="action-save" tabler-id="device-floppy" description="Save data; notes, diagnoses, settings, drafts" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"/><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"/></g>
+    </symbol>
+
+    <symbol id="action-send" tabler-id="send" description="Send invitation email to new user" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14L21 3m0 0l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1z"/>
+    </symbol>
+
+    <symbol id="action-start" tabler-id="check" description="Start a new session note; client confirmation modal button" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/>
+    </symbol>
+
+    <symbol id="action-verify" tabler-id="checks" description="Verify action; Set Password button, MFA verification" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 12l5 5L22 7M2 12l5 5m5-5l5-5"/>
+    </symbol>
+
+    <symbol id="action-submit" tabler-id="send" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14L21 3m0 0l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1z"/>
+    </symbol>
+    <symbol id="action-submit-alt-1" tabler-id="check" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/>
+    </symbol>
+
+    <symbol id="action-add-bookmark" tabler-id="bookmark-plus" description="Bookmark something" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17l-6 4V7a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v5m-2 7h6m-3-3v6"/>
+    </symbol>
+
+    <symbol id="action-remove-bookmark" tabler-id="bookmark-minus" description="Remove a bookmark from something" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17l-6 4V7a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v8m-2 4h6"/>
+    </symbol>
+
+    <symbol id="action-amend" tabler-id="delta" description="Equivalent in meaning to action-edit, except that a copy is being edited to save as a new/updated version" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h16L12 4z"/>
+    </symbol>
+
+    <symbol id="action-amend-document" tabler-id="file-delta" description="Equivalent in meaning to action-edit-document, except that a copy of the document is being edited to save as a new/updated version" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2"/><path d="M9 17h6l-3-6z"/></g>
+    </symbol>
+
+    <symbol id="action-security-mfa-reset" tabler-id="shield-x" description="Action for resetting a security-related attribute" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.252 20.601q-.613.233-1.252.399A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1-.19 7.357M22 22l-5-5m0 5l5-5"/>
+    </symbol>
+
+    <symbol id="action-change-role" tabler-id="replace-user" description="Action for changing a user's role" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 11V8a2 2 0 0 0-2-2h-6m0 0l3 3m-3-3l3-3M3 13.013v3a2 2 0 0 0 2 2h6m0 0l-3-3m3 3l-3 3m8-4.511a2 2 0 1 0 4.001-.001a2 2 0 0 0-4.001.001m-12-12a2 2 0 1 0 4.001-.001A2 2 0 0 0 4 4.502m17 16.997a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2m-6-12a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2"/>
+    </symbol>
+
+
+    <!-- ======================
+         Clinical Concepts
+         Therapeutic concepts like diagnoses, treatment plans, sessions, interventions, and approaches
+         ====================== -->
+
+    <symbol id="diagnosis" tabler-id="clipboard-heart" description="Clinical diagnosis concept; section titles and info indicators" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2m2.993 11.75l2.747-2.815a1.9 1.9 0 0 0 0-2.632a1.775 1.775 0 0 0-2.56 0l-.183.188l-.183-.189a1.775 1.775 0 0 0-2.56 0a1.9 1.9 0 0 0 0 2.632l2.738 2.825z"/></g>
+    </symbol>
+
+    <symbol id="treatment-plan-alt-1" tabler-id="target" description="Treatment plan concept; goals count, section titles" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/></g>
+    </symbol>
+    <symbol id="treatment-plan" tabler-id="map-2" description="Treatment plan concept; goals count, section titles" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18.5L9 17l-6 3V7l6-3l6 3l6-3v7.5M9 4v13m6-10v5.5m6.121 7.621a3 3 0 1 0-4.242 0Q17.506 20.749 19 22q1.577-1.335 2.121-1.879M19 18v.01"/>
+    </symbol>
+
+    <symbol id="session-history" tabler-id="chart-bar" description="Session history visualization; previous session summary heading" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm12-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM9 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM4 20h14"/>
+    </symbol>
+
+    <symbol id="sessions-alt-1" tabler-id="file-text" description="Session records; total session count and empty state indicators" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 9h1m-1 4h6m-6 4h6"/></g>
+    </symbol>
+    <symbol id="sessions" tabler-id="timeline" description="Session records; total session count and empty state indicators" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m4 16l6-7l5 5l5-6"/><path d="M14 14a1 1 0 1 0 2 0a1 1 0 1 0-2 0M9 9a1 1 0 1 0 2 0a1 1 0 1 0-2 0m-6 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m16-8a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/></g>
+    </symbol>
+    <symbol id="sessions-alt-2" tabler-id="layers-linked" description="Session records; total session count and empty state indicators" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 8.268A2 2 0 0 1 20 10v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h3"/><path d="M5 15.734A2 2 0 0 1 4 14V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3"/></g>
+    </symbol>
+
+    <symbol id="approaches-alt-1" tabler-id="tag" description="Therapeutic approaches (CBT, psychodynamic, etc.); section header on interventions page" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592-5.592a2.41 2.41 0 0 0 0-3.408l-7.71-7.71A2 2 0 0 0 11.172 3H6a3 3 0 0 0-3 3"/></g>
+    </symbol>
+    <symbol id="approaches" tabler-id="tags" description="Therapeutic approaches (CBT, psychodynamic, etc.); section header on interventions page" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592-3.592a2.41 2.41 0 0 0 0-3.408l-5.71-5.71A2 2 0 0 0 9.172 6H5a2 2 0 0 0-2 2"/><path d="m18 19l1.592-1.592a4.82 4.82 0 0 0 0-6.816L15 6m-8 4h-.01"/></g>
+    </symbol>
+
+    <symbol id="interventions-visible-alt-1" tabler-id="list-details" description="Visible interventions stat and section icon; All Interventions list" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5h8m-8 4h5m-5 6h8m-8 4h5M3 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+    </symbol>
+    <symbol id="interventions-visible-alt-2" tabler-id="seeding-filled" description="Visible interventions stat and section icon; All Interventions list" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M6 3a7 7 0 0 1 6.95 6.155A6.97 6.97 0 0 1 18 7h3a1 1 0 0 1 1 1v1a7 7 0 0 1-7 7h-2v4a1 1 0 0 1-2 0v-7H9a7 7 0 0 1-7-7V4a1 1 0 0 1 1-1z"/>
+    </symbol>
+    <symbol id="interventions-visible" tabler-id="seedling" description="Visible interventions stat and section icon; All Interventions list" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10a6 6 0 0 0-6-6H3v2a6 6 0 0 0 6 6h3m0 2a6 6 0 0 1 6-6h3v1a6 6 0 0 1-6 6h-3m0 5V10"/>
+    </symbol>
+
+    <symbol id="client-response" tabler-id="user-check" description="Client response to intervention; session note modal and response indicator" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h4m1 4l2 2l4-4"/>
+    </symbol>
+
+    <symbol id="has-description-alt-1" tabler-id="pencil-check" description="Use to indicate that an intervention has a description added for it" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16zm9.5-13.5l4 4M15 19l2 2l4-4"/>
+    </symbol>
+    <symbol id="has-description" tabler-id="checklist" description="Use to indicate that an intervention has a description added for it" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.615 20H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8m-3 5l2 2l4-4M9 8h4m-4 4h2"/>
+    </symbol>
+
+    <symbol id="favorite-alt-1" tabler-id="star-filled" description="Favorited intervention; section header, stats, toggle button" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"/>
+    </symbol>
+    <symbol id="favorite" tabler-id="bookmark" description="Favorited intervention; section header, stats, toggle button" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 7v14l-6-4l-6 4V7a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4"/>
+    </symbol>
+    <symbol id="favorite-alt-2" tabler-id="bookmark-filled" description="Favorited intervention; section header, stats, toggle button" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M14 2a5 5 0 0 1 5 5v14a1 1 0 0 1-1.555.832L12 18.202l-5.444 3.63a1 1 0 0 1-1.55-.72L5 21V7a5 5 0 0 1 5-5z"/>
+    </symbol>
+
+    <symbol id="principal" tabler-id="star-filled" description="Principal diagnosis indicator; primary diagnosis among multiple" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"/>
+    </symbol>
+
+    <symbol id="recommended-alt-1" tabler-id="star" description="Recommended therapeutic approach indicator; suggested approaches" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/>
+    </symbol>
+    <symbol id="recommended" tabler-id="north-star" description="Recommended therapeutic approach indicator; suggested approaches" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18m-9 9V3M7.5 7.5l9 9m-9 0l9-9"/>
+    </symbol>
+
+    <symbol id="bullet-check" tabler-id="circle-check" description="Checked bullet point; treatment plan goal bullets" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="m9 12l2 2l4-4"/></g>
+    </symbol>
+
+    <symbol id="bullet-small" tabler-id="point-filled" description="Small bullet point; treatment plan sub-goals" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M12 7a5 5 0 1 1-4.995 5.217L7 12l.005-.217A5 5 0 0 1 12 7"/>
+    </symbol>
+
+
+    <!-- ======================
+         Status & Feedback
+         Success, error, warning, loading, and informational state indicators
+         ====================== -->
+
+    <symbol id="success" tabler-id="circle-check" description="General success state; BAA signed, toast messages, MFA enabled badges" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="m9 12l2 2l4-4"/></g>
+    </symbol>
+
+    <symbol id="save-success" tabler-id="check" description="Save operation completed; settings save button state change" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/>
+    </symbol>
+
+    <symbol id="selected" tabler-id="check" description="Selected intervention indicator; shows which intervention is chosen" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/>
+    </symbol>
+
+    <symbol id="copy-success" tabler-id="check" description="Copy to clipboard completed; MFA secret code copied state" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/>
+    </symbol>
+
+    <symbol id="complete" tabler-id="check" description="Task/process complete; MFA setup completion badge" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/>
+    </symbol>
+
+    <symbol id="error" tabler-id="circle-x" description="Error state; BAA error, password validation failures" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0m7-2l4 4m0-4l-4 4"/>
+    </symbol>
+
+    <symbol id="warning" tabler-id="alert-triangle" description="General warning; delete confirmations, risk flags, unsaved changes, low sessions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m-1.637-9.409L2.257 17.125a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636-2.87L13.637 3.59a1.914 1.914 0 0 0-3.274 0M12 16h.01"/>
+    </symbol>
+
+    <symbol id="warning-duplicate" tabler-id="copy-off" description="Duplicate session warning; same date already exists" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.414 19.415A2 2 0 0 1 18 20h-8a2 2 0 0 1-2-2v-8c0-.554.225-1.055.589-1.417M12 8h6a2 2 0 0 1 2 2v6m-4-8V6a2 2 0 0 0-2-2H8m-3.418.59C4.222 4.95 4 5.45 4 6v8a2 2 0 0 0 2 2h2M3 3l18 18"/>
+    </symbol>
+
+    <symbol id="warning-insurance" tabler-id="credit-card-off" description="Insurance warning; authorization expiring soon or sessions running low" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 3l18 18M9 5h9a3 3 0 0 1 3 3v8a3 3 0 0 1-.128.87m-2.002 2.002A3 3 0 0 1 18 19H6a3 3 0 0 1-3-3V8a3 3 0 0 1 2.124-2.87M3 11h8m4 0h6M7 15h.01M11 15h2"/>
+    </symbol>
+
+    <symbol id="warning-overdue" tabler-id="clock-exclamation" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20.986 12.502a9 9 0 1 0-5.973 7.98"/><path d="M12 7v5l3 3m4 1v3m0 3v.01"/></g>
+    </symbol>
+    <symbol id="warning-overdue-alt-1" tabler-id="calendar-exclamation" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 21H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5m-4-9v4M8 3v4m-4 4h16m-9 4h1m0 0v3m7-2v3m0 3v.01"/>
+    </symbol>
+
+    <symbol id="info" tabler-id="info-circle" description="Informational; client info button, help text, HIPAA alerts, role permissions" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"/><path d="M11 12h1v4h1"/></g>
+    </symbol>
+
+    <symbol id="loading" tabler-id="loader" description="Loading/saving spinner; animated indicator used throughout app" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V3m4.25 4.75L18.4 5.6M18 12h3m-4.75 4.25l2.15 2.15M12 18v3m-4.25-4.75L5.6 18.4M6 12H3m4.75-4.25L5.6 5.6"/>
+    </symbol>
+
+    <symbol id="validation-met" tabler-id="circle-check" description="Password requirement met; validation checklist item passed" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="m9 12l2 2l4-4"/></g>
+    </symbol>
+
+    <symbol id="linked" tabler-id="layers-linked" description="Linked status" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 8.268A2 2 0 0 1 20 10v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h3"/><path d="M5 15.734A2 2 0 0 1 4 14V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3"/></g>
+    </symbol>
+
+    <symbol id="status-locked" tabler-id="file-text-shield" description="Indicates a locked or protected document" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M13 3v4a.997.997 0 0 0 1 1h4"/><path d="M11 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v3.5M8 9h1m-1 3.994h3m-3 4.003h2"/><path d="M21 15.994c0 4-2.5 6-3.5 6s-3.5-2-3.5-6c1 0 2.5-.5 3.5-1.5c1 1 2.5 1.5 3.5 1.5"/></g>
+    </symbol>
+
+    <symbol id="bookmarked" tabler-id="bookmark-filled" description="Something is currently bookmarked" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M14 2a5 5 0 0 1 5 5v14a1 1 0 0 1-1.555.832L12 18.202l-5.444 3.63a1 1 0 0 1-1.55-.72L5 21V7a5 5 0 0 1 5-5z"/>
+    </symbol>
+
+    <symbol id="not-bookmarked" tabler-id="bookmark" description="Something is currently not bookmarked" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 7v14l-6-4l-6 4V7a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4"/>
+    </symbol>
+
+    <symbol id="count" tabler-id="chart-bar" description="Use to indicate counts" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm12-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM9 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM4 20h14"/>
+    </symbol>
+
+    <symbol id="frequent" tabler-id="trending-up" description="Use for things that are frequently used" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 17l6-6l4 4l8-8"/><path d="M14 7h7v7"/></g>
+    </symbol>
+
+    <symbol id="status-editing" tabler-id="pencil" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16zm9.5-13.5l4 4"/>
+    </symbol>
+    <symbol id="status-editing-alt-1" tabler-id="file-pencil" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2"/><path d="m10 18l5-5a1.414 1.414 0 0 0-2-2l-5 5v2z"/></g>
+    </symbol>
+
+    <symbol id="status-amending" tabler-id="delta" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h16L12 4z"/>
+    </symbol>
+    <symbol id="status-amending-alt-1" tabler-id="file-delta" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2"/><path d="M9 17h6l-3-6z"/></g>
+    </symbol>
+
+    <symbol id="status-new" tabler-id="sparkles" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2m0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2M9 18a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6"/>
+    </symbol>
+    <symbol id="status-new-alt-1" tabler-id="file-text-spark" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M12 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v3.5M9 9h1m-1 4h6m-6 4h3m7 5.5a4.75 4.75 0 0 1 3.5-3.5a4.75 4.75 0 0 1-3.5-3.5a4.75 4.75 0 0 1-3.5 3.5a4.75 4.75 0 0 1 3.5 3.5"/></g>
+    </symbol>
+
+    <symbol id="frequent-client" tabler-id="user-share" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h3m3 7l5-5m0 4.5V17h-4.5"/>
+    </symbol>
+
+
+    <!-- ======================
+         UI Navigation & Controls
+         Back buttons, close buttons, expand/collapse, visibility toggles, and menu controls
+         ====================== -->
+
+    <symbol id="back" tabler-id="arrow-left" description="Navigate back; return to clients, documents view, or previous step in flow" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l6 6m-6-6l6-6"/>
+    </symbol>
+
+    <symbol id="close" tabler-id="x" description="Close modals, panels, alerts, dismiss toasts, cancel edits" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/>
+    </symbol>
+
+    <symbol id="expand" tabler-id="chevron-down" description="Expand collapsible section; settings cards, intervention details, goals" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"/>
+    </symbol>
+
+    <symbol id="collapse" tabler-id="chevron-up" description="Collapse expanded section; session goals, details sections" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 15l6-6l6 6"/>
+    </symbol>
+
+    <symbol id="collapsed-indicator" tabler-id="chevron-right" description="Indicator that section is collapsed; resolved diagnoses section" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 6l6 6l-6 6"/>
+    </symbol>
+
+    <symbol id="show-options-from-left" tabler-id="chevrons-right" description="Show additional options; segmented control expansion toggle" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 7l5 5l-5 5m6-10l5 5l-5 5"/>
+    </symbol>
+
+    <symbol id="hide-options-from-left" tabler-id="chevrons-left" description="Hide additional options; collapse segmented control expanded state" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11 7l-5 5l5 5m6-10l-5 5l5 5"/>
+    </symbol>
+
+    <symbol id="show-options-from-right" tabler-id="chevrons-left" description="Show more options; slide-out coming from right side" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11 7l-5 5l5 5m6-10l-5 5l5 5"/>
+    </symbol>
+
+    <symbol id="hide-options-from-right" tabler-id="chevrons-right" description="Hide options shown in expanded panel that came from right side" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 7l5 5l-5 5m6-10l5 5l-5 5"/>
+    </symbol>
+
+    <symbol id="admin-view" tabler-id="eye" description="Admin panel icon; view-only access banner for supervisor role" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/><path d="M21 12q-3.6 6-9 6t-9-6q3.6-6 9-6t9 6"/></g>
+    </symbol>
+
+    <symbol id="password-show" tabler-id="eye" description="Show password field contents; toggle to reveal text" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/><path d="M21 12q-3.6 6-9 6t-9-6q3.6-6 9-6t9 6"/></g>
+    </symbol>
+
+    <symbol id="password-hide" tabler-id="eye-off" description="Hide password field contents; toggle to mask text" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828"/><path d="M16.681 16.673A8.7 8.7 0 0 1 12 18q-5.4 0-9-6q1.908-3.18 4.32-4.674m2.86-1.146A9 9 0 0 1 12 6q5.4 0 9 6q-1 1.665-2.138 2.87M3 3l18 18"/></g>
+    </symbol>
+
+    <symbol id="unhide" tabler-id="eye" description="Show hidden intervention/approach; restore from hidden section" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/><path d="M21 12q-3.6 6-9 6t-9-6q3.6-6 9-6t9 6"/></g>
+    </symbol>
+
+    <symbol id="hidden" tabler-id="eye-off" description="Hidden state indicator; hidden interventions section header and stats" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828"/><path d="M16.681 16.673A8.7 8.7 0 0 1 12 18q-5.4 0-9-6q1.908-3.18 4.32-4.674m2.86-1.146A9 9 0 0 1 12 6q5.4 0 9 6q-1 1.665-2.138 2.87M3 3l18 18"/></g>
+    </symbol>
+
+    <symbol id="action-hide" tabler-id="eye-off" description="Hide intervention/approach button; move to hidden section" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828"/><path d="M16.681 16.673A8.7 8.7 0 0 1 12 18q-5.4 0-9-6q1.908-3.18 4.32-4.674m2.86-1.146A9 9 0 0 1 12 6q5.4 0 9 6q-1 1.665-2.138 2.87M3 3l18 18"/></g>
+    </symbol>
+
+    <symbol id="menu-hamburger" tabler-id="menu-2" description="Hamburger menu button; navigation drawer toggle on all pages" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </symbol>
+
+    <symbol id="continue" tabler-id="arrow-right" description="Continue to next step; MFA setup flow progression buttons" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-6 6l6-6m-6-6l6 6"/>
+    </symbol>
+
+    <symbol id="switch-client" tabler-id="arrows-left-right" description="Move draft to different client; draft switch modal button" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 17H3m3-7L3 7l3-3M3 7h18m-3 13l3-3l-3-3"/>
+    </symbol>
+
+    <symbol id="move-up" tabler-id="arrow-move-up" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V3M9 6l3-3l3 3m-3 11a2 2 0 1 1 0 4a2 2 0 0 1 0-4"/>
+    </symbol>
+    <symbol id="move-up-alt-1" tabler-id="arrow-move-up-filled" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="m11.852 2.011l.058-.007L12 2l.075.003l.126.017l.111.03l.111.044l.098.052l.104.074l.082.073l3 3a1 1 0 1 1-1.414 1.414L13 5.415V13a1 1 0 0 1-2 0V5.415L9.707 6.707a1 1 0 0 1-1.32.083l-.094-.083a1 1 0 0 1 0-1.414l3-3q.053-.054.112-.097l.11-.071l.114-.054l.105-.035zM12 16a3 3 0 1 1 0 6a3 3 0 0 1 0-6"/>
+    </symbol>
+
+    <symbol id="move-down" tabler-id="arrow-move-down" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11v10m-3-3l3 3l3-3M10 5a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/>
+    </symbol>
+    <symbol id="move-down-alt-1" tabler-id="arrow-move-down-filled" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M12 10a1 1 0 0 1 1 1v7.584l1.293-1.291a1 1 0 0 1 1.32-.083l.094.083a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-.112.097l-.11.071l-.114.054l-.105.035l-.149.03L12 22l-.075-.003l-.126-.017l-.111-.03l-.111-.044l-.098-.052l-.096-.067l-.09-.08l-3-3a1 1 0 0 1 1.414-1.414L11 18.586V11a1 1 0 0 1 1-1m0-8a3 3 0 1 1-3 3l.005-.176A3 3 0 0 1 12 2"/>
+    </symbol>
+
+
+    <!-- ======================
+         User & Client Management
+         User profiles, user groups, and user administration icons
+         ====================== -->
+
+    <symbol id="user" tabler-id="user" description="Single user; custom intervention badge, profile heading, avatar placeholder" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+    </symbol>
+
+    <symbol id="users" tabler-id="users" description="Multiple users; no users empty state icon" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/>
+    </symbol>
+
+    <symbol id="user-management" tabler-id="user-cog" description="User management actions; change role button and modal heading" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h2.5m4.501 4a2 2 0 1 0 4 0a2 2 0 1 0-4 0m2-3.5V17m0 4v1.5m3.031-5.25l-1.299.75m-3.463 2l-1.3.75m0-3.5l1.3.75m3.463 2l1.3.75"/>
+    </symbol>
+
+
+    <!-- ======================
+         Security & Authentication
+         MFA, passwords, encryption, and HIPAA compliance icons
+         ====================== -->
+
+    <symbol id="security-mfa" tabler-id="shield" description="Multi-factor authentication; compliance heading, reset MFA button and modal, login badge" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a12 12 0 0 0 8.5 3A12 12 0 0 1 12 21A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3"/>
+    </symbol>
+
+    <symbol id="security-mfa-enabled" tabler-id="shield-check" description="MFA is enabled status; user management status indicator" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.46 20.846A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1-.09 7.06M15 19l2 2l4-4"/>
+    </symbol>
+
+    <symbol id="security-mfa-disabled" tabler-id="shield-exclamation" description="MFA not set up status; warning state in user management" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.04 19.745c-.942.551-1.964.976-3.04 1.255A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 .195 6.015M19 16v3m0 3v.01"/>
+    </symbol>
+
+    <symbol id="security-set-password-alt-1" tabler-id="key" description="Set new password; first-time password setup badge" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1-4.069 0l-.301-.301l-6.558 6.558a2 2 0 0 1-1.239.578L5.172 21H4a1 1 0 0 1-.993-.883L3 20v-1.172a2 2 0 0 1 .467-1.284l.119-.13L4 17h2v-2h2v-2l2.144-2.144l-.301-.301a2.877 2.877 0 0 1 0-4.069l2.643-2.643a2.877 2.877 0 0 1 4.069 0M15 9h.01"/>
+    </symbol>
+    <symbol id="security-set-password" tabler-id="password-user" description="Set new password; first-time password setup badge" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17v4m-2-1l4-2m-4 0l4 2m-9-3v4m-2-1l4-2m-4 0l4 2m12-3v4m-2-1l4-2m-4 0l4 2M9 6a3 3 0 1 0 6 0a3 3 0 0 0-6 0m-2 8a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2"/>
+    </symbol>
+
+    <symbol id="security-password-field" tabler-id="lock-password" description="Password input field icon; login and set password forms" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zm3-2V7a4 4 0 1 1 8 0v4m-1 5h.01m-3 0h.01m-3 0h.01"/>
+    </symbol>
+
+    <symbol id="security-lock" tabler-id="lock" description="Encryption/security; data encryption info, 256-bit badge on login page" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3-5V7a4 4 0 1 1 8 0v4"/></g>
+    </symbol>
+
+    <symbol id="security-device-mobile" tabler-id="device-mobile" description="Mobile device; MFA setup download step and QR scan instructions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2zm5-1h2m-1 13v.01"/>
+    </symbol>
+
+    <symbol id="security-email" tabler-id="mail" description="Email; login email field, invitation email info alert" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m3 7l9 6l9-6"/></g>
+    </symbol>
+
+    <symbol id="compliance-baa" tabler-id="writing-sign" description="Business Associate Agreement; HIPAA compliance status in settings" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19q5-3 5-6c0-3-1-3-2-3s-2.032 1.085-2 3c.034 2.048 1.658 2.877 2.5 4C8 19 9 19.5 10 18q1-1.5 1.5-2.5q1.5 3.5 4 3.5H18m2-2V5c0-1.121-.879-2-2-2s-2 .879-2 2v12l2 2zM16 7h4"/>
+    </symbol>
+
+
+    <!-- ======================
+         AI & Automation
+         AI narrative generation, model parameters, and processing indicators
+         ====================== -->
+
+    <symbol id="ai-generate" tabler-id="wand" description="Generate AI content; narrative generation heading and trigger button" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21L21 6l-3-3L3 18zm9-15l3 3M9 3a2 2 0 0 0 2 2a2 2 0 0 0-2 2a2 2 0 0 0-2-2a2 2 0 0 0 2-2m10 10a2 2 0 0 0 2 2a2 2 0 0 0-2 2a2 2 0 0 0-2-2a2 2 0 0 0 2-2"/>
+    </symbol>
+
+    <symbol id="ai-parameters" tabler-id="adjustments-horizontal" description="AI model parameters; settings section for temperature, tokens, etc." viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 6h8m4 0h4M6 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0m-2 0h2m4 0h10m-5 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 18h11m4 0h1"/>
+    </symbol>
+
+    <symbol id="ai-stop" tabler-id="player-stop" description="Stop AI generation in progress" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/>
+    </symbol>
+
+    <symbol id="ai-thinking" tabler-id="brain" description="AI processing/thinking phase indicator during narrative generation" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15.5 13a3.5 3.5 0 0 0-3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1-7 0v-1.8"/><path d="M17.5 16a3.5 3.5 0 0 0 0-7H17"/><path d="M19 9.3V6.5a3.5 3.5 0 0 0-7 0M6.5 16a3.5 3.5 0 0 1 0-7H7"/><path d="M5 9.3V6.5a3.5 3.5 0 0 1 7 0v10"/></g>
+    </symbol>
+
+
+    <!-- ======================
+         Dates & Time
+         Calendar dates, time indicators, durations, and history references
+         ====================== -->
+
+    <symbol id="date" tabler-id="calendar" description="Generic date; user joined date, session dates, diagnosis dates, treatment dates" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm12-4v4M8 3v4m-4 4h16m-9 4h1m0 0v3"/>
+    </symbol>
+
+    <symbol id="date-last-session" tabler-id="calendar-check" description="Last session date indicator; client confirmation modal" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.5 21H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M16 3v4M8 3v4m-4 4h16m-5 8l2 2l4-4"/>
+    </symbol>
+
+    <symbol id="date-today-alt-1" tabler-id="calendar-event" description="Today's date; Today's Sessions workspace heading" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm12-4v4M8 3v4m-4 4h16"/><path d="M8 15h2v2H8z"/></g>
+    </symbol>
+    <symbol id="date-today" tabler-id="calendar-due" description="Today's date; Today's Sessions workspace heading" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm12-4v4M8 3v4m-4 4h16"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/></g>
+    </symbol>
+
+    <symbol id="date-none" tabler-id="calendar-x" description="No previous sessions indicator; new client with no history" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 21H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6.5M16 3v4M8 3v4m-4 4h16m2 11l-5-5m0 5l5-5"/>
+    </symbol>
+
+    <symbol id="time-recent-alt-1" tabler-id="clock" description="Recent time reference; last session date in client list" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M12 7v5l3 3"/></g>
+    </symbol>
+    <symbol id="time-recent" tabler-id="arrow-back-up" description="Recent time reference; last session date in client list" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 14l-4-4l4-4"/><path d="M5 10h11a4 4 0 1 1 0 8h-1"/></g>
+    </symbol>
+    <symbol id="time-recent-alt-2" tabler-id="player-skip-back" description="Recent time reference; last session date in client list" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 5v14L8 12zM4 5v14"/>
+    </symbol>
+
+    <symbol id="time-repetition-frequency-alt-1" tabler-id="clock" description="Session frequency/basis; how often client is seen (weekly, biweekly)" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M12 7v5l3 3"/></g>
+    </symbol>
+    <symbol id="time-repetition-frequency" tabler-id="calendar-repeat" description="Session frequency/basis; how often client is seen (weekly, biweekly)" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.5 21H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3m-4-7v4M8 3v4m-4 4h12m4 3l2 2h-3m1 2l2-2m-3 0a3 3 0 1 0 2 5.236"/>
+    </symbol>
+
+    <symbol id="history-recent" tabler-id="history" description="Recent history; Previous Session section title, Recent Clients heading" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 8v4l2 2"/><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/></g>
+    </symbol>
+
+
+    <!-- ======================
+         Search, Filter, & Sort
+         Finding and organizing content through search, filters, and sorting
+         ====================== -->
+
+    <symbol id="search" tabler-id="search" description="Search input; interventions, clients, intervention selector" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6"/>
+    </symbol>
+
+    <symbol id="empty-no-results-alt-1" tabler-id="search" description="No matching results empty state for search queries" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6"/>
+    </symbol>
+    <symbol id="empty-no-results" tabler-id="circle-dotted-letter-o" description="No matching results empty state for search queries" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8a2 2 0 0 1 2 2v4a2 2 0 1 1-4 0v-4a2 2 0 0 1 2-2M7.5 4.21v.01M4.21 7.5v.01M3 12v.01m1.21 4.49v.01m3.29 3.28v.01M12 21v.01m4.5-1.22v.01m3.29-3.3v.01M21 12v.01M19.79 7.5v.01m-3.29-3.3v.01M12 3v.01"/>
+    </symbol>
+
+    <symbol id="mode-browse" tabler-id="search" description="Browse mode button; segmented control component library example" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6"/>
+    </symbol>
+
+    <symbol id="filter" tabler-id="filter" description="Filter control; client list filter label" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v2.172a2 2 0 0 1-.586 1.414L15 12v7l-6 2v-8.5L4.52 7.572A2 2 0 0 1 4 6.227z"/>
+    </symbol>
+
+    <symbol id="filter-all" tabler-id="stack" description="Show all items filter option; all therapy types example" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 6l-8 4l8 4l8-4zm-8 8l8 4l8-4"/>
+    </symbol>
+
+    <symbol id="sort" tabler-id="arrows-sort" description="Sort control; client list sort label" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 9l4-4l4 4M7 5v14m14-4l-4 4l-4-4m4 4V5"/>
+    </symbol>
+
+
+    <!-- ======================
+         Settings & Configuration
+         Dashboard column settings and new client default configuration icons
+         ====================== -->
+
+    <symbol id="setting-client-defaults" tabler-id="user-plus" description="New client default settings; session basis, duration, payer type, and client type defaults" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0m8 12h6m-3-3v6M6 21v-2a4 4 0 0 1 4-4h4"/>
+    </symbol>
+
+    <symbol id="setting-client-type-column-alt-1" tabler-id="users" description="Client type column toggle; show/hide type in client dashboard" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/>
+    </symbol>
+    <symbol id="setting-client-type-column" tabler-id="category-2" description="Client type column toggle; show/hide type in client dashboard" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 4h6v6h-6zM4 14h6v6H4zm10 3a3 3 0 1 0 6 0a3 3 0 1 0-6 0M4 7a3 3 0 1 0 6 0a3 3 0 1 0-6 0"/>
+    </symbol>
+
+    <symbol id="setting-client-dashboard-alt-1" tabler-id="columns" description="Client dashboard column visibility settings section" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h5.5M4 10h5.5M4 14h5.5M4 18h5.5m5-12H20m-5.5 4H20m-5.5 4H20m-5.5 4H20"/>
+    </symbol>
+    <symbol id="setting-client-dashboard" tabler-id="address-book" description="Client dashboard column visibility settings section" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 6v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2M10 16h6"/><path d="M11 11a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 8h3m-3 4h3m-3 4h3"/></g>
+    </symbol>
+
+    <symbol id="setting-diagnosis-column" tabler-id="clipboard-heart" description="Diagnosis column toggle; show/hide diagnosis in client dashboard" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2m2.993 11.75l2.747-2.815a1.9 1.9 0 0 0 0-2.632a1.775 1.775 0 0 0-2.56 0l-.183.188l-.183-.189a1.775 1.775 0 0 0-2.56 0a1.9 1.9 0 0 0 0 2.632l2.738 2.825z"/></g>
+    </symbol>
+
+    <symbol id="setting-name-column-alt-1" tabler-id="user" description="Name display column toggle; full name vs initials in client dashboard" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+    </symbol>
+    <symbol id="setting-name-column" tabler-id="writing-sign" description="Name display column toggle; full name vs initials in client dashboard" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19q5-3 5-6c0-3-1-3-2-3s-2.032 1.085-2 3c.034 2.048 1.658 2.877 2.5 4C8 19 9 19.5 10 18q1-1.5 1.5-2.5q1.5 3.5 4 3.5H18m2-2V5c0-1.121-.879-2-2-2s-2 .879-2 2v12l2 2zM16 7h4"/>
+    </symbol>
+
+    <symbol id="setting-payer-column" tabler-id="credit-card" description="Payer column toggle; show/hide payer type in client dashboard" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3zm0 2h18M7 15h.01M11 15h2"/>
+    </symbol>
+
+    <symbol id="setting-placeholders" tabler-id="code" description="System prompt placeholder configuration; available variables for AI narrative templates" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 8l-4 4l4 4m10-8l4 4l-4 4M14 4l-4 16"/>
+    </symbol>
+
+    <symbol id="setting-referral-column" tabler-id="share" description="Referral source column toggle; show/hide referral in client dashboard" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0m12-6a3 3 0 1 0 6 0a3 3 0 1 0-6 0m0 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0m-6.3-7.3l6.6-3.4m-6.6 6l6.6 3.4"/>
+    </symbol>
+    <symbol id="setting-referral-column-alt-1" tabler-id="arrow-left-from-arc" description="Referral source column toggle; show/hide referral in client dashboard" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h12m-4 4l4-4l-4-4m-5-5a9 9 0 1 0 0 18"/>
+    </symbol>
+
+    <symbol id="setting-status-column" tabler-id="circle-check" description="Status column toggle; show/hide status in client dashboard" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="m9 12l2 2l4-4"/></g>
+    </symbol>
+
+    <symbol id="setting-session-basis-column" tabler-id="calendar-repeat" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.5 21H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3m-4-7v4M8 3v4m-4 4h12m4 3l2 2h-3m1 2l2-2m-3 0a3 3 0 1 0 2 5.236"/>
+    </symbol>
+    <symbol id="setting-session-basis-column-alt-1" tabler-id="repeat" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12V9a3 3 0 0 1 3-3h13m-3-3l3 3l-3 3m3 3v3a3 3 0 0 1-3 3H4m3 3l-3-3l3-3"/>
+    </symbol>
+
+    <symbol id="setting-last-session-column" tabler-id="history" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 8v4l2 2"/><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/></g>
+    </symbol>
+    <symbol id="setting-last-session-column-alt-1" tabler-id="calendar-time" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11.795 21H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M14 18a4 4 0 1 0 8 0a4 4 0 1 0-8 0m1-15v4M7 3v4m-4 4h16"/><path d="M18 16.496V18l1 1"/></g>
+    </symbol>
+
+    <symbol id="setting-toggle-off" tabler-id="toggle-left-filled" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M8 9a3 3 0 1 1-3 3l.005-.176A3 3 0 0 1 8 9"/><path d="M16 5a7 7 0 0 1 0 14H8A7 7 0 0 1 8 5zm0 2H8a5 5 0 1 0 0 10h8a5 5 0 0 0 0-10"/></g>
+    </symbol>
+    <symbol id="setting-toggle-off-alt-1" tabler-id="toggle-left" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/><path d="M2 12a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6"/></g>
+    </symbol>
+
+    <symbol id="setting-toggle-on" tabler-id="toggle-right-filled" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M16 9a3 3 0 1 1-3 3l.005-.176A3 3 0 0 1 16 9"/><path d="M16 5a7 7 0 0 1 0 14H8A7 7 0 0 1 8 5zm0 2H8a5 5 0 1 0 0 10h8a5 5 0 0 0 0-10"/></g>
+    </symbol>
+    <symbol id="setting-toggle-on-alt-1" tabler-id="toggle-right" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/><path d="M2 12a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6"/></g>
+    </symbol>
+
+
+    <!-- ======================
+         Platform & Branding
+         Operating system, mobile platform, and cloud service logos/badges
+         ====================== -->
+
+    <symbol id="platform-android" tabler-id="brand-android" description="Android platform; MFA authenticator app download for Google Play" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10v6m16-6v6M7 9h10v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1za5 5 0 0 1 10 0M8 3l1 2m7-2l-1 2M9 18v3m6-3v3"/>
+    </symbol>
+
+    <symbol id="platform-ios" tabler-id="brand-apple" description="iOS/Apple platform; MFA authenticator app download for App Store" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.286 7.008C5.07 7.008 4 10.238 4 12.928C4 16.157 6.143 21 8.286 21c1.165-.05 1.799-.538 3.214-.538c1.406 0 1.607.538 3.214.538S19 17.771 19 15.619c-.03-.011-2.649-.434-2.679-3.23c-.02-2.335 2.589-3.179 2.679-3.228c-1.096-1.606-3.162-2.113-3.75-2.153c-1.535-.12-3.032 1.077-3.75 1.077c-.729 0-2.036-1.077-3.214-1.077M12 4a2 2 0 0 0 2-2a2 2 0 0 0-2 2"/>
+    </symbol>
+
+    <symbol id="badge-cloud" tabler-id="cloud" description="Cloud service badge; AWS cloud hosting on login page" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.657 18C4.085 18 2 15.993 2 13.517s2.085-4.482 4.657-4.482c.393-1.762 1.794-3.2 3.675-3.773c1.88-.572 3.956-.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486s-1.551 3.487-3.465 3.487H6.657"/>
+    </symbol>
+
+
+    <!-- ======================
+         Form Input States
+         Checkbox and radio button states (checked/unchecked) for form controls
+         ====================== -->
+
+    <symbol id="checkbox-unchecked" tabler-id="square" description="Unchecked checkbox state; button-checkbox off state" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    </symbol>
+
+    <symbol id="checkbox-checked" tabler-id="square-check-filled" description="Checked checkbox state; button-checkbox on state" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M18.333 2c1.96 0 3.56 1.537 3.662 3.472l.005.195v12.666c0 1.96-1.537 3.56-3.472 3.662l-.195.005H5.667a3.667 3.667 0 0 1-3.662-3.472L2 18.333V5.667c0-1.96 1.537-3.56 3.472-3.662L5.667 2zm-2.626 7.293a1 1 0 0 0-1.414 0L11 12.585l-1.293-1.292l-.094-.083a1 1 0 0 0-1.32 1.497l2 2l.094.083a1 1 0 0 0 1.32-.083l4-4l.083-.094a1 1 0 0 0-.083-1.32"/>
+    </symbol>
+
+    <symbol id="radio-unchecked" tabler-id="circle" description="Unchecked radio button state; button-radio off state" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/>
+    </symbol>
+
+    <symbol id="radio-checked" tabler-id="circle-dot-filled" description="Checked radio button state; button-radio on state" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M17 3.34a10 10 0 1 1-14.995 8.984L2 12l.005-.324A10 10 0 0 1 17 3.34M12 10a2 2 0 0 0-1.977 1.697l-.018.154L10 12l.005.15A2 2 0 1 0 12 10"/>
+    </symbol>
+
+
+    <!-- ======================
+         Miscellaneous
+         Icons that don't fit other categories - location, quick/detailed modes
+         ====================== -->
+
+    <symbol id="location" tabler-id="map-pin" description="Physical location; session location selector (office, telehealth)" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"/><path d="M17.657 16.657L13.414 20.9a2 2 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0"/></g>
+    </symbol>
+
+    <symbol id="mode-quick" tabler-id="bolt" description="Quick mode; intervention selector simplified fast-add mode" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 3v7h6l-8 11v-7H5z"/>
+    </symbol>
+
+    <symbol id="mode-detailed" tabler-id="list-details" description="Detailed mode; intervention selector full-feature mode with descriptions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5h8m-8 4h5m-5 6h8m-8 4h5M3 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+    </symbol>
+
+
+    <!-- ======================
+         Therapeutic Approaches
+         Icons to represent various therapeutic approaches
+         ====================== -->
+
+    <symbol id="approach-cbt-alt-1" tabler-id="circuit-changeover" description="Cognitive behavioral therapeutic approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12h2m16-5h2M4 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12-5a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4 10h2m-6 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0m-8.5-6.5L16 7"/>
+    </symbol>
+    <symbol id="approach-cbt" tabler-id="route-alt-right" description="Cognitive behavioral therapeutic approach" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 3h5v5M8 3H3v5"/><path d="m21 3l-7.536 7.536A5 5 0 0 0 12 14.07V21M6 6.01V6m2 2.02v-.01M10 10v.01"/></g>
+    </symbol>
+
+    <symbol id="approach-dbt" tabler-id="scale" description="Dialectical behavior therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20h10M6 6l6-1l6 1m-6-3v17m-3-8L6 6l-3 6a3 3 0 0 0 6 0m12 0l-3-6l-3 6a3 3 0 0 0 6 0"/>
+    </symbol>
+
+    <symbol id="approach-humanistic" tabler-id="heart-handshake" description="Humanistic therapy approach" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19.5 12.572L12 20l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 6.572"/><path d="M12 6L8.707 9.293a1 1 0 0 0 0 1.414l.543.543c.69.69 1.81.69 2.5 0l1-1a3.18 3.18 0 0 1 4.5 0l2.25 2.25m-7 3l2 2M15 13l2 2"/></g>
+    </symbol>
+
+    <symbol id="approach-psychodynamic" tabler-id="armchair-2" description="Psychodynamic therapy approach" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 10V6a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4"/><path d="M16 15v-2a3 3 0 1 1 3 3v3H5v-3a3 3 0 1 1 3-3v2m0-3h8m-9 7v2m10-2v2"/></g>
+    </symbol>
+
+    <symbol id="approach-attachment-alt-1" tabler-id="baby-carriage-filled" description="Attachment-based therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M14.5 2a6.5 6.5 0 0 1 6.49 6.858a1.04 1.04 0 0 1-.04.456a6.51 6.51 0 0 1-3.757 5.103l.532 1.595Q17.86 16 18 16a3 3 0 1 1-3 3l.005-.176a3 3 0 0 1 .894-1.966l-.634-1.903Q14.888 15 14.5 15h-2.675q-.547 0-1.076-.083l-.648 1.941A3 3 0 1 1 5 19l.004-.176a3 3 0 0 1 3.27-2.812l.56-1.682a7 7 0 0 1-3.652-4.117L3.78 6H2a1 1 0 0 1-.993-.883L1 5a1 1 0 0 1 1-1h2.5a1 1 0 0 1 .949.684L6.553 8H13V3a1 1 0 0 1 1-1zM8 18a1 1 0 1 0 0 2a1 1 0 0 0 0-2m10 0a1 1 0 1 0 0 2a1 1 0 0 0 0-2"/>
+    </symbol>
+    <symbol id="approach-attachment" tabler-id="baby-carriage" description="Attachment-based therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 19a2 2 0 1 0 4 0a2 2 0 1 0-4 0m10 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M2 5h2.5l1.632 4.897A6 6 0 0 0 11.825 14H14.5a5.5 5.5 0 0 0 0-11H14v6M6 9h14M9 17l1-3m6 0l1 3"/>
+    </symbol>
+
+    <symbol id="approach-coherence" tabler-id="puzzle" description="Coherence therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h3a1 1 0 0 0 1-1V5a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1v-1a2 2 0 0 0-4 0v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a2 2 0 0 0 0-4H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1"/>
+    </symbol>
+    <symbol id="approach-coherence-alt-1" tabler-id="puzzle-filled" description="Coherence therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M10 2a3 3 0 0 1 2.995 2.824L13 5v1h3a2 2 0 0 1 1.995 1.85L18 8v3h1a3 3 0 0 1 .176 5.995L19 17h-1v3a2 2 0 0 1-1.85 1.995L16 22h-3a2 2 0 0 1-1.995-1.85L11 20v-1a1 1 0 0 0-1.993-.117L9 19v1a2 2 0 0 1-1.85 1.995L7 22H4a2 2 0 0 1-1.995-1.85L2 20v-3a2 2 0 0 1 1.85-1.995L4 15h1a1 1 0 0 0 .117-1.993L5 13H4a2 2 0 0 1-1.995-1.85L2 11V8a2 2 0 0 1 1.85-1.995L4 6h3V5a3 3 0 0 1 3-3"/>
+    </symbol>
+
+    <symbol id="approach-emotion-focused-alt-1" tabler-id="heart-broken-filled" description="Emotion-focused therapy approach (EFT)" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="currentColor" d="M11.001 3.8L11 5.763l-1.894 3.79l-.047.11A1 1 0 0 0 9.4 10.8l3.332 2.499l-1.626 3.254A1 1 0 0 0 11 17v3.417L3.803 13.29a6 6 0 0 1 6.956-9.621zm5.77-.739l.246.037a6 6 0 0 1 3.184 10.193l-.044.037L13 20.416v-3.181l1.894-3.788l.047-.11A1 1 0 0 0 14.6 12.2l-3.333-2.5l1.627-3.253A1 1 0 0 0 13 6V3.813a6 6 0 0 1 3.77-.752"/>
+    </symbol>
+    <symbol id="approach-emotion-focused" tabler-id="heart-broken" description="Emotion-focused therapy approach (EFT)" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19.5 12.572L12 20l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 6.572"/><path d="m12 6l-2 4l4 3l-2 4v3"/></g>
+    </symbol>
+
+    <symbol id="approach-feminist" tabler-id="gender-femme" description="Feminist therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 9a5 5 0 1 0 10 0A5 5 0 1 0 7 9m5 5v7m-5-3h10"/>
+    </symbol>
+
+    <symbol id="approach-parts-work" tabler-id="masks-theater" description="Parts work and IFS therapy approach" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M13.192 9h6.616a2 2 0 0 1 1.992 2.183l-.567 6.182A4 4 0 0 1 17.25 21h-1.5a4 4 0 0 1-3.983-3.635l-.567-6.182A2 2 0 0 1 13.192 9M15 13h.01M18 13h.01"/><path d="M15 16.5q1.5 1 3 0m-9.368-.518A4 4 0 0 1 8.25 16h-1.5a4 4 0 0 1-3.983-3.635L2.2 6.183A2 2 0 0 1 4.192 4h6.616a2 2 0 0 1 2 2M6 8h.01M9 8h.01"/><path d="M6 12q1.146-.765 2.291-.36"/></g>
+    </symbol>
+
+    <symbol id="approach-somatic-alt-1" tabler-id="body-scan" description="Somatic therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2m8-16h2a2 2 0 0 1 2 2v2m-4 12h2a2 2 0 0 0 2-2v-2m-9-8a1 1 0 1 0 2 0a1 1 0 1 0-2 0m-1 9v-1a2 2 0 1 1 4 0v1m-6-7q1 1 2 1h4q1 0 2-1m-4 1v3"/>
+    </symbol>
+    <symbol id="approach-somatic" tabler-id="lungs" description="Somatic therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.081 20C7.693 20 9 18.665 9 17.02V7.257C9 6.563 8.448 6 7.768 6c-.205 0-.405.052-.584.15l-.13.083C5.594 7.292 4.622 8.88 3.65 12.057q-.63 2.055-.648 4.775c-.012 1.675 1.261 3.054 2.877 3.161zm11.839 0C16.307 20 15 18.665 15 17.02V7.257C15 6.563 15.552 6 16.233 6c.204 0 .405.052.584.15l.13.083c1.46 1.059 2.432 2.647 3.405 5.824q.63 2.055.648 4.775c.012 1.675-1.261 3.054-2.878 3.161zM9 12a3 3 0 0 0 3-3a3 3 0 0 0 3 3m-3-8v5"/>
+    </symbol>
+    <symbol id="approach-somatic-alt-2" tabler-id="activity-heartbeat" description="Somatic therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h4.5L9 6l4 12l2-9l1.5 3H21"/>
+    </symbol>
+
+    <symbol id="approach-general" tabler-id="zoom-question" description="Non-specific/general/other therapy approach" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6m-5-2v.01"/><path d="M10 10a1.5 1.5 0 1 0-1.14-2.474"/></g>
+    </symbol>
+    <symbol id="approach-general-alt-1" tabler-id="stereo-glasses" description="Non-specific/general/other therapy approach" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3H6l-3 9m13-9h2l3 9M3 12v7a1 1 0 0 0 1 1h4.586a1 1 0 0 0 .707-.293l2-2a1 1 0 0 1 1.414 0l2 2a1 1 0 0 0 .707.293H20a1 1 0 0 0 1-1v-7zm4 4h1m8 0h1"/>
+    </symbol>
+
+
+    <!-- ======================
+         Feature Versions
+         ====================== -->
+
+    <symbol id="version-undeveloped" tabler-id="placeholder" description="Icon for toggling placeholders for undeveloped features" viewBox="0 0 24 24">
+        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 20.415A8 8 0 1 0 13 5h-3"/><path d="m13 8l-3-3l3-3M7 17l4-4l-4-4l-4 4z"/></g>
+    </symbol>
+
+    <symbol id="version-alpha" tabler-id="alpha" description="Icon for toggling or indicating alpha versions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.1 6q-1.65 4.37-2.4 6c-1.879 4.088-3.713 6-6 6c-2.4 0-4.8-2.4-4.8-6s2.4-6 4.8-6c2.267 0 4.135 1.986 6 6q.768 1.653 2.4 6"/>
+    </symbol>
+
+    <symbol id="version-beta" tabler-id="beta" description="Icon for toggling or indicating beta versions" viewBox="0 0 24 24">
+        <path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 22V8a4 4 0 0 1 4-4h.5a3.5 3.5 0 0 1 0 7H12h.5A4.5 4.5 0 1 1 8 15.5V15"/>
+    </symbol>
+
+</svg>

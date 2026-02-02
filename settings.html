@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Therapy Docs</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Critical CSS to prevent FOUC -->
+    <style>[x-cloak] { display: none !important; }</style>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="dist/output.css">
+
+    <!-- Application Entry Point (ES Module) - includes Alpine.js -->
+    <script type="module" src="js/entries/settings.entry.js"></script>
+</head>
+<body>
+    <div x-data="settingsApp" class="min-h-screen bg-neutral-50" :class="{ 'mock-watermark': window.config?.useMockAPI }">
+
+        <!-- Shared Navigation Drawer -->
+        <div id="nav-drawer"></div>
+
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-neutral-200 sticky top-0 z-40">
+            <div class="px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button @click="drawerOpen = true" class="hamburger-btn">
+                        <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#menu-hamburger"></use></svg>
+                    </button>
+                    <h1 class="text-lg font-bold text-neutral-900 flex items-center">
+                        <svg class="icon mr-2 text-primary-500"><use href="./assets/icons/tabler-sprites.svg#settings"></use></svg>
+                        Settings
+                    </h1>
+                </div>
+                <button
+                    @click="saveSettings"
+                    :disabled="(!hasChanges && !hasDocumentTypeChanges && !hasEditModeChanges && !hasProfileChanges && !hasInterventionSettingsChanges) || saving || showSuccess"
+                    class="btn transition-colors duration-300"
+                    :class="{
+                        'btn-primary': !showSuccess,
+                        'btn-success': showSuccess,
+                        'opacity-50 cursor-not-allowed': ((!hasChanges && !hasDocumentTypeChanges && !hasEditModeChanges && !hasProfileChanges && !hasInterventionSettingsChanges) && !showSuccess) || saving
+                    }"
+                >
+                    <!-- Saving state -->
+                    <template x-if="saving">
+                        <span class="flex items-center"><blob-spinner class="icon-md mr-1"></blob-spinner> Saving...</span>
+                    </template>
+                    <!-- Success state -->
+                    <template x-if="!saving && showSuccess">
+                        <span class="flex items-center"><svg class="icon icon-md mr-1"><use href="./assets/icons/tabler-sprites.svg#save-success"></use></svg> Saved</span>
+                    </template>
+                    <!-- Default state -->
+                    <template x-if="!saving && !showSuccess">
+                        <span class="flex items-center"><svg class="icon icon-md mr-1"><use href="./assets/icons/custom-sprites.svg#action-save"></use></svg> Save</span>
+                    </template>
+                </button>
+            </div>
+        </header>
+
+        <!-- Loading State -->
+        <template x-if="loading">
+            <div class="p-8 text-center">
+                <blob-spinner class="icon-lg mx-auto mb-4"></blob-spinner>
+                <p class="text-neutral-500">Loading settings...</p>
+            </div>
+        </template>
+
+        <!-- Error State -->
+        <div x-show="errorMessage && !loading" x-cloak x-transition class="p-4">
+            <div class="alert-error">
+                <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                <span x-text="errorMessage" class="flex-1"></span>
+                <button @click="errorMessage = ''" class="hover:opacity-70 transition-opacity" title="Dismiss">
+                    <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#close"></use></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div x-show="!loading" x-cloak class="container-narrow section">
+
+            <!-- Profile Settings -->
+            <div class="collapsible-card mb-6">
+                <div class="collapsible-header" @click="expandedCards.profile = !expandedCards.profile">
+                    <div>
+                        <span class="collapsible-title">
+                            <svg class="icon text-primary-600 inline-block"><use href="./assets/icons/tabler-sprites.svg#user"></use></svg>
+                            Profile
+                        </span>
+                        <p class="text-sm text-neutral-500 mt-1">Your display name and professional credentials</p>
+                    </div>
+                    <svg class="icon transition-transform" :class="{ 'rotate-180': expandedCards.profile }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                </div>
+                <div class="collapsible-body space-y-4" x-show="expandedCards.profile" x-collapse>
+                        <!-- Display Info (read-only) -->
+                        <div class="bg-neutral-50 rounded-lg p-4">
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-neutral-500">Name</span>
+                                    <p class="font-medium text-neutral-900" x-text="userName"></p>
+                                </div>
+                                <div>
+                                    <span class="text-neutral-500">Email</span>
+                                    <p class="font-medium text-neutral-900" x-text="userEmail"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- License (editable) -->
+                        <div>
+                            <label class="form-label">Professional License</label>
+                            <input
+                                type="text"
+                                x-model="profileLicense"
+                                class="form-input"
+                                placeholder="e.g., LMFT, LCSW, PhD"
+                                maxlength="50"
+                            >
+                            <p class="text-xs text-neutral-500 mt-2">
+                                Displayed after your name in the navigation menu (e.g., "Karen Horney, MD")
+                            </p>
+                        </div>
+                </div>
+            </div>
+
+            <!-- Compliance & Security -->
+            <div class="collapsible-card mb-6">
+                <div class="collapsible-header" @click="expandedCards.compliance = !expandedCards.compliance">
+                    <div>
+                        <span class="collapsible-title">
+                            <svg class="icon text-primary-600 inline-block"><use href="./assets/icons/tabler-sprites.svg#security-mfa"></use></svg>
+                            Compliance & Security
+                        </span>
+                        <p class="text-sm text-neutral-500 mt-1">HIPAA compliance and data security status</p>
+                    </div>
+                    <svg class="icon transition-transform" :class="{ 'rotate-180': expandedCards.compliance }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                </div>
+                <div class="collapsible-body" x-show="expandedCards.compliance" x-collapse>
+                        <!-- BAA Status -->
+                        <div class="bg-neutral-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+                                        <svg class="icon text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#compliance-baa"></use></svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-neutral-900">Business Associate Agreement (BAA)</p>
+                                        <p class="text-sm text-neutral-500">Required for HIPAA compliance with AWS</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <!-- Loading state -->
+                                    <template x-if="baaStatus.loading">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm bg-neutral-200 text-neutral-600">
+                                            <blob-spinner class="icon-sm"></blob-spinner>
+                                            Checking...
+                                        </span>
+                                    </template>
+                                    <!-- Signed state -->
+                                    <template x-if="!baaStatus.loading && baaStatus.signed">
+                                        <div>
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm bg-success-100 text-success-700">
+                                                <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#success"></use></svg>
+                                                Signed
+                                            </span>
+                                            <p x-show="baaStatus.signedAt" class="text-xs text-neutral-500 mt-1" x-text="formatBaaDate()"></p>
+                                        </div>
+                                    </template>
+                                    <!-- Not signed state -->
+                                    <template x-if="!baaStatus.loading && !baaStatus.signed && !baaStatus.error">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm bg-warning-100 text-warning-700">
+                                            <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                                            Not Signed
+                                        </span>
+                                    </template>
+                                    <!-- Error state -->
+                                    <template x-if="!baaStatus.loading && baaStatus.error">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm bg-danger-100 text-danger-700">
+                                            <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#error"></use></svg>
+                                            Error
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- Placeholder for future items -->
+                    <p class="text-xs text-neutral-400 mt-4">
+                        <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#security-lock"></use></svg>
+                        All data is encrypted at rest and in transit using AWS security standards.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Document Types Settings -->
+            <div class="collapsible-card mb-6">
+                <div class="collapsible-header" @click="expandedCards.documentTypes = !expandedCards.documentTypes">
+                    <div>
+                        <span class="collapsible-title">
+                            <svg class="icon text-primary-600"><use href="./assets/icons/tabler-sprites.svg#form-types"></use></svg>
+                            Document Types
+                        </span>
+                        <p class="text-sm text-neutral-500 mt-1">Choose which document types are visible in the app</p>
+                    </div>
+                    <svg class="icon transition-transform" :class="{ 'rotate-180': expandedCards.documentTypes }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                </div>
+                <div class="collapsible-body" x-show="expandedCards.documentTypes" x-collapse>
+                    <div class="space-y-3">
+                        <!-- Progress Notes (always visible) -->
+                        <div class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#sessions"></use></svg>
+                                <div>
+                                    <span class="font-medium text-neutral-900">Progress Notes</span>
+                                    <p class="text-xs text-neutral-500">Session documentation (always visible)</p>
+                                </div>
+                            </div>
+                            <span class="text-xs text-neutral-400 uppercase font-medium">Always On</span>
+                        </div>
+                    </div>
+
+                    <!-- Document Types Feature Visibility subsection -->
+                    <div class="mt-6 pt-6 border-t border-neutral-200">
+                        <h3 class="text-sm font-semibold text-neutral-700 mb-3">Document Types Feature Visibility</h3>
+                        <p class="text-sm text-neutral-500 mb-4">Control visibility of document types based on development status</p>
+                        <div class="space-y-3">
+                            <!-- Show Undeveloped Document Types -->
+                            <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#version-undeveloped"></use></svg>
+                                    <div>
+                                        <span class="font-medium text-neutral-900">Show Undeveloped Document Types</span>
+                                        <p class="text-xs text-neutral-500">Show document types that are not yet implemented</p>
+                                    </div>
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    x-model="documentTypeSettings.showUndeveloped"
+                                    class="sr-only peer"
+                                >
+                                <svg x-show="documentTypeSettings.showUndeveloped" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                <svg x-show="!documentTypeSettings.showUndeveloped" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                            </label>
+
+                            <!-- Undeveloped individual toggles (shown when showUndeveloped is true) -->
+                            <template x-if="documentTypeSettings.showUndeveloped">
+                                <div class="ml-8 space-y-3 border-l-2 border-neutral-200 pl-4">
+                                    <!-- Consultation -->
+                                    <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#form-consultation"></use></svg>
+                                            <div>
+                                                <span class="font-medium text-neutral-900">Consultation</span>
+                                                <p class="text-xs text-neutral-500">Initial consultation notes</p>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="checkbox"
+                                            x-model="documentTypeSettings.consultationEnabled"
+                                            class="sr-only peer"
+                                        >
+                                        <svg x-show="documentTypeSettings.consultationEnabled" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                        <svg x-show="!documentTypeSettings.consultationEnabled" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                                    </label>
+
+                                    <!-- Discharge -->
+                                    <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#form-discharge"></use></svg>
+                                            <div>
+                                                <span class="font-medium text-neutral-900">Discharge</span>
+                                                <p class="text-xs text-neutral-500">Discharge summaries</p>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="checkbox"
+                                            x-model="documentTypeSettings.dischargeEnabled"
+                                            class="sr-only peer"
+                                        >
+                                        <svg x-show="documentTypeSettings.dischargeEnabled" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                        <svg x-show="!documentTypeSettings.dischargeEnabled" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                                    </label>
+                                </div>
+                            </template>
+
+                            <!-- Show Beta Document Types -->
+                            <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#version-beta"></use></svg>
+                                    <div>
+                                        <span class="font-medium text-neutral-900">Show Beta Document Types</span>
+                                        <p class="text-xs text-neutral-500">Show document types that are in beta testing</p>
+                                    </div>
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    x-model="documentTypeSettings.showBeta"
+                                    class="sr-only peer"
+                                >
+                                <svg x-show="documentTypeSettings.showBeta" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                <svg x-show="!documentTypeSettings.showBeta" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                            </label>
+
+                            <!-- Beta individual toggles (shown when showBeta is true) -->
+                            <template x-if="documentTypeSettings.showBeta">
+                                <div class="ml-8 space-y-3 border-l-2 border-neutral-200 pl-4">
+                                    <!-- Intake -->
+                                    <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#form-intake"></use></svg>
+                                            <div>
+                                                <span class="font-medium text-neutral-900">Intake</span>
+                                                <p class="text-xs text-neutral-500">Initial client assessment and history</p>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="checkbox"
+                                            x-model="documentTypeSettings.intakeEnabled"
+                                            class="sr-only peer"
+                                        >
+                                        <svg x-show="documentTypeSettings.intakeEnabled" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                        <svg x-show="!documentTypeSettings.intakeEnabled" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                                    </label>
+
+                                    <!-- Diagnosis -->
+                                    <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#form-diagnosis"></use></svg>
+                                            <div>
+                                                <span class="font-medium text-neutral-900">Diagnosis</span>
+                                                <p class="text-xs text-neutral-500">Clinical diagnosis (ICD-10)</p>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="checkbox"
+                                            x-model="documentTypeSettings.diagnosisEnabled"
+                                            class="sr-only peer"
+                                        >
+                                        <svg x-show="documentTypeSettings.diagnosisEnabled" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                        <svg x-show="!documentTypeSettings.diagnosisEnabled" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                                    </label>
+
+                                    <!-- Treatment Plan -->
+                                    <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#form-treatment-plan"></use></svg>
+                                            <div>
+                                                <span class="font-medium text-neutral-900">Treatment Plan</span>
+                                                <p class="text-xs text-neutral-500">Goals and intervention strategies</p>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="checkbox"
+                                            x-model="documentTypeSettings.treatmentPlanEnabled"
+                                            class="sr-only peer"
+                                        >
+                                        <svg x-show="documentTypeSettings.treatmentPlanEnabled" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                        <svg x-show="!documentTypeSettings.treatmentPlanEnabled" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                                    </label>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-neutral-400 mt-4">
+                        <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#info"></use></svg>
+                        Disabled document types are hidden from navigation but existing documents remain accessible.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Edit Mode Settings -->
+            <div class="collapsible-card mb-6">
+                <div class="collapsible-header" @click="expandedCards.editMode = !expandedCards.editMode">
+                    <div>
+                        <span class="collapsible-title">
+                            <svg class="icon text-primary-600"><use href="./assets/icons/tabler-sprites.svg#action-edit-document"></use></svg>
+                            Document Editing
+                        </span>
+                        <p class="text-sm text-neutral-500 mt-1">How existing documents can be modified</p>
+                    </div>
+                    <svg class="icon transition-transform" :class="{ 'rotate-180': expandedCards.editMode }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                </div>
+                <div class="collapsible-body" x-show="expandedCards.editMode" x-collapse>
+                    <!-- Require Amendments Toggle -->
+                    <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#status-locked"></use></svg>
+                            <div>
+                                <span class="font-medium text-neutral-900">Require Amendments</span>
+                                <p class="text-xs text-neutral-500" x-text="requireAmendments ? 'Edits create new documents, preserving originals for compliance' : 'Direct editing overwrites original content'"></p>
+                            </div>
+                        </div>
+                        <input
+                            type="checkbox"
+                            x-model="requireAmendments"
+                            class="sr-only peer"
+                        >
+                        <svg x-show="requireAmendments" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                        <svg x-show="!requireAmendments" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                    </label>
+
+                    <p class="text-xs text-neutral-400 mt-3">
+                        <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#info"></use></svg>
+                        This setting applies to all progress notes, regardless of when they were created.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interventions Settings -->
+            <div class="collapsible-card mb-6">
+                <div class="collapsible-header" @click="expandedCards.interventions = !expandedCards.interventions">
+                    <div>
+                        <span class="collapsible-title">
+                            <svg class="icon text-primary-600"><use href="./assets/icons/tabler-sprites.svg#interventions"></use></svg>
+                            Interventions
+                        </span>
+                        <p class="text-sm text-neutral-500 mt-1">How interventions are sorted in progress notes</p>
+                    </div>
+                    <svg class="icon transition-transform" :class="{ 'rotate-180': expandedCards.interventions }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                </div>
+                <div class="collapsible-body" x-show="expandedCards.interventions" x-collapse>
+                    <div class="space-y-3">
+                        <!-- Per-Client Usage Toggle -->
+                        <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#user"></use></svg>
+                                <div>
+                                    <span class="font-medium text-neutral-900">Per-Client Usage</span>
+                                    <p class="text-xs text-neutral-500" x-text="interventionSettings.usageMode === 'per-client'
+                                        ? 'Shows interventions you use most with the current client'
+                                        : 'Shows interventions you use most across all clients'"></p>
+                                </div>
+                            </div>
+                            <input
+                                type="checkbox"
+                                :checked="interventionSettings.usageMode === 'per-client'"
+                                @change="interventionSettings.usageMode = $event.target.checked ? 'per-client' : 'global'"
+                                class="sr-only peer"
+                            >
+                            <svg x-show="interventionSettings.usageMode === 'per-client'" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                            <svg x-show="interventionSettings.usageMode !== 'per-client'" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                        </label>
+
+                        <!-- Fill with Global (only shown when Per-Client is ON) -->
+                        <template x-if="interventionSettings.usageMode === 'per-client'">
+                            <div class="ml-8 space-y-3 border-l-2 border-neutral-200 pl-4">
+                                <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/custom-sprites.svg#frequent-clients"></use></svg>
+                                        <div>
+                                            <span class="font-medium text-neutral-900">Fill with Globally Frequent</span>
+                                            <p class="text-xs text-neutral-500">When client has fewer frequent interventions than the max, fill remaining slots with globally frequent ones</p>
+                                        </div>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        x-model="interventionSettings.fillWithGlobal"
+                                        class="sr-only peer"
+                                    >
+                                    <svg x-show="interventionSettings.fillWithGlobal" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                    <svg x-show="!interventionSettings.fillWithGlobal" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                                </label>
+                            </div>
+                        </template>
+
+                        <!-- Maximum Frequent Interventions -->
+                        <div class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#count"></use></svg>
+                                <div>
+                                    <span class="font-medium text-neutral-900">Maximum Frequent Interventions in Quick Add</span>
+                                    <p class="text-xs text-neutral-500">Number of non-favorites to show in the quick-add section</p>
+                                </div>
+                            </div>
+                            <input
+                                type="number"
+                                x-model.number="interventionSettings.maxFrequentInterventions"
+                                min="1"
+                                max="20"
+                                class="form-input w-20 text-center"
+                            >
+                        </div>
+
+                        <!-- Limit Favorites Toggle -->
+                        <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#bookmarked"></use></svg>
+                                <div>
+                                    <span class="font-medium text-neutral-900">Limit Favorites in Quick Add</span>
+                                    <p class="text-xs text-neutral-500" x-text="interventionSettings.limitFavoritesInQuickAdd
+                                        ? 'Shows a limited number of favorites'
+                                        : 'Shows all your favorited interventions'"></p>
+                                </div>
+                            </div>
+                            <input
+                                type="checkbox"
+                                x-model="interventionSettings.limitFavoritesInQuickAdd"
+                                class="sr-only peer"
+                            >
+                            <svg x-show="interventionSettings.limitFavoritesInQuickAdd" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                            <svg x-show="!interventionSettings.limitFavoritesInQuickAdd" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                        </label>
+
+                        <!-- Conditional sub-settings (only visible when limit is ON) -->
+                        <template x-if="interventionSettings.limitFavoritesInQuickAdd">
+                            <div class="ml-8 space-y-3 border-l-2 border-neutral-200 pl-4">
+                                <!-- Max Favorites Number -->
+                                <div class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#count"></use></svg>
+                                        <div>
+                                            <span class="font-medium text-neutral-900">Maximum Favorites</span>
+                                            <p class="text-xs text-neutral-500">Number of favorites to show in Quick Add</p>
+                                        </div>
+                                    </div>
+                                    <input
+                                        type="number"
+                                        x-model.number="interventionSettings.maxFavoritesInQuickAdd"
+                                        min="1"
+                                        max="50"
+                                        class="form-input w-20 text-center"
+                                    >
+                                </div>
+
+                                <!-- Sort by Usage Toggle -->
+                                <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#sort"></use></svg>
+                                        <div>
+                                            <span class="font-medium text-neutral-900">Sort Favorites by Usage</span>
+                                            <p class="text-xs text-neutral-500" x-text="interventionSettings.sortFavoritesByUsage
+                                                ? 'Most-used favorites appear first'
+                                                : 'Favorites appear in the order you added them'"></p>
+                                        </div>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        x-model="interventionSettings.sortFavoritesByUsage"
+                                        class="sr-only peer"
+                                    >
+                                    <svg x-show="interventionSettings.sortFavoritesByUsage" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                    <svg x-show="!interventionSettings.sortFavoritesByUsage" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                                </label>
+                            </div>
+                        </template>
+                    </div>
+
+                    <p class="text-xs text-neutral-400 mt-4">
+                        <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#info"></use></svg>
+                        When "Sort by usage" is enabled in progress notes, favorites appear first (sorted by usage),
+                        then your most-used non-favorites, then the rest alphabetically.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dashboard Settings -->
+            <div class="collapsible-card mb-6">
+                <div class="collapsible-header" @click="expandedCards.dashboard = !expandedCards.dashboard">
+                    <div>
+                        <span class="collapsible-title">
+                            <svg class="icon text-primary-600 inline-block"><use href="./assets/icons/tabler-sprites.svg#setting-client-dashboard"></use></svg>
+                            Client Dashboard
+                        </span>
+                        <p class="text-sm text-neutral-500 mt-1">Customize which columns appear in your client list</p>
+                    </div>
+                    <svg class="icon transition-transform" :class="{ 'rotate-180': expandedCards.dashboard }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                </div>
+                <div class="collapsible-body" x-show="expandedCards.dashboard" x-collapse>
+                        <h3 class="text-sm font-semibold text-neutral-700 mb-3">Visible Columns</h3>
+                    <div class="space-y-3">
+                        <template x-for="column in availableColumns" :key="column.id">
+                            <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-neutral-400 w-5"><use :href="'./assets/icons/tabler-sprites.svg#' + column.icon"></use></svg>
+                                    <div>
+                                        <span class="font-medium text-neutral-900" x-text="column.label"></span>
+                                        <p class="text-xs text-neutral-500" x-text="column.description"></p>
+                                    </div>
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    :checked="settings.visibleColumns.includes(column.id)"
+                                    @change="toggleColumn(column.id)"
+                                    :disabled="column.required"
+                                    class="sr-only peer"
+                                >
+                                <svg x-show="settings.visibleColumns.includes(column.id)" class="icon icon-xl text-primary-500" :class="{ 'opacity-50': column.required }"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                <svg x-show="!settings.visibleColumns.includes(column.id)" x-cloak class="icon icon-xl text-neutral-400" :class="{ 'opacity-50': column.required }"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                            </label>
+                        </template>
+                    </div>
+
+                    <!-- Client Details Feature Visibility subsection -->
+                    <div class="mt-6 pt-6 border-t border-neutral-200">
+                        <h3 class="text-sm font-semibold text-neutral-700 mb-3">Client Details Feature Visibility</h3>
+                        <p class="text-sm text-neutral-500 mb-4">Control which tabs appear in the client details panel</p>
+                        <div class="space-y-3">
+                            <!-- Show Undeveloped Tabs -->
+                            <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#version-undeveloped"></use></svg>
+                                    <div>
+                                        <span class="font-medium text-neutral-900">Show Undeveloped Tabs</span>
+                                        <p class="text-xs text-neutral-500">Display tabs that only contain placeholder content</p>
+                                    </div>
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    x-model="tabVisibilitySettings.showUndevelopedTabs"
+                                    class="sr-only peer"
+                                >
+                                <svg x-show="tabVisibilitySettings.showUndevelopedTabs" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                <svg x-show="!tabVisibilitySettings.showUndevelopedTabs" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                            </label>
+
+                            <!-- Show Beta Tabs -->
+                            <label class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg cursor-pointer hover:bg-neutral-100 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <svg class="icon text-neutral-400 w-5"><use href="./assets/icons/tabler-sprites.svg#version-beta"></use></svg>
+                                    <div>
+                                        <span class="font-medium text-neutral-900">Show Beta Tabs</span>
+                                        <p class="text-xs text-neutral-500">Display tabs for features in beta testing</p>
+                                    </div>
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    x-model="tabVisibilitySettings.showBetaTabs"
+                                    class="sr-only peer"
+                                >
+                                <svg x-show="tabVisibilitySettings.showBetaTabs" class="icon icon-xl text-primary-500"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-on"></use></svg>
+                                <svg x-show="!tabVisibilitySettings.showBetaTabs" x-cloak class="icon icon-xl text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#setting-toggle-off"></use></svg>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Client Defaults -->
+            <div class="collapsible-card mb-6">
+                <div class="collapsible-header" @click="expandedCards.newClientDefaults = !expandedCards.newClientDefaults">
+                    <div>
+                        <span class="collapsible-title">
+                            <svg class="icon text-primary-600 inline-block"><use href="./assets/icons/tabler-sprites.svg#setting-client-defaults"></use></svg>
+                            New Client Defaults
+                        </span>
+                        <p class="text-sm text-neutral-500 mt-1">Set default values for new clients</p>
+                    </div>
+                    <svg class="icon transition-transform" :class="{ 'rotate-180': expandedCards.newClientDefaults }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                </div>
+                <div class="collapsible-body space-y-4" x-show="expandedCards.newClientDefaults" x-collapse>
+                    <!-- Payment Type -->
+                    <div>
+                        <label class="form-label">Default Payment Type</label>
+                        <select x-model="settings.newClientDefaults.paymentType" class="form-select">
+                            <option value="private-pay">Private Pay</option>
+                            <option value="insurance">Insurance</option>
+                            <option value="sliding-scale">Sliding Scale</option>
+                        </select>
+                    </div>
+
+                    <!-- Session Basis -->
+                    <div>
+                        <label class="form-label">Default Session Basis</label>
+                        <select x-model="settings.newClientDefaults.sessionBasis" class="form-select">
+                            <option value="">Not set</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="biweekly">Biweekly</option>
+                            <option value="as-needed">As Needed</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Risk Level -->
+                    <div>
+                        <label class="form-label">Default Risk Level</label>
+                        <select x-model="settings.newClientDefaults.riskLevel" class="form-select">
+                            <option value="">Not set</option>
+                            <option value="standard">Standard</option>
+                            <option value="elevated">Elevated</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Narrative Generation Settings -->
+            <div class="collapsible-card mb-6">
+                <div class="collapsible-header" @click="expandedCards.aiNarrative = !expandedCards.aiNarrative">
+                    <div>
+                        <span class="collapsible-title">
+                            <svg class="icon text-primary-600 inline-block"><use href="./assets/icons/tabler-sprites.svg#ai-generate"></use></svg>
+                            AI Narrative Generation
+                        </span>
+                        <p class="text-sm text-neutral-500 mt-1">Customize the prompts used to generate narrative progress notes</p>
+                    </div>
+                    <svg class="icon transition-transform" :class="{ 'rotate-180': expandedCards.aiNarrative }"><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                </div>
+                <div class="collapsible-body space-y-6" x-show="expandedCards.aiNarrative" x-collapse>
+
+                    <!-- Model Parameters Section -->
+                    <div class="border-b border-neutral-200 pb-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h4 class="text-sm font-semibold text-neutral-700">
+                                    <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#ai-parameters"></use></svg>
+                                    Model Parameters
+                                </h4>
+                                <p class="text-xs text-neutral-500 mt-1">
+                                    Fine-tune the AI model's behavior for narrative generation.
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                @click="resetModelParametersToDefault()"
+                                class="btn btn-ghost btn-sm"
+                            >
+                                <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-reset"></use></svg>
+                                Reset
+                            </button>
+                        </div>
+
+                        <!-- Model Selection -->
+                        <div class="mb-6">
+                            <label class="form-label">Model</label>
+                            <select x-model="narrativeSettings.modelId" class="form-select">
+                                <template x-for="model in availableModels" :key="model.id">
+                                    <option :value="model.id" x-text="model.name"></option>
+                                </template>
+                            </select>
+                            <p class="text-xs text-neutral-500 mt-2">
+                                <span x-text="availableModels.find(m => m.id === narrativeSettings.modelId)?.description || ''"></span>
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- Temperature -->
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="form-label mb-0">Temperature</label>
+                                    <span class="text-sm font-mono text-primary-700" x-text="narrativeSettings.temperature.toFixed(1)"></span>
+                                </div>
+                                <input
+                                    type="range"
+                                    x-model.number="narrativeSettings.temperature"
+                                    min="0"
+                                    max="1"
+                                    step="0.1"
+                                    class="w-full h-2 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-primary-500"
+                                >
+                                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                                    <span>Focused (0.0)</span>
+                                    <span>Creative (1.0)</span>
+                                </div>
+                                <p class="text-xs text-neutral-500 mt-2">
+                                    Lower values produce more consistent output. Higher values increase creativity.
+                                </p>
+                            </div>
+
+                            <!-- Max Tokens -->
+                            <div>
+                                <label class="form-label">Max Tokens</label>
+                                <input
+                                    type="number"
+                                    x-model.number="narrativeSettings.maxTokens"
+                                    min="256"
+                                    max="4096"
+                                    step="128"
+                                    class="form-input"
+                                >
+                                <p class="text-xs text-neutral-500 mt-2">
+                                    Maximum length of generated narrative. 1 token ≈ 4 characters. Default: 1024 (~400 words).
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Response Prefill -->
+                        <div class="mt-6">
+                            <label class="form-label">Response Prefill</label>
+                            <input
+                                type="text"
+                                x-model="narrativeSettings.prefill"
+                                class="form-input font-mono text-sm"
+                                placeholder="<thinking>"
+                            >
+                            <p class="text-xs text-neutral-500 mt-2">
+                                Text to prepend to AI's response. Use <code class="bg-neutral-100 px-1 rounded">&lt;thinking&gt;</code> to encourage the AI to reason before writing the narrative.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- System Prompt Section -->
+                    <div class="border-b border-neutral-200 pb-6">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <label class="form-label mb-0">System Prompt</label>
+                                <p class="text-xs text-neutral-500 mt-1">
+                                    Sets the AI's role and behavior. Controls tone, style, and output format.
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                @click="resetSystemPromptToDefault()"
+                                class="btn btn-ghost btn-sm"
+                            >
+                                <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-reset"></use></svg>
+                                Reset
+                            </button>
+                        </div>
+                        <textarea
+                            x-model="narrativeSettings.systemPrompt"
+                            class="form-textarea font-mono text-sm"
+                            rows="10"
+                            placeholder="Enter the system prompt that defines the AI's role..."
+                        ></textarea>
+                    </div>
+
+                    <!-- Session Data Template Section -->
+                    <div class="border-b border-neutral-200 pb-6">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <label class="form-label mb-0">Session Data Template</label>
+                                <p class="text-xs text-neutral-500 mt-1">
+                                    Structure for session information with placeholders for dynamic data.
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                @click="resetSectionToDefault('progressNoteData')"
+                                class="btn btn-ghost btn-sm"
+                            >
+                                <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-reset"></use></svg>
+                                Reset
+                            </button>
+                        </div>
+
+                        <!-- Available Placeholders Reference (collapsible) -->
+                        <div class="bg-neutral-50 rounded-lg mb-3" x-data="{ placeholdersOpen: false }">
+                            <button
+                                type="button"
+                                @click="placeholdersOpen = !placeholdersOpen"
+                                class="w-full p-3 flex items-center justify-between text-left hover:bg-neutral-100 rounded-lg transition-colors"
+                            >
+                                <span class="text-sm font-medium text-neutral-600">
+                                    <svg class="icon icon-sm mr-2 text-neutral-400 inline-block"><use href="./assets/icons/tabler-sprites.svg#setting-placeholders"></use></svg>
+                                    Available Placeholders
+                                </span>
+                                <svg
+                                    class="icon text-neutral-400 transition-transform duration-200"
+                                    :class="{ 'rotate-180': placeholdersOpen }"
+                                ><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                            </button>
+                            <div x-show="placeholdersOpen" x-collapse>
+                                <div class="px-3 pb-3">
+                                    <!-- Core Placeholders -->
+                                    <p class="text-xs text-neutral-500 mb-2 font-medium uppercase tracking-wide">Core (used in default template)</p>
+                                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm mb-4">
+                                        <div class="font-mono text-primary-700">{{date}}</div>
+                                        <div class="text-neutral-600">Session date</div>
+
+                                        <div class="font-mono text-primary-700">{{duration}}</div>
+                                        <div class="text-neutral-600">Duration in minutes</div>
+
+                                        <div class="font-mono text-primary-700">{{clientName}}</div>
+                                        <div class="text-neutral-600">Client's name</div>
+
+                                        <div class="font-mono text-primary-700">{{clientType}}</div>
+                                        <div class="text-neutral-600">Individual, Couple, Family</div>
+
+                                        <div class="font-mono text-primary-700">{{sessionPurpose}}</div>
+                                        <div class="text-neutral-600">Purpose of session</div>
+
+                                        <div class="font-mono text-primary-700">{{mseEntries}}</div>
+                                        <div class="text-neutral-600">Mental status observations</div>
+
+                                        <div class="font-mono text-primary-700">{{therapeuticApproaches}}</div>
+                                        <div class="text-neutral-600">Approaches used</div>
+
+                                        <div class="font-mono text-primary-700">{{interventions}}</div>
+                                        <div class="text-neutral-600">Interventions & responses</div>
+
+                                        <div class="font-mono text-primary-700">{{additionalNotes}}</div>
+                                        <div class="text-neutral-600">Additional session notes</div>
+
+                                        <div class="font-mono text-primary-700">{{futureNotes}}</div>
+                                        <div class="text-neutral-600">Future session plans</div>
+                                    </div>
+
+                                    <!-- Additional Placeholders -->
+                                    <p class="text-xs text-neutral-500 mb-2 font-medium uppercase tracking-wide">Additional (for custom templates)</p>
+                                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                                        <div class="font-mono text-primary-700">{{diagnosis}}</div>
+                                        <div class="text-neutral-600">Current diagnosis</div>
+
+                                        <div class="font-mono text-primary-700">{{treatmentGoals}}</div>
+                                        <div class="text-neutral-600">Treatment plan goals</div>
+
+                                        <div class="font-mono text-primary-700">{{targetSymptoms}}</div>
+                                        <div class="text-neutral-600">Target symptoms</div>
+
+                                        <div class="font-mono text-primary-700">{{treatmentNotes}}</div>
+                                        <div class="text-neutral-600">Treatment plan notes</div>
+
+                                        <div class="font-mono text-primary-700">{{lastSessionDate}}</div>
+                                        <div class="text-neutral-600">Previous session date</div>
+
+                                        <div class="font-mono text-primary-700">{{lastSessionNarrative}}</div>
+                                        <div class="text-neutral-600">Previous narrative</div>
+
+                                        <div class="font-mono text-primary-700">{{riskLevel}}</div>
+                                        <div class="text-neutral-600">Risk level</div>
+
+                                        <div class="font-mono text-primary-700">{{totalSessions}}</div>
+                                        <div class="text-neutral-600">Total session count</div>
+
+                                        <div class="font-mono text-primary-700">{{treatmentStartDate}}</div>
+                                        <div class="text-neutral-600">When therapy began</div>
+
+                                        <div class="font-mono text-primary-700">{{sessionBasis}}</div>
+                                        <div class="text-neutral-600">Session frequency</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <textarea
+                            x-model="narrativeSettings.sections.progressNoteData"
+                            class="form-textarea font-mono text-sm"
+                            rows="12"
+                            placeholder="Enter the template with placeholders for session data..."
+                        ></textarea>
+                    </div>
+
+                    <!-- Instructions Section -->
+                    <div class="border-b border-neutral-200 pb-6">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <label class="form-label mb-0">Instructions</label>
+                                <p class="text-xs text-neutral-500 mt-1">
+                                    Step-by-step guidance for the AI when generating narratives.
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                @click="resetSectionToDefault('instructions')"
+                                class="btn btn-ghost btn-sm"
+                            >
+                                <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-reset"></use></svg>
+                                Reset
+                            </button>
+                        </div>
+                        <textarea
+                            x-model="narrativeSettings.sections.instructions"
+                            class="form-textarea font-mono text-sm"
+                            rows="16"
+                            placeholder="Enter instructions for the AI..."
+                        ></textarea>
+                    </div>
+
+                    <!-- Examples Section -->
+                    <div class="border-b border-neutral-200 pb-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <label class="form-label mb-0">Examples</label>
+                                <p class="text-xs text-neutral-500 mt-1">
+                                    Input/output pairs demonstrating expected narrative generation.
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    @click="resetExamplesToDefault()"
+                                    class="btn btn-ghost btn-sm"
+                                >
+                                    <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-reset"></use></svg>
+                                    Reset All
+                                </button>
+                                <button
+                                    type="button"
+                                    @click="addExample()"
+                                    class="btn btn-sm btn-secondary"
+                                >
+                                    <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-add"></use></svg>
+                                    Add Example
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Examples List -->
+                        <div class="space-y-3">
+                            <template x-for="(example, index) in narrativeSettings.examples" :key="example.id">
+                                <div class="border border-neutral-200 rounded-lg bg-white">
+                                    <!-- Example Header -->
+                                    <div
+                                        class="p-3 flex items-center justify-between cursor-pointer hover:bg-neutral-50 transition-colors rounded-t-lg"
+                                        :class="{ 'rounded-b-lg': expandedExampleId !== example.id }"
+                                        @click="toggleExample(example.id)"
+                                    >
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-neutral-400 font-mono text-sm" x-text="'#' + (index + 1)"></span>
+                                            <span class="font-medium text-neutral-700" x-text="example.description || 'Untitled Example'"></span>
+                                            <!-- Validation warning badge -->
+                                            <span
+                                                x-show="exampleValidation[example.id]?.missing?.length > 0"
+                                                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-warning-100 text-warning-700"
+                                                :title="'Missing: ' + (exampleValidation[example.id]?.missing?.join(', ') || '')"
+                                            >
+                                                <svg class="icon icon-xs"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                                                <span x-text="exampleValidation[example.id]?.missing?.length"></span>
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <!-- Move up -->
+                                            <button
+                                                type="button"
+                                                @click.stop="moveExampleUp(example.id)"
+                                                :disabled="index === 0"
+                                                class="p-1.5 text-neutral-400 hover:text-neutral-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                                                title="Move up"
+                                            >
+                                                <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#move-up"></use></svg>
+                                            </button>
+                                            <!-- Move down -->
+                                            <button
+                                                type="button"
+                                                @click.stop="moveExampleDown(example.id)"
+                                                :disabled="index === narrativeSettings.examples.length - 1"
+                                                class="p-1.5 text-neutral-400 hover:text-neutral-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                                                title="Move down"
+                                            >
+                                                <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#move-down"></use></svg>
+                                            </button>
+                                            <!-- Delete -->
+                                            <button
+                                                type="button"
+                                                @click.stop="removeExample(example.id)"
+                                                class="p-1.5 text-neutral-400 hover:text-danger-600"
+                                                title="Delete example"
+                                            >
+                                                <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#action-delete"></use></svg>
+                                            </button>
+                                            <!-- Expand/Collapse -->
+                                            <svg
+                                                class="icon text-neutral-400 transition-transform ml-1"
+                                                :class="{ 'rotate-180': expandedExampleId === example.id }"
+                                            ><use href="./assets/icons/tabler-sprites.svg#expand"></use></svg>
+                                        </div>
+                                    </div>
+
+                                    <!-- Example Body (collapsible) -->
+                                    <div
+                                        x-show="expandedExampleId === example.id"
+                                        x-collapse
+                                        class="border-t border-neutral-200 p-4 space-y-4"
+                                    >
+                                        <!-- Description -->
+                                        <div>
+                                            <label class="form-label text-sm">Description</label>
+                                            <input
+                                                type="text"
+                                                x-model="example.description"
+                                                class="form-input"
+                                                placeholder="Brief description of this example scenario..."
+                                            >
+                                        </div>
+
+                                        <!-- Input -->
+                                        <div>
+                                            <label class="form-label text-sm">Input (Session Data)</label>
+                                            <textarea
+                                                x-model="example.input"
+                                                class="form-textarea font-mono text-sm"
+                                                rows="10"
+                                                placeholder="<session_information>..."
+                                            ></textarea>
+                                        </div>
+
+                                        <!-- Output -->
+                                        <div>
+                                            <label class="form-label text-sm">
+                                                Output (Expected Response)
+                                                <span
+                                                    x-show="exampleValidation[example.id]?.missing?.length > 0"
+                                                    class="text-warning-600 font-normal ml-2"
+                                                >
+                                                    <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                                                    Missing: <span x-text="exampleValidation[example.id]?.missing?.join(', ')"></span>
+                                                </span>
+                                            </label>
+                                            <textarea
+                                                x-model="example.output"
+                                                @input="validateExample(example.id)"
+                                                class="form-textarea font-mono text-sm"
+                                                :class="{ 'border-warning-300 focus:border-warning-500 focus:ring-warning-500/20': exampleValidation[example.id]?.missing?.length > 0 }"
+                                                rows="15"
+                                                placeholder="<thinking>...</thinking>
+<narrative>...</narrative>"
+                                            ></textarea>
+                                            <p class="text-xs text-neutral-500 mt-1">
+                                                Must include <code class="bg-neutral-100 px-1 rounded">&lt;thinking&gt;</code> and <code class="bg-neutral-100 px-1 rounded">&lt;narrative&gt;</code> sections.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Empty state -->
+                            <div
+                                x-show="narrativeSettings.examples.length === 0"
+                                class="text-center py-8 text-neutral-500 border border-dashed border-neutral-300 rounded-lg"
+                            >
+                                <svg class="icon icon-xl mb-2 mx-auto"><use href="./assets/icons/tabler-sprites.svg#interventions-visible"></use></svg>
+                                <p>No examples added yet.</p>
+                                <button
+                                    type="button"
+                                    @click="addExample()"
+                                    class="btn btn-sm btn-secondary mt-3"
+                                >
+                                    <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-add"></use></svg>
+                                    Add First Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Format Section -->
+                    <div class="border-b border-neutral-200 pb-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <label class="form-label mb-0">Output Format</label>
+                                <p class="text-xs text-neutral-500 mt-1">
+                                    Defines the expected structure for the AI's thinking and narrative output.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <!-- Thinking Format -->
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="form-label mb-0 text-sm">Thinking Section</label>
+                                    <button
+                                        type="button"
+                                        @click="resetSectionToDefault('thinkingOutputFormat')"
+                                        class="btn btn-ghost btn-sm"
+                                        title="Reset to default"
+                                    >
+                                        <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#action-reset"></use></svg>
+                                    </button>
+                                </div>
+                                <textarea
+                                    x-model="narrativeSettings.sections.thinkingOutputFormat"
+                                    @input="validateAllExamples()"
+                                    class="form-textarea font-mono text-sm"
+                                    rows="8"
+                                    placeholder="Expected thinking section format..."
+                                ></textarea>
+                            </div>
+
+                            <!-- Narrative Format -->
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="form-label mb-0 text-sm">Narrative Section</label>
+                                    <button
+                                        type="button"
+                                        @click="resetSectionToDefault('narrativeOutputFormat')"
+                                        class="btn btn-ghost btn-sm"
+                                        title="Reset to default"
+                                    >
+                                        <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#action-reset"></use></svg>
+                                    </button>
+                                </div>
+                                <textarea
+                                    x-model="narrativeSettings.sections.narrativeOutputFormat"
+                                    @input="validateAllExamples()"
+                                    class="form-textarea font-mono text-sm"
+                                    rows="8"
+                                    placeholder="Expected narrative section format..."
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex items-center justify-between pt-2 border-t border-neutral-200">
+                        <button
+                            type="button"
+                            @click="resetAllPromptsToDefault()"
+                            class="btn btn-secondary"
+                        >
+                            <span class="flex items-center">
+                                <svg class="icon icon-md mr-2"><use href="./assets/icons/tabler-sprites.svg#action-reset"></use></svg>
+                                Reset All to Default
+                            </span>
+                        </button>
+
+                        <div class="flex items-center gap-3">
+                            <!-- Validation warning -->
+                            <span x-show="hasExampleValidationWarnings()" class="text-sm text-warning-600">
+                                <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                                Some examples have validation warnings
+                            </span>
+                            <!-- Unsaved changes warning -->
+                            <span x-show="hasNarrativeChanges && !showNarrativeSuccess && !hasExampleValidationWarnings()" class="text-sm text-warning-600">
+                                <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                                Unsaved changes
+                            </span>
+                            <button
+                                type="button"
+                                @click="saveNarrativeSettings()"
+                                :disabled="!hasNarrativeChanges || savingNarrative || showNarrativeSuccess"
+                                class="btn transition-colors duration-300"
+                                :class="{
+                                    'btn-primary': !showNarrativeSuccess,
+                                    'btn-success': showNarrativeSuccess,
+                                    'opacity-50 cursor-not-allowed': (!hasNarrativeChanges && !showNarrativeSuccess) || savingNarrative
+                                }"
+                            >
+                                <template x-if="savingNarrative">
+                                    <span class="flex items-center"><blob-spinner class="icon-md mr-1"></blob-spinner> Saving...</span>
+                                </template>
+                                <template x-if="!savingNarrative && showNarrativeSuccess">
+                                    <span class="flex items-center"><svg class="icon icon-md mr-1"><use href="./assets/icons/tabler-sprites.svg#save-success"></use></svg> Saved</span>
+                                </template>
+                                <template x-if="!savingNarrative && !showNarrativeSuccess">
+                                    <span class="flex items-center"><svg class="icon icon-md mr-1"><use href="./assets/icons/custom-sprites.svg#action-save"></use></svg> Save Settings</span>
+                                </template>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

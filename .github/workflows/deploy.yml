@@ -1,0 +1,132 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+permissions:
+  id-token: write   # Required for OIDC
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build CSS
+        run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # Replace YOUR_AWS_ACCOUNT_ID with your actual AWS account ID
+          role-to-assume: arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/GitHubActions-FrontendDeploy
+          aws-region: us-east-1
+
+      # Generate config.js for DEV environment
+      - name: Generate config (dev)
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          cat > js/config.js << 'EOF'
+          export const config = {
+              apiEndpoint: '${{ secrets.API_ENDPOINT_DEV }}',
+              streamingApiEndpoint: '${{ secrets.STREAMING_API_ENDPOINT_DEV }}',
+              region: 'us-east-1',
+              userPoolId: '${{ secrets.COGNITO_POOL_ID_DEV }}',
+              userPoolClientId: '${{ secrets.COGNITO_CLIENT_ID_DEV }}',
+              features: {
+                  aiNarratives: true,
+                  offlineMode: false,
+                  debugMode: false
+              },
+              useMockAPI: false
+          };
+
+          window.config = config;
+          EOF
+
+      # Generate config.js for PROD environment
+      - name: Generate config (prod)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cat > js/config.js << 'EOF'
+          export const config = {
+              apiEndpoint: '${{ secrets.API_ENDPOINT_PROD }}',
+              streamingApiEndpoint: '${{ secrets.STREAMING_API_ENDPOINT_PROD }}',
+              region: 'us-east-1',
+              userPoolId: '${{ secrets.COGNITO_POOL_ID_PROD }}',
+              userPoolClientId: '${{ secrets.COGNITO_CLIENT_ID_PROD }}',
+              features: {
+                  aiNarratives: true,
+                  offlineMode: false,
+                  debugMode: false
+              },
+              useMockAPI: false
+          };
+
+          window.config = config;
+          EOF
+
+      # Deploy to DEV environment (dev branch)
+      - name: Deploy to S3 (dev)
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          aws s3 sync . s3://therapy-notes-frontend-dev \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "node_modules/*" \
+            --exclude "styles/input.css" \
+            --exclude "package*.json" \
+            --exclude "*.md" \
+            --exclude ".claude/*" \
+            --exclude "docs/*" \
+            --exclude "notes/*" \
+            --exclude "archived/*" \
+            --exclude "mockups/*"
+
+      # Deploy to PROD environment (main branch)
+      - name: Deploy to S3 (prod)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          aws s3 sync . s3://therapy-notes-frontend-prod \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "node_modules/*" \
+            --exclude "styles/input.css" \
+            --exclude "package*.json" \
+            --exclude "*.md" \
+            --exclude ".claude/*" \
+            --exclude "docs/*" \
+            --exclude "notes/*" \
+            --exclude "archived/*" \
+            --exclude "mockups/*"
+
+      # Invalidate CloudFront cache (dev)
+      - name: Invalidate CloudFront cache (dev)
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_DEV }} \
+            --paths "/*"
+
+      # Invalidate CloudFront cache (prod)
+      - name: Invalidate CloudFront cache (prod)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_PROD }} \
+            --paths "/*"

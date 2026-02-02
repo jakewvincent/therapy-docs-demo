@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archived Clients - Therapy Docs</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Critical CSS to prevent FOUC -->
+    <style>[x-cloak] { display: none !important; }</style>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="dist/output.css">
+
+    <!-- Application Entry Point (ES Module) - includes Alpine.js -->
+    <script type="module" src="js/entries/clients-archived.entry.js"></script>
+</head>
+<body>
+    <div x-data="clientsArchived" class="min-h-screen bg-neutral-50" :class="{ 'mock-watermark': window.config?.useMockAPI }">
+
+        <!-- Shared Navigation Drawer (injected by drawer.js) -->
+        <div id="nav-drawer"></div>
+
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-neutral-200 sticky top-0 z-40">
+            <div class="px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button @click="drawerOpen = true" class="hamburger-btn">
+                        <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#menu-hamburger"></use></svg>
+                    </button>
+                    <a href="clients.html" class="hamburger-btn" title="Back to Clients">
+                        <svg class="icon"><use href="./assets/icons/tabler-sprites.svg#back"></use></svg>
+                    </a>
+                    <div class="flex items-center gap-2">
+                        <svg class="icon text-neutral-400"><use href="./assets/icons/tabler-sprites.svg#action-archive"></use></svg>
+                        <h1 class="text-lg font-bold text-neutral-900">Archived Clients</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Loading State -->
+        <template x-if="loading">
+            <div class="p-8 text-center">
+                <blob-spinner class="icon-lg mx-auto mb-4"></blob-spinner>
+                <p class="text-neutral-500">Loading archived clients...</p>
+            </div>
+        </template>
+
+        <!-- Error State -->
+        <template x-if="errorMessage && !loading">
+            <div class="p-4">
+                <div class="alert-error">
+                    <svg class="icon mr-2"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                    <span x-text="errorMessage"></span>
+                </div>
+            </div>
+        </template>
+
+        <!-- Main Content (shown when not loading) -->
+        <div x-show="!loading" x-cloak>
+            <!-- Summary -->
+            <div class="px-4 py-2 bg-neutral-100 border-b border-neutral-200">
+                <p class="text-sm text-neutral-600">
+                    <span class="font-semibold text-neutral-900" x-text="clients.length"></span> archived
+                    <span x-text="clients.length === 1 ? 'client' : 'clients'"></span>
+                </p>
+            </div>
+
+            <!-- Client List -->
+            <div class="divide-y divide-neutral-200 bg-white">
+                <template x-for="client in clients" :key="client.id">
+                    <div class="px-4 py-4 flex items-center justify-between">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-lg font-bold text-neutral-900" x-text="client.name"></span>
+                                <span class="type-badge" x-text="client.clientType"></span>
+                                <span
+                                    class="status-badge"
+                                    :class="{
+                                        'status-active': client.status === 'active',
+                                        'status-inactive': client.status === 'inactive'
+                                    }"
+                                    x-text="client.status"
+                                ></span>
+                            </div>
+                            <p class="text-sm text-neutral-500">
+                                Archived <span x-text="formatDate(client.archivedAt)"></span>
+                                <span class="mx-1">&middot;</span>
+                                <span x-text="client.totalSessions"></span> sessions
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2 ml-4">
+                            <button
+                                @click="confirmRestore(client)"
+                                class="btn btn-secondary btn-sm"
+                                title="Restore client"
+                            >
+                                <svg class="icon icon-sm mr-1"><use href="./assets/icons/tabler-sprites.svg#action-restore"></use></svg> Restore
+                            </button>
+                            <button
+                                @click="confirmDelete(client)"
+                                class="btn btn-ghost btn-sm text-danger-600 hover:bg-danger-50"
+                                title="Permanently delete"
+                            >
+                                <svg class="icon icon-sm"><use href="./assets/icons/tabler-sprites.svg#action-delete"></use></svg>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Empty State -->
+            <template x-if="clients.length === 0 && !loading">
+                <div class="p-8 text-center text-neutral-500 bg-white">
+                    <svg class="icon icon-2xl mb-3 text-neutral-300 mx-auto"><use href="./assets/icons/tabler-sprites.svg#empty-archived"></use></svg>
+                    <p class="mb-2">No archived clients</p>
+                    <a href="clients.html" class="text-primary-600 hover:text-primary-700 text-sm">
+                        <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#back"></use></svg> Back to Clients
+                    </a>
+                </div>
+            </template>
+        </div>
+
+        <!-- Restore Confirmation Modal -->
+        <div
+            x-show="showRestoreModal"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="modal-overlay"
+            @click.self="showRestoreModal = false"
+            @keydown.escape.window="showRestoreModal && (showRestoreModal = false)"
+            x-cloak
+        >
+            <div
+                class="card w-full max-w-md bg-white"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+                @click.stop
+            >
+                <div class="text-center mb-4">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-success-100 text-success-600 mb-3">
+                        <svg class="icon icon-lg"><use href="./assets/icons/tabler-sprites.svg#action-restore"></use></svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-neutral-900">Restore Client?</h2>
+                </div>
+
+                <p class="text-neutral-600 text-center mb-6">
+                    <span class="font-semibold" x-text="clientToAction?.name"></span> will be restored to your active client list.
+                </p>
+
+                <div class="flex gap-3 justify-center">
+                    <button
+                        type="button"
+                        @click="showRestoreModal = false"
+                        class="btn btn-secondary"
+                        :disabled="restoring"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        @click="restoreClient"
+                        class="btn btn-success"
+                        :disabled="restoring"
+                    >
+                        <template x-if="restoring">
+                            <span><blob-spinner class="icon-sm mr-2"></blob-spinner>Restoring...</span>
+                        </template>
+                        <template x-if="!restoring">
+                            <span><svg class="icon icon-sm mr-2"><use href="./assets/icons/tabler-sprites.svg#action-restore"></use></svg>Restore</span>
+                        </template>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal (Stern Warning) -->
+        <div
+            x-show="showDeleteModal"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="modal-overlay"
+            @click.self="closeDeleteModal"
+            @keydown.escape.window="showDeleteModal && closeDeleteModal()"
+            x-cloak
+        >
+            <div
+                class="card w-full max-w-md bg-white"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+                @click.stop
+            >
+                <div class="text-center mb-4">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-danger-100 text-danger-600 mb-3">
+                        <svg class="icon icon-lg"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-neutral-900">Permanently Delete Client?</h2>
+                </div>
+
+                <div class="bg-danger-50 border border-danger-200 rounded-lg p-4 mb-4">
+                    <p class="text-danger-800 text-sm font-medium mb-2">
+                        <svg class="icon icon-sm mr-1 inline-block"><use href="./assets/icons/tabler-sprites.svg#warning"></use></svg>
+                        This action CANNOT be undone.
+                    </p>
+                    <p class="text-danger-700 text-sm">
+                        All data for <span class="font-semibold" x-text="clientToAction?.name"></span> will be:
+                    </p>
+                    <ul class="text-danger-700 text-sm mt-2 ml-4 list-disc">
+                        <li>Backed up to secure storage</li>
+                        <li>Permanently removed from the system</li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-neutral-700">
+                        To confirm, type the client's initials: <span class="font-bold" x-text="clientToAction?.name"></span>
+                    </label>
+                    <input
+                        type="text"
+                        x-model="deleteConfirmText"
+                        class="form-input mt-2"
+                        :placeholder="'Type ' + (clientToAction?.name || '') + ' to confirm'"
+                        @keydown.enter="deleteConfirmMatches && deleteClient()"
+                    >
+                </div>
+
+                <div class="flex gap-3 justify-center">
+                    <button
+                        type="button"
+                        @click="closeDeleteModal"
+                        class="btn btn-secondary"
+                        :disabled="deleting"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        @click="deleteClient"
+                        class="btn btn-danger"
+                        :disabled="!deleteConfirmMatches || deleting"
+                    >
+                        <template x-if="deleting">
+                            <span><blob-spinner class="icon-sm mr-2"></blob-spinner>Deleting...</span>
+                        </template>
+                        <template x-if="!deleting">
+                            <span><svg class="icon icon-sm mr-2"><use href="./assets/icons/tabler-sprites.svg#action-delete"></use></svg>Delete Permanently</span>
+                        </template>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
