@@ -2452,12 +2452,17 @@ export function createAppData() {
       const client = this.clients.find(c => c.id === this.selectedClient);
       const sessionDate = this.currentNote.date;
 
-      // 1. Check if backend document exists for this date
+      // 1. Check if backend document exists for this date (same form type)
+      // Only warn for document types where same-date duplicates are unusual.
+      // Diagnoses are excluded - multiple diagnoses per date is normal (comorbid conditions).
+      const WARN_ON_DUPLICATE_DATE = ['progress_note', 'intake', 'treatment_plan', 'consultation', 'discharge'];
+      const currentDocType = this._formTypeToDocType(this.formType);
+
       // Defensive: ensure clientDocuments is an array
       const docs = Array.isArray(this.clientDocuments) ? this.clientDocuments : [];
-      const existingDoc = docs.find(
-        doc => doc.documentType === 'progress_note' && doc.date === sessionDate
-      );
+      const existingDoc = WARN_ON_DUPLICATE_DATE.includes(currentDocType)
+        ? docs.find(doc => doc.documentType === currentDocType && doc.date === sessionDate)
+        : null;
       warnings.hasBackendDocument = !!existingDoc;
 
       // 2. Check if another local draft exists for this date (different UUID, same form type)
@@ -3005,6 +3010,23 @@ export function createAppData() {
         'discharge': 'Discharge'
       };
       return map[documentType] || documentType;
+    },
+
+    /**
+     * Helper method to convert form type ID to internal document type
+     * @param {string} formType - Form type ID (e.g., 'Progress Note')
+     * @returns {string} Internal document type (e.g., 'progress_note')
+     */
+    _formTypeToDocType(formType) {
+      const map = {
+        'Progress Note': 'progress_note',
+        'Diagnosis': 'diagnosis',
+        'Treatment Plan': 'treatment_plan',
+        'Intake': 'intake',
+        'Consultation': 'consultation',
+        'Discharge': 'discharge'
+      };
+      return map[formType] || formType.toLowerCase().replace(/ /g, '_');
     },
 
     // ========================================
