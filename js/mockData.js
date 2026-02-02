@@ -86,26 +86,26 @@ export const mockData = {
       status: 'active',
       isArchived: false,
       archivedAt: null,
-      createdAt: '2024-11-15',
+      createdAt: '2025-11-15',
       totalSessions: 12,
-      lastSessionDate: '2025-01-10',
+      lastSessionDate: '2026-01-10',
       // Additional fields
       sessionBasis: 'weekly',
       paymentType: 'insurance',
       payer: 'Blue Cross Blue Shield',
-      authorizationExpiration: '2025-03-15',
+      authorizationExpiration: '2026-03-15',
       sessionsRemaining: 8,
       riskLevel: 'standard',
-      lastRiskAssessment: '2025-01-10',
+      lastRiskAssessment: '2026-01-10',
       referralSource: 'PCP: Dr. Martinez',
-      referralDate: '2024-11-10',
+      referralDate: '2025-11-10',
       internalNotes: 'Prefers morning appointments. Works from home on Fridays.',
       // Historical data fields
-      startDate: '2024-08-01',
+      startDate: '2025-08-01',
       sessionAdjustment: 5,
       // Next scheduled appointment (stored as UTC, displayed as local)
       nextAppointment: {
-        datetime: '2025-12-24T19:00:00Z',  // 2:00 PM EST stored as UTC
+        datetime: '2026-12-24T19:00:00Z',  // 2:00 PM EST stored as UTC
         duration: 50
       }
     },
@@ -118,9 +118,9 @@ export const mockData = {
       status: 'active',
       isArchived: false,
       archivedAt: null,
-      createdAt: '2024-10-22',
+      createdAt: '2025-10-22',
       totalSessions: 8,
-      lastSessionDate: '2025-01-09',
+      lastSessionDate: '2026-01-09',
       // Additional fields
       sessionBasis: 'weekly',
       paymentType: 'private-pay',
@@ -128,16 +128,16 @@ export const mockData = {
       authorizationExpiration: null,
       sessionsRemaining: null,
       riskLevel: 'elevated',
-      lastRiskAssessment: '2025-01-09',
+      lastRiskAssessment: '2026-01-09',
       referralSource: 'Psychology Today',
-      referralDate: '2024-10-15',
+      referralDate: '2025-10-15',
       internalNotes: 'Video sessions only - lives out of state. Check in about trauma processing pace.',
       // Historical data fields
-      startDate: '2024-10-22',
+      startDate: '2025-10-22',
       sessionAdjustment: 0,
       // Next scheduled appointment (stored as UTC, displayed as local)
       nextAppointment: {
-        datetime: '2025-12-24T20:30:00Z',  // 3:30 PM EST stored as UTC
+        datetime: '2026-12-24T20:30:00Z',  // 3:30 PM EST stored as UTC
         duration: 50
       }
     },
@@ -150,9 +150,9 @@ export const mockData = {
       status: 'active',
       isArchived: false,
       archivedAt: null,
-      createdAt: '2024-12-01',
+      createdAt: '2025-12-01',
       totalSessions: 5,
-      lastSessionDate: '2025-01-08',
+      lastSessionDate: '2026-01-08',
       // Additional fields
       sessionBasis: 'biweekly',
       paymentType: 'sliding-scale',
@@ -162,14 +162,14 @@ export const mockData = {
       riskLevel: null,
       lastRiskAssessment: null,
       referralSource: 'Reentry Support Foundation',
-      referralDate: '2024-11-28',
+      referralDate: '2025-11-28',
       internalNotes: 'Couple seen through RSF program. Partner recently released. Both committed to process.',
       // Historical data fields
-      startDate: '2024-12-01',
+      startDate: '2025-12-01',
       sessionAdjustment: 0,
       // Next scheduled appointment (biweekly - next week, stored as UTC)
       nextAppointment: {
-        datetime: '2025-12-31T16:00:00Z',  // 11:00 AM EST stored as UTC
+        datetime: '2026-12-31T16:00:00Z',  // 11:00 AM EST stored as UTC
         duration: 75
       }
     },
@@ -182,26 +182,26 @@ export const mockData = {
       status: 'active',
       isArchived: false,
       archivedAt: null,
-      createdAt: '2024-09-10',
+      createdAt: '2025-09-10',
       totalSessions: 18,
-      lastSessionDate: '2025-01-07',
+      lastSessionDate: '2026-01-07',
       // Additional fields
       sessionBasis: 'weekly',
       paymentType: 'insurance',
       payer: 'Aetna',
-      authorizationExpiration: '2025-01-20',
+      authorizationExpiration: '2026-01-20',
       sessionsRemaining: 2,
       riskLevel: 'standard',
-      lastRiskAssessment: '2024-12-15',
+      lastRiskAssessment: '2025-12-15',
       referralSource: 'Former client referral',
-      referralDate: '2024-09-01',
+      referralDate: '2025-09-01',
       internalNotes: 'Auth expiring soon - need to request reauthorization. Psychiatrist: Dr. Wong.',
       // Historical data fields
-      startDate: '2024-06-15',
+      startDate: '2025-06-15',
       sessionAdjustment: 10,
       // Next scheduled appointment (tomorrow, stored as UTC)
       nextAppointment: {
-        datetime: '2025-12-25T14:00:00Z',  // 9:00 AM EST stored as UTC
+        datetime: '2026-12-25T14:00:00Z',  // 9:00 AM EST stored as UTC
         duration: 50
       }
     },
@@ -214,7 +214,7 @@ export const mockData = {
       status: 'inactive',
       isArchived: false,
       archivedAt: null,
-      createdAt: '2024-06-15',
+      createdAt: '2025-06-15',
       totalSessions: 0,
       lastSessionDate: null,
       // Additional fields
@@ -226,7 +226,7 @@ export const mockData = {
       riskLevel: null,
       lastRiskAssessment: null,
       referralSource: 'Self-referred',
-      referralDate: '2024-06-10',
+      referralDate: '2025-06-10',
       internalNotes: 'Completed intake call but never scheduled first session. Reached out twice, no response.',
       // Historical data fields
       startDate: null,
@@ -242,10 +242,10 @@ export const mockData = {
       lastDelivery: 'In Person',
       status: 'discharged',
       isArchived: true,
-      archivedAt: '2024-12-20',
-      createdAt: '2024-03-01',
+      archivedAt: '2025-12-20',
+      createdAt: '2025-03-01',
       totalSessions: 24,
-      lastSessionDate: '2024-12-15',
+      lastSessionDate: '2025-12-15',
       sessionBasis: null,
       paymentType: 'insurance',
       payer: 'United Healthcare',
@@ -254,9 +254,9 @@ export const mockData = {
       riskLevel: null,
       lastRiskAssessment: null,
       referralSource: 'Employee Assistance Program',
-      referralDate: '2024-02-20',
+      referralDate: '2025-02-20',
       internalNotes: 'Successfully completed treatment. Met all goals. Discharged with relapse prevention plan.',
-      startDate: '2024-03-01',
+      startDate: '2025-03-01',
       sessionAdjustment: 0,
       // No appointment scheduled (discharged client)
       nextAppointment: null
@@ -270,7 +270,7 @@ export const mockData = {
       status: 'active',
       isArchived: false,
       archivedAt: null,
-      createdAt: '2025-01-15',
+      createdAt: '2026-01-15',
       totalSessions: 0,
       lastSessionDate: null,
       sessionBasis: null,
@@ -281,13 +281,13 @@ export const mockData = {
       riskLevel: null,
       lastRiskAssessment: null,
       referralSource: 'Website inquiry',
-      referralDate: '2025-01-12',
+      referralDate: '2026-01-12',
       internalNotes: 'New client - first appointment scheduled.',
       startDate: null,
       sessionAdjustment: 0,
       // First appointment - today! (stored as UTC)
       nextAppointment: {
-        datetime: '2025-12-24T15:00:00Z',  // 10:00 AM EST stored as UTC
+        datetime: '2026-12-24T15:00:00Z',  // 10:00 AM EST stored as UTC
         duration: 60  // Extended first session
       }
     }
@@ -314,12 +314,12 @@ export const mockData = {
     'client-001': [
       // Consultation document
       {
-        id: 'doc-consultation-2024-11-10T10:00:00Z-001',
+        id: 'doc-consultation-2025-11-10T10:00:00Z-001',
         documentType: 'consultation',
         clientId: 'client-001',
         status: 'complete',
         content: {
-          date: '2024-11-10',
+          date: '2025-11-10',
           duration: 30,
           delivery: 'Phone',
           referralSource: 'PCP: Dr. Martinez',
@@ -327,17 +327,17 @@ export const mockData = {
           recommendedServices: 'Individual therapy, CBT approach',
           notes: 'Client sounds motivated for treatment. Discussed logistics and scheduled intake.'
         },
-        createdAt: '2024-11-10T10:30:00Z',
-        updatedAt: '2024-11-10T10:30:00Z'
+        createdAt: '2025-11-10T10:30:00Z',
+        updatedAt: '2025-11-10T10:30:00Z'
       },
       // Intake document (new format with presenting problem IDs)
       {
-        id: 'doc-intake-2024-11-15T09:00:00Z-001',
+        id: 'doc-intake-2025-11-15T09:00:00Z-001',
         documentType: 'intake',
         clientId: 'client-001',
         status: 'complete',
         content: {
-          date: '2024-11-15',
+          date: '2025-11-15',
           duration: 90,
           delivery: 'In Person',
           // Demographics section
@@ -366,15 +366,15 @@ export const mockData = {
           },
           treatmentRecommendations: 'Weekly individual therapy using CBT and mindfulness approaches. Focus on work-related anxiety and imposter syndrome.'
         },
-        createdAt: '2024-11-15T10:30:00Z',
-        updatedAt: '2024-11-15T10:30:00Z'
+        createdAt: '2025-11-15T10:30:00Z',
+        updatedAt: '2025-11-15T10:30:00Z'
       },
       // Diagnosis documents
       {
-        id: 'doc-diagnosis-2024-11-20T10:00:00Z-001',
+        id: 'doc-diagnosis-2025-11-20T10:00:00Z-001',
         documentType: 'diagnosis',
         clientId: 'client-001',
-        date: '2024-11-20',  // Top-level date field per unified documents API
+        date: '2025-11-20',  // Top-level date field per unified documents API
         status: 'active',
         content: {
           icd10Code: 'F41.1',
@@ -384,14 +384,14 @@ export const mockData = {
           clinicalNotes: 'Responds well to CBT and mindfulness interventions. Work-related triggers identified.',
           dateResolved: null
         },
-        createdAt: '2024-11-20T10:00:00Z',
-        updatedAt: '2024-11-20T10:00:00Z'
+        createdAt: '2025-11-20T10:00:00Z',
+        updatedAt: '2025-11-20T10:00:00Z'
       },
       {
-        id: 'doc-diagnosis-2024-11-20T10:00:00Z-002',
+        id: 'doc-diagnosis-2025-11-20T10:00:00Z-002',
         documentType: 'diagnosis',
         clientId: 'client-001',
-        date: '2024-11-20',  // Top-level date field per unified documents API
+        date: '2025-11-20',  // Top-level date field per unified documents API
         status: 'active',
         content: {
           icd10Code: 'F32.0',
@@ -401,28 +401,28 @@ export const mockData = {
           clinicalNotes: 'Secondary to anxiety. Monitoring for changes.',
           dateResolved: null
         },
-        createdAt: '2024-11-20T10:00:00Z',
-        updatedAt: '2024-11-20T10:00:00Z'
+        createdAt: '2025-11-20T10:00:00Z',
+        updatedAt: '2025-11-20T10:00:00Z'
       },
       // Treatment Plan document (new format with structured goals and linked intake)
       {
-        id: 'doc-treatment_plan-2024-11-22T10:30:00Z-001',
+        id: 'doc-treatment_plan-2025-11-22T10:30:00Z-001',
         documentType: 'treatment_plan',
         clientId: 'client-001',
         status: 'active',
         content: {
-          dateCreated: '2024-11-22',
-          reviewDate: '2025-02-22',
+          dateCreated: '2025-11-22',
+          reviewDate: '2026-02-22',
           // Presenting problems linked from intake
           presentingProblems: ['anxiety', 'burnout'],
           presentingProblemsSource: 'intake',
-          linkedIntakeId: 'doc-intake-2024-11-15T09:00:00Z-001',
+          linkedIntakeId: 'doc-intake-2025-11-15T09:00:00Z-001',
           // Structured goals with interventions
           goals: [
             {
               id: 'goal-001',
               text: 'Reduce anxiety symptoms to manageable levels',
-              targetDate: '2025-02-22',
+              targetDate: '2026-02-22',
               interventions: [
                 { id: 'SE-4', name: 'Grounding', approach: 'Somatic Experiencing', fromLibrary: true },
                 { id: 'CT-1', name: 'Pro-symptom exploration', approach: 'Coherence Therapy', fromLibrary: true },
@@ -432,7 +432,7 @@ export const mockData = {
             {
               id: 'goal-002',
               text: 'Develop effective coping strategies for work stress',
-              targetDate: '2025-03-22',
+              targetDate: '2026-03-22',
               interventions: [
                 { id: 'SE-1', name: 'Resourcing', approach: 'Somatic Experiencing', fromLibrary: true },
                 { id: 'FT-2', name: 'Externalization', approach: 'Feminist Therapy', fromLibrary: true }
@@ -441,7 +441,7 @@ export const mockData = {
             {
               id: 'goal-003',
               text: 'Improve sleep quality and establish healthy sleep routine',
-              targetDate: '2025-04-22',
+              targetDate: '2026-04-22',
               interventions: [
                 { id: 'SE-12', name: 'Window of tolerance education', approach: 'Somatic Experiencing', fromLibrary: true },
                 { id: 'custom-002', name: 'Sleep hygiene education', approach: 'Coherence Therapy', fromLibrary: false }
@@ -453,17 +453,17 @@ export const mockData = {
           clientAgrees: true,
           notes: 'Client responds well to cognitive restructuring. Continue focus on challenging negative thought patterns.'
         },
-        createdAt: '2024-11-22T10:30:00Z',
-        updatedAt: '2024-11-22T10:30:00Z'
+        createdAt: '2025-11-22T10:30:00Z',
+        updatedAt: '2025-11-22T10:30:00Z'
       },
       // Progress Note documents
       {
-        id: 'doc-progress_note-2025-01-03T15:30:00Z-001',
+        id: 'doc-progress_note-2026-01-03T15:30:00Z-001',
         documentType: 'progress_note',
         clientId: 'client-001',
         status: 'complete',
         content: {
-          date: '2025-01-03',
+          date: '2026-01-03',
           duration: 50,
           formType: 'Progress Note',
           delivery: 'In Person',
@@ -476,16 +476,16 @@ export const mockData = {
           notes: 'Client reported increased anxiety over holiday period. Discussed family dynamics and boundary-setting challenges. Reviewed coping strategies and adjusted homework assignments for holiday season.',
           narrative: 'Session addressed holiday-related stress and family boundary challenges. Client benefited from reviewing established coping mechanisms. Continued focus on maintaining therapeutic gains during stressful periods.'
         },
-        createdAt: '2025-01-03T15:30:00Z',
-        updatedAt: '2025-01-03T15:30:00Z'
+        createdAt: '2026-01-03T15:30:00Z',
+        updatedAt: '2026-01-03T15:30:00Z'
       },
       {
-        id: 'doc-progress_note-2025-01-10T15:30:00Z-001',
+        id: 'doc-progress_note-2026-01-10T15:30:00Z-001',
         documentType: 'progress_note',
         clientId: 'client-001',
         status: 'complete',
         content: {
-          date: '2025-01-10',
+          date: '2026-01-10',
           duration: 50,
           formType: 'Progress Note',
           delivery: 'In Person',
@@ -515,19 +515,19 @@ export const mockData = {
           notes: 'Client discussed continued progress with work-related anxiety. Reported using grounding techniques successfully during a challenging meeting. Explored feelings of imposter syndrome that arose when given new project responsibilities. Practiced cognitive restructuring around negative self-talk. Homework: Continue daily grounding practice and journal about wins at work.',
           narrative: 'Client demonstrated significant progress in managing work-related anxiety through consistent use of grounding techniques. Session focused on addressing imposter syndrome related to new responsibilities. Client shows good insight and engagement with therapeutic interventions. Plan: Continue cognitive-behavioral approach with focus on reframing negative self-perceptions.'
         },
-        createdAt: '2025-01-10T15:30:00Z',
-        updatedAt: '2025-01-10T15:30:00Z'
+        createdAt: '2026-01-10T15:30:00Z',
+        updatedAt: '2026-01-10T15:30:00Z'
       }
     ],
     'client-002': [
       // Intake document (new format with presenting problem IDs)
       {
-        id: 'doc-intake-2024-10-22T09:00:00Z-001',
+        id: 'doc-intake-2025-10-22T09:00:00Z-001',
         documentType: 'intake',
         clientId: 'client-002',
         status: 'complete',
         content: {
-          date: '2024-10-22',
+          date: '2025-10-22',
           duration: 90,
           delivery: 'Video',
           demographicInfo: { age: 28, occupation: 'Teacher' },
@@ -554,15 +554,15 @@ export const mockData = {
           },
           treatmentRecommendations: 'Weekly trauma-focused therapy. Consider EMDR when ready. Prioritize safety and stabilization.'
         },
-        createdAt: '2024-10-22T10:30:00Z',
-        updatedAt: '2024-10-22T10:30:00Z'
+        createdAt: '2025-10-22T10:30:00Z',
+        updatedAt: '2025-10-22T10:30:00Z'
       },
       // Diagnosis documents
       {
-        id: 'doc-diagnosis-2024-10-25T14:00:00Z-001',
+        id: 'doc-diagnosis-2025-10-25T14:00:00Z-001',
         documentType: 'diagnosis',
         clientId: 'client-002',
-        date: '2024-10-25',  // Top-level date field per unified documents API
+        date: '2025-10-25',  // Top-level date field per unified documents API
         status: 'active',
         content: {
           icd10Code: 'F43.10',
@@ -572,14 +572,14 @@ export const mockData = {
           clinicalNotes: 'Complex trauma history. Strong therapeutic alliance supporting gradual processing.',
           dateResolved: null
         },
-        createdAt: '2024-10-25T14:00:00Z',
-        updatedAt: '2024-10-25T14:00:00Z'
+        createdAt: '2025-10-25T14:00:00Z',
+        updatedAt: '2025-10-25T14:00:00Z'
       },
       {
-        id: 'doc-diagnosis-2024-10-25T14:00:00Z-002',
+        id: 'doc-diagnosis-2025-10-25T14:00:00Z-002',
         documentType: 'diagnosis',
         clientId: 'client-002',
-        date: '2024-10-25',  // Top-level date field per unified documents API
+        date: '2025-10-25',  // Top-level date field per unified documents API
         status: 'resolved',
         content: {
           icd10Code: 'F41.9',
@@ -587,30 +587,30 @@ export const mockData = {
           isPrincipal: false,
           severity: 'mild',
           clinicalNotes: 'Initial presentation. Reclassified after full assessment.',
-          dateResolved: '2024-11-15'
+          dateResolved: '2025-11-15'
         },
-        createdAt: '2024-10-25T14:00:00Z',
-        updatedAt: '2024-11-15T10:00:00Z'
+        createdAt: '2025-10-25T14:00:00Z',
+        updatedAt: '2025-11-15T10:00:00Z'
       },
       // Treatment Plan document (new format with structured goals and linked intake)
       {
-        id: 'doc-treatment_plan-2024-10-28T15:00:00Z-001',
+        id: 'doc-treatment_plan-2025-10-28T15:00:00Z-001',
         documentType: 'treatment_plan',
         clientId: 'client-002',
         status: 'active',
         content: {
-          dateCreated: '2024-10-28',
-          reviewDate: '2025-01-28',
+          dateCreated: '2025-10-28',
+          reviewDate: '2026-01-28',
           // Presenting problems linked from intake
           presentingProblems: ['cptsd', 'relational-conflict'],
           presentingProblemsSource: 'intake',
-          linkedIntakeId: 'doc-intake-2024-10-22T09:00:00Z-001',
+          linkedIntakeId: 'doc-intake-2025-10-22T09:00:00Z-001',
           // Structured goals with interventions
           goals: [
             {
               id: 'goal-001',
               text: 'Process traumatic memories in safe environment',
-              targetDate: '2025-04-28',
+              targetDate: '2026-04-28',
               interventions: [
                 { id: 'SE-1', name: 'Resourcing', approach: 'Somatic Experiencing', fromLibrary: true },
                 { id: 'SE-3', name: 'Titration', approach: 'Somatic Experiencing', fromLibrary: true },
@@ -621,7 +621,7 @@ export const mockData = {
             {
               id: 'goal-002',
               text: 'Reduce avoidance behaviors',
-              targetDate: '2025-03-28',
+              targetDate: '2026-03-28',
               interventions: [
                 { id: 'CT-1', name: 'Pro-symptom exploration', approach: 'Coherence Therapy', fromLibrary: true },
                 { id: 'CT-5', name: 'Symptom coherence mapping', approach: 'Coherence Therapy', fromLibrary: true },
@@ -631,7 +631,7 @@ export const mockData = {
             {
               id: 'goal-003',
               text: 'Strengthen support systems',
-              targetDate: '2025-02-28',
+              targetDate: '2026-02-28',
               interventions: [
                 { id: 'AT-1', name: 'Secure base provision', approach: 'Attachment-Based', fromLibrary: true },
                 { id: 'AT-4', name: 'Attachment pattern awareness', approach: 'Attachment-Based', fromLibrary: true }
@@ -642,17 +642,17 @@ export const mockData = {
           clientAgrees: true,
           notes: 'Proceed gradually with trauma processing. Client has strong therapeutic alliance. Prioritize stabilization before deep processing.'
         },
-        createdAt: '2024-10-28T15:00:00Z',
-        updatedAt: '2024-10-28T15:00:00Z'
+        createdAt: '2025-10-28T15:00:00Z',
+        updatedAt: '2025-10-28T15:00:00Z'
       },
       // Progress Note document
       {
-        id: 'doc-progress_note-2025-01-09T14:00:00Z-001',
+        id: 'doc-progress_note-2026-01-09T14:00:00Z-001',
         documentType: 'progress_note',
         clientId: 'client-002',
         status: 'complete',
         content: {
-          date: '2025-01-09',
+          date: '2026-01-09',
           duration: 50,
           formType: 'Progress Note',
           delivery: 'Video',
@@ -665,19 +665,19 @@ export const mockData = {
           notes: 'Client shared breakthrough regarding relationship patterns. Made connection between childhood experiences and current relationship dynamics. Showed increased emotional awareness. Discussed communication strategies to implement with partner.',
           narrative: 'Client demonstrated significant insight connecting past experiences to present relationship patterns. Strong therapeutic alliance evident. Introduced communication skills training. Plan: Continue trauma-informed approach with focus on healthy relationship building.'
         },
-        createdAt: '2025-01-09T14:00:00Z',
-        updatedAt: '2025-01-09T14:00:00Z'
+        createdAt: '2026-01-09T14:00:00Z',
+        updatedAt: '2026-01-09T14:00:00Z'
       }
     ],
     'client-003': [
       // Intake document
       {
-        id: 'doc-intake-2024-12-01T09:00:00Z-001',
+        id: 'doc-intake-2025-12-01T09:00:00Z-001',
         documentType: 'intake',
         clientId: 'client-003',
         status: 'complete',
         content: {
-          date: '2024-12-01',
+          date: '2025-12-01',
           duration: 90,
           delivery: 'In Person',
           demographicInfo: { coupleType: 'Heterosexual couple' },
@@ -688,15 +688,15 @@ export const mockData = {
           riskAssessment: { domesticViolence: false, safety: true },
           treatmentRecommendations: 'Biweekly couples therapy focusing on communication and rebuilding trust.'
         },
-        createdAt: '2024-12-01T10:30:00Z',
-        updatedAt: '2024-12-01T10:30:00Z'
+        createdAt: '2025-12-01T10:30:00Z',
+        updatedAt: '2025-12-01T10:30:00Z'
       },
       // Diagnosis document
       {
-        id: 'doc-diagnosis-2024-12-05T11:00:00Z-001',
+        id: 'doc-diagnosis-2025-12-05T11:00:00Z-001',
         documentType: 'diagnosis',
         clientId: 'client-003',
-        date: '2024-12-05',  // Top-level date field per unified documents API
+        date: '2025-12-05',  // Top-level date field per unified documents API
         status: 'provisional',
         content: {
           icd10Code: 'Z63.0',
@@ -706,17 +706,17 @@ export const mockData = {
           clinicalNotes: 'Couple presenting with communication difficulties post-reentry.',
           dateResolved: null
         },
-        createdAt: '2024-12-05T11:00:00Z',
-        updatedAt: '2024-12-05T11:00:00Z'
+        createdAt: '2025-12-05T11:00:00Z',
+        updatedAt: '2025-12-05T11:00:00Z'
       },
       // Progress Note document
       {
-        id: 'doc-progress_note-2025-01-08T16:00:00Z-001',
+        id: 'doc-progress_note-2026-01-08T16:00:00Z-001',
         documentType: 'progress_note',
         clientId: 'client-003',
         status: 'complete',
         content: {
-          date: '2025-01-08',
+          date: '2026-01-08',
           duration: 50,
           formType: 'Progress Note',
           delivery: 'In Person',
@@ -729,19 +729,19 @@ export const mockData = {
           notes: 'Client working through grief related to recent loss. Normalized grief responses and discussed importance of self-compassion. Explored support systems and introduced gentle self-care practices.',
           narrative: 'Grief-focused session with emphasis on psychoeducation and normalization of client\'s experience. Client receptive to self-compassion framework. Plan: Continue grief work with attention to self-care and support system activation.'
         },
-        createdAt: '2025-01-08T16:00:00Z',
-        updatedAt: '2025-01-08T16:00:00Z'
+        createdAt: '2026-01-08T16:00:00Z',
+        updatedAt: '2026-01-08T16:00:00Z'
       }
     ],
     'client-004': [
       // Consultation document
       {
-        id: 'doc-consultation-2024-09-01T10:00:00Z-001',
+        id: 'doc-consultation-2025-09-01T10:00:00Z-001',
         documentType: 'consultation',
         clientId: 'client-004',
         status: 'complete',
         content: {
-          date: '2024-09-01',
+          date: '2025-09-01',
           duration: 30,
           delivery: 'Phone',
           referralSource: 'Former client referral',
@@ -749,17 +749,17 @@ export const mockData = {
           recommendedServices: 'Individual therapy with psychiatric consultation',
           notes: 'Client reports significant depressive symptoms. Coordinating with psychiatrist.'
         },
-        createdAt: '2024-09-01T10:30:00Z',
-        updatedAt: '2024-09-01T10:30:00Z'
+        createdAt: '2025-09-01T10:30:00Z',
+        updatedAt: '2025-09-01T10:30:00Z'
       },
       // Intake document
       {
-        id: 'doc-intake-2024-09-10T09:00:00Z-001',
+        id: 'doc-intake-2025-09-10T09:00:00Z-001',
         documentType: 'intake',
         clientId: 'client-004',
         status: 'complete',
         content: {
-          date: '2024-09-10',
+          date: '2025-09-10',
           duration: 90,
           delivery: 'In Person',
           demographicInfo: { age: 45, occupation: 'On disability leave' },
@@ -771,15 +771,15 @@ export const mockData = {
           riskAssessment: { suicidalIdeation: false, homicidalIdeation: false, selfHarm: false },
           treatmentRecommendations: 'Weekly therapy coordinated with psychiatric care. Behavioral activation focus.'
         },
-        createdAt: '2024-09-10T10:30:00Z',
-        updatedAt: '2024-09-10T10:30:00Z'
+        createdAt: '2025-09-10T10:30:00Z',
+        updatedAt: '2025-09-10T10:30:00Z'
       },
       // Diagnosis document
       {
-        id: 'doc-diagnosis-2024-09-15T10:00:00Z-001',
+        id: 'doc-diagnosis-2025-09-15T10:00:00Z-001',
         documentType: 'diagnosis',
         clientId: 'client-004',
-        date: '2024-09-15',  // Top-level date field per unified documents API
+        date: '2025-09-15',  // Top-level date field per unified documents API
         status: 'active',
         content: {
           icd10Code: 'F33.1',
@@ -789,17 +789,17 @@ export const mockData = {
           clinicalNotes: 'Recurrent episode. Coordinating with psychiatrist Dr. Wong.',
           dateResolved: null
         },
-        createdAt: '2024-09-15T10:00:00Z',
-        updatedAt: '2024-09-15T10:00:00Z'
+        createdAt: '2025-09-15T10:00:00Z',
+        updatedAt: '2025-09-15T10:00:00Z'
       },
       // Treatment Plan document
       {
-        id: 'doc-treatment_plan-2024-09-20T10:00:00Z-001',
+        id: 'doc-treatment_plan-2025-09-20T10:00:00Z-001',
         documentType: 'treatment_plan',
         clientId: 'client-004',
         status: 'active',
         content: {
-          date: '2024-09-20',
+          date: '2025-09-20',
           goals: [
             'Reduce depressive symptoms',
             'Return to work functioning',
@@ -808,19 +808,19 @@ export const mockData = {
           interventions: ['Behavioral activation', 'Mood monitoring', 'Coordination with psychiatry'],
           targetSymptoms: ['Depression', 'Low motivation', 'Sleep disturbance'],
           notes: 'Collaborative care with psychiatrist. Weekly sessions.',
-          reviewDate: '2025-01-20'
+          reviewDate: '2026-01-20'
         },
-        createdAt: '2024-09-20T10:00:00Z',
-        updatedAt: '2024-09-20T10:00:00Z'
+        createdAt: '2025-09-20T10:00:00Z',
+        updatedAt: '2025-09-20T10:00:00Z'
       },
       // Progress Note document (most recent is Treatment Plan review)
       {
-        id: 'doc-progress_note-2025-01-07T10:00:00Z-001',
+        id: 'doc-progress_note-2026-01-07T10:00:00Z-001',
         documentType: 'progress_note',
         clientId: 'client-004',
         status: 'complete',
         content: {
-          date: '2025-01-07',
+          date: '2026-01-07',
           duration: 50,
           formType: 'Treatment Plan',
           delivery: 'Phone',
@@ -833,19 +833,19 @@ export const mockData = {
           notes: 'Client reported stable mood and continued progress with depression management. Discussed medication adherence and coordination with psychiatrist. Explored return-to-work planning and activity scheduling.',
           narrative: 'Client showing sustained improvement in mood regulation. Good collaboration with psychiatric care. Focus shifting toward functional goals including work reintegration. Plan: Continue behavioral activation and mood monitoring.'
         },
-        createdAt: '2025-01-07T10:00:00Z',
-        updatedAt: '2025-01-07T10:00:00Z'
+        createdAt: '2026-01-07T10:00:00Z',
+        updatedAt: '2026-01-07T10:00:00Z'
       }
     ],
     'client-005': [
       // Consultation document only (never started treatment)
       {
-        id: 'doc-consultation-2024-06-10T10:00:00Z-001',
+        id: 'doc-consultation-2025-06-10T10:00:00Z-001',
         documentType: 'consultation',
         clientId: 'client-005',
         status: 'complete',
         content: {
-          date: '2024-06-10',
+          date: '2025-06-10',
           duration: 20,
           delivery: 'Phone',
           referralSource: 'Self-referred',
@@ -853,19 +853,19 @@ export const mockData = {
           recommendedServices: 'Individual therapy',
           notes: 'Brief call. Client interested but unsure about scheduling. Will follow up.'
         },
-        createdAt: '2024-06-10T10:30:00Z',
-        updatedAt: '2024-06-10T10:30:00Z'
+        createdAt: '2025-06-10T10:30:00Z',
+        updatedAt: '2025-06-10T10:30:00Z'
       }
     ],
     'client-006': [
       // Intake document
       {
-        id: 'doc-intake-2024-03-01T09:00:00Z-001',
+        id: 'doc-intake-2025-03-01T09:00:00Z-001',
         documentType: 'intake',
         clientId: 'client-006',
         status: 'complete',
         content: {
-          date: '2024-03-01',
+          date: '2025-03-01',
           duration: 90,
           delivery: 'In Person',
           demographicInfo: { age: 38, occupation: 'Accountant' },
@@ -877,15 +877,15 @@ export const mockData = {
           riskAssessment: { suicidalIdeation: false, homicidalIdeation: false, selfHarm: false },
           treatmentRecommendations: 'Weekly therapy for burnout recovery.'
         },
-        createdAt: '2024-03-01T10:30:00Z',
-        updatedAt: '2024-03-01T10:30:00Z'
+        createdAt: '2025-03-01T10:30:00Z',
+        updatedAt: '2025-03-01T10:30:00Z'
       },
       // Diagnosis document
       {
-        id: 'doc-diagnosis-2024-03-05T10:00:00Z-001',
+        id: 'doc-diagnosis-2025-03-05T10:00:00Z-001',
         documentType: 'diagnosis',
         clientId: 'client-006',
-        date: '2024-03-05',  // Top-level date field per unified documents API
+        date: '2025-03-05',  // Top-level date field per unified documents API
         status: 'resolved',
         content: {
           icd10Code: 'Z73.0',
@@ -893,19 +893,19 @@ export const mockData = {
           isPrincipal: true,
           severity: 'moderate',
           clinicalNotes: 'Work-related burnout. Good prognosis with lifestyle changes.',
-          dateResolved: '2024-12-15'
+          dateResolved: '2025-12-15'
         },
-        createdAt: '2024-03-05T10:00:00Z',
-        updatedAt: '2024-12-15T10:00:00Z'
+        createdAt: '2025-03-05T10:00:00Z',
+        updatedAt: '2025-12-15T10:00:00Z'
       },
       // Treatment Plan document
       {
-        id: 'doc-treatment_plan-2024-03-10T10:00:00Z-001',
+        id: 'doc-treatment_plan-2025-03-10T10:00:00Z-001',
         documentType: 'treatment_plan',
         clientId: 'client-006',
         status: 'completed',
         content: {
-          date: '2024-03-10',
+          date: '2025-03-10',
           goals: [
             'Reduce burnout symptoms',
             'Establish work-life boundaries',
@@ -914,19 +914,19 @@ export const mockData = {
           interventions: ['Stress management', 'Boundary setting', 'Values clarification'],
           targetSymptoms: ['Exhaustion', 'Cynicism', 'Reduced efficacy'],
           notes: 'Focus on recovery and prevention.',
-          reviewDate: '2024-06-10'
+          reviewDate: '2025-06-10'
         },
-        createdAt: '2024-03-10T10:00:00Z',
-        updatedAt: '2024-12-15T10:00:00Z'
+        createdAt: '2025-03-10T10:00:00Z',
+        updatedAt: '2025-12-15T10:00:00Z'
       },
       // Progress Note documents (sample - would have many more for 24 sessions)
       {
-        id: 'doc-progress_note-2024-12-15T10:00:00Z-001',
+        id: 'doc-progress_note-2025-12-15T10:00:00Z-001',
         documentType: 'progress_note',
         clientId: 'client-006',
         status: 'complete',
         content: {
-          date: '2024-12-15',
+          date: '2025-12-15',
           duration: 50,
           formType: 'Progress Note',
           delivery: 'In Person',
@@ -939,17 +939,17 @@ export const mockData = {
           notes: 'Final session. Reviewed progress and discussed relapse prevention strategies. Client met all treatment goals.',
           narrative: 'Termination session. Client successfully completed treatment, meeting all identified goals. Relapse prevention plan established. Client encouraged to return if needed.'
         },
-        createdAt: '2024-12-15T10:00:00Z',
-        updatedAt: '2024-12-15T10:00:00Z'
+        createdAt: '2025-12-15T10:00:00Z',
+        updatedAt: '2025-12-15T10:00:00Z'
       },
       // Discharge document
       {
-        id: 'doc-discharge-2024-12-20T10:00:00Z-001',
+        id: 'doc-discharge-2025-12-20T10:00:00Z-001',
         documentType: 'discharge',
         clientId: 'client-006',
         status: 'complete',
         content: {
-          date: '2024-12-20',
+          date: '2025-12-20',
           reasonForDischarge: 'Treatment goals achieved',
           treatmentSummary: 'Client completed 24 sessions over 9 months. Successfully addressed work burnout, established healthy boundaries, and developed sustainable stress management practices.',
           treatmentOutcome: 'Goals met',
@@ -959,8 +959,8 @@ export const mockData = {
           referrals: [],
           clientAcknowledgment: true
         },
-        createdAt: '2024-12-20T10:00:00Z',
-        updatedAt: '2024-12-20T10:00:00Z'
+        createdAt: '2025-12-20T10:00:00Z',
+        updatedAt: '2025-12-20T10:00:00Z'
       }
     ],
     'client-007': [
@@ -1369,7 +1369,7 @@ export const mockData = {
   // Lexicon configuration data
   lexicon: {
     version: 1,
-    updatedAt: "2025-12-16T00:00:00.000Z",
+    updatedAt: "2026-12-16T00:00:00.000Z",
     updatedBy: "drkhorney@contextmatterstherapy.com",
 
     // Copy of InterventionLexicon data
@@ -1449,6 +1449,6 @@ export const mockData = {
       'timeline-work': { total: 5, 'client-001': 2, 'client-004': 2, 'client-006': 1 },
       'visualization': { total: 4, 'client-003': 2, 'client-005': 2 }
     },
-    lastUpdated: '2025-01-03T16:30:00Z'
+    lastUpdated: '2026-01-03T16:30:00Z'
   }
 };
