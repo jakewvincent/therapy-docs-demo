@@ -93,19 +93,12 @@ export function createLoginAppData() {
 
             Logger.log('Login page initialized');
 
-            // Check if already logged in
-            const token = localStorage.getItem('authToken');
-            if (token) {
-                // Already authenticated - redirect to forms
-                window.location.href = 'documents.html';
-                return;
-            }
-
-            // In debug mode, redirect to documents.html (autoLogin will handle it there)
-            if (config.features && config.features.debugMode) {
-                window.location.href = 'documents.html';
-                return;
-            }
+            // Clear any existing auth state so demo visitors always see the login flow
+            // (Other pages will redirect here if not authenticated)
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('userInfo');
         },
 
         // ========================================
